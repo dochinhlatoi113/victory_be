@@ -1,0 +1,15 @@
+  {{#if message }}
+    {{message}}
+
+  {{/if}}
+
+<div class="container">
+    <h1>Create Catagory Film</h1>
+    <form method="POST" action="insert-category">
+    <div class="form-group">
+        <label for="nameCategory">Name Category</label>
+        <input type="text" name="name" class="form-control" id="name" >       
+    </div>   
+    <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+</div>

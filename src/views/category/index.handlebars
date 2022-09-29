@@ -1,0 +1,25 @@
+
+
+<table class="table">
+  <thead>
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">Name</th>
+      <th scope="col">Total</th>
+      <th scope="col"></th>
+    </tr>
+  </thead>
+  <tbody>
+    
+     {{#each category }}
+    <tr> 
+      <th scope="row">{{inc @index}}</th>
+      <td> {{this.name}}</td>
+      <td>Otto</td>
+      <td><button type="button" class="btn btn-warning">Edit</button> ||
+           <button type="button" class="btn btn-info">Delete</button></td>
+      </tr>
+   
+  </tbody>
+   {{/each}}
+</table>
