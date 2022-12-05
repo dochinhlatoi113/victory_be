@@ -1,23 +1,23 @@
 const express = require("express")
-const adminController = require("../controller/adminController")
-const productController = require("../controller/productController")
-const categoryController = require("../controller/categoryController")
+const recivingController = require("../controller/recivingController")
+const loginController = require("../controller/loginController")
+const passport = require('passport');
+var LocalStrategy   = require('passport-local').Strategy;
+const initPassportLocal = require('../controller/auth/passport');
 let router = express.Router();
 
 const routerInit = (app) => {
-
-    router.get('/', adminController.getIndexPage)
-    //product
-    router.get('/create-film', productController.createFormFilm)
-    router.post('/insert-film',productController.insertFilm)
-  
-    //category
-   
-    router.get('/index-category', categoryController.indexCategoryFilm)
-    router.get('/create-category', categoryController.createFormCategoryFilm)
-    router.post('/insert-category',categoryController.insertFormCategoryFilm)
-    // main route
-  
+    app.use(passport.initialize());
+    app.use(passport.session()); 
+    router.get('/login',loginController.checkNotAuthenticated,loginController.show) 
+    router.post('/logout', loginController.logout)    
+    router.post('/login',loginController.checkNotAuthenticated ,passport.authenticate('local',{
+        failureRedirect: "/login",
+        successRedirect: "/",
+        
+      }));
+    router.get('/',loginController.checkAuthenticated,recivingController.getIndexPage)    
+    router.get('/create-reciving-room', recivingController.create)    
     return app.use('/', router)
 }
 module.exports = routerInit

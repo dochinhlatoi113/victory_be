@@ -1,5 +1,5 @@
 <aside class="main-sidebar sidebar-dark-primary elevation-4">
-<div class="form-inline">
+{{!-- <div class="form-inline">
         <div class="input-group" data-widget="sidebar-search">
           <input class="form-control form-control-sidebar" type="search" placeholder="Search" aria-label="Search">
           <div class="input-group-append">
@@ -8,77 +8,48 @@
             </button>
           </div>
         </div>
-      </div>
+      </div> --}}
 
       <!-- Sidebar Menu -->
       <nav class="mt-2">
         <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
-
-        <li class="nav-item ">
-            <a href="#" class="nav-link active">
-              <i class="nav-icon fas fa-table"></i>
-              <p>
-                Sản phẩm
-                <i class="fas fa-angle-left right"></i>
-              </p>
-            </a>
-          <ul class="nav nav-treeview">
-            <li class="nav-item ">
-            <a href="#" class="nav-link active"style="background-color:#dc3545; color:white">
-              <i class="nav-icon fas fa-circle"></i>
-              <p>
-                Category
-                <i class="fas fa-angle-left right"></i>
-              </p>
-            </a>
-            <ul class="nav nav-treeview">
-              <li class="nav-item">
-                <a href="/index-category" class="nav-link active">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Category Film</p>
-                </a>
-              </li>             
-             
-            </ul>
-            <ul class="nav nav-treeview">
-              <li class="nav-item">
-                <a href="create-category" class="nav-link active">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Add Category Flim</p>
-                </a>
-              </li>             
-             
-            </ul>
-            <ul class="nav nav-treeview">
-              <li class="nav-item">
-                <a href="" class="nav-link active">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Thùng rác</p>
-                </a>
-              </li>             
-             
-            </ul>
-          </li>        
-
-   <li class="nav-item">
-            <a href="#" class="nav-link active " style="background-color:#dc3545; color:white">
+            <li class="nav-item">
+            <a href="#" class="nav-link active " >
               <i class="nav-icon fas fa-tree"></i>
               <p>
-                 BRANDS
+                 Phòng thụ lý
                 <i class="fas fa-angle-left right"></i>
               </p>
             </a>
             <ul class="nav nav-treeview">
               <li class="nav-item">
-                <a href="" class="nav-link active">
+                <a href="/" class="nav-link active">
                   <i class="far fa-circle nav-icon"></i>
-                  <p>Danh sách thương hiệu</p>
+                  <p>Danh sách khách hàng </p>
+                </a>
+              </li>  
+              <li class="nav-item">
+                <a href="/create-reciving-room" class="nav-link active">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Thêm khách hàng</p>
+                </a>
+              </li> 
+               <li class="nav-item">
+                <a href="/create-reciving-room" class="nav-link active">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Thêm chương trình</p>
+                </a>
+              </li> 
+               <li class="nav-item">
+                <a href="/" class="nav-link active">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Nhiệm vụ </p>
                 </a>
               </li>  
               <li class="nav-item">
                 <a href="" class="nav-link active">
                   <i class="far fa-circle nav-icon"></i>
-                  <p>Thêm Thương hiệu</p>
+                  <p>Nhật ký làm việc</p>
                 </a>
               </li>     
               <li class="nav-item">
@@ -88,27 +59,27 @@
                 </a>
               </li>      
             </ul>
-          </li>
-          <!-- ...........products................... -->
-          <li class="nav-item">
-            <a href="#" class="nav-link active"style="background-color:#dc3545; color:white">
+          </li>     
+          <!--contract-->
+              <li class="nav-item">
+            <a href="#" class="nav-link active " >
               <i class="nav-icon fas fa-tree"></i>
               <p>
-                 PRODUCTS
+                 Contract
                 <i class="fas fa-angle-left right"></i>
               </p>
             </a>
             <ul class="nav nav-treeview">
               <li class="nav-item">
-                <a href="" class="nav-link active">
+                <a href="/" class="nav-link active">
                   <i class="far fa-circle nav-icon"></i>
-                  <p>Danh sách sản phẩm</p>
+                  <p>Danh sách hợp đồng</p>
                 </a>
               </li>  
               <li class="nav-item">
-                <a href="create-film" class="nav-link active">
+                <a href="/create-reciving-room" class="nav-link active">
                   <i class="far fa-circle nav-icon"></i>
-                  <p>Thêm Sản Phẩm</p>
+                  <p>Thêm hợp đồng</p>
                 </a>
               </li>     
               <li class="nav-item">
@@ -118,27 +89,34 @@
                 </a>
               </li>      
             </ul>
-          </li>
-         
-         <li class="nav-item">
-            <a href="#" class="nav-link active"style="background-color:#dc3545; color:white">
+          </li>     
+          <!--end contract-->
+           <!--knowleage base-->
+              <li class="nav-item">
+            <a href="#" class="nav-link active " >
               <i class="nav-icon fas fa-tree"></i>
               <p>
-                MÃ GIẢM 
+                 Knowleage base
                 <i class="fas fa-angle-left right"></i>
               </p>
             </a>
             <ul class="nav nav-treeview">
               <li class="nav-item">
-                <a href="" class="nav-link active">
+                <a href="/" class="nav-link active">
                   <i class="far fa-circle nav-icon"></i>
-                  <p>Danh sách</p>
+                  <p>Danh sách kiến thức</p>
+                </a>
+              </li>  
+               <li class="nav-item">
+                <a href="/" class="nav-link active">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Thêm kiến thức</p>
                 </a>
               </li>  
               <li class="nav-item">
-                <a href="" class="nav-link active">
+                <a href="/create-reciving-room" class="nav-link active">
                   <i class="far fa-circle nav-icon"></i>
-                  <p>Thêm </p>
+                  <p>Thêm category</p>
                 </a>
               </li>     
               <li class="nav-item">
@@ -148,128 +126,8 @@
                 </a>
               </li>      
             </ul>
-          </li> 
-        </ul>       
-        <!-- .....................Kho hàng.......................................       -->
-      
-        <li class="nav-item">
-            <a href="#" class="nav-link active " >
-              <i class="nav-icon fas fa-tree"></i>
-              <p>
-                 Kho hàng
-                <i class="fas fa-angle-left right"></i>
-              </p>
-            </a>
-            <ul class="nav nav-treeview">
-              <li class="nav-item">
-                <a href="" class="nav-link active">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Danh sách thương hiệu</p>
-                </a>
-              </li>  
-              <li class="nav-item">
-                <a href="" class="nav-link active">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Thêm Thương hiệu</p>
-                </a>
-              </li>     
-              <li class="nav-item">
-                <a href="" class="nav-link active">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Thùng rác</p>
-                </a>
-              </li>      
-            </ul>
-          </li>
-
-
-        <!-- ........................................................................... -->
-        
-
-        <!-- .....................Report.......................................       -->
-      
-        <li class="nav-item">
-            <a href="#" class="nav-link active " >
-              <i class="nav-icon fas fa-tree"></i>
-              <p>
-                 Report
-                <i class="fas fa-angle-left right"></i>
-              </p>
-            </a>
-            <ul class="nav nav-treeview">
-              <li class="nav-item">
-                <a href="" class="nav-link active">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Danh sách đơn hàng</p>
-                </a>
-              </li>                  
-            </ul>
-            <ul class="nav nav-treeview">
-              <li class="nav-item">
-                <a href="" class="nav-link active">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Báo cáo tổng quan</p>
-                </a>
-              </li>                  
-            </ul>
-          </li>
-        <!-- ...........................Quản trị viên................................................ -->
-        <li class="nav-item">
-            <a href="#" class="nav-link active " >
-              <i class="nav-icon fas fa-tree"></i>
-              <p>
-                  Quản trị viên
-                <i class="fas fa-angle-left right"></i>
-              </p>
-            </a>
-            <ul class="nav nav-treeview">
-              <li class="nav-item">
-                <a href="" class="nav-link active">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Thêm thành viên</p>
-                </a>
-              </li>                  
-            </ul>
-            <ul class="nav nav-treeview">
-              <li class="nav-item">
-                <a href="" class="nav-link active">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Danh sách thành viên</p>
-                </a>
-              </li>                  
-            </ul>
-          </li>
-         <li class="nav-item">
-            <a href="#" class="nav-link active " >
-              <i class="nav-icon fas fa-tree"></i>
-              <p>
-                  Bài viết
-                <i class="fas fa-angle-left right"></i>
-              </p>
-            </a>
-            <ul class="nav nav-treeview">
-              <li class="nav-item">
-                <a href="" class="nav-link active">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Bài viết</p>
-                </a>
-              </li>                  
-            </ul>
-            <ul class="nav nav-treeview">
-              <li class="nav-item">
-                <a href="" class="nav-link active">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Danh sách bài viết</p>
-                </a>
-              </li>  
-              <li class="nav-item">
-                <a href="" class="nav-link active">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Thùng rác</p>
-                </a>
-              </li>                     
-            </ul>
-          </li>
+          </li>     
+          <!--end knowleage base-->
       </ul>
     </nav>    
   </div>  
