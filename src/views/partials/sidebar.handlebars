@@ -11,8 +11,15 @@
       </div> --}}
 
       <!-- Sidebar Menu -->
-      <nav class="mt-2">
-        <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+        <div style="margin-top: 10px;">
+              <form action="/logout" method="POST">                
+                 <button type="submit" class="btn btn-warning">Logout</button>
+            </form>             
+          </div>
+        <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">   
+         <marquee  direction="left" height="30%">
+            <p class="title-left-sidebar">Phòng thụ lý</p>  
+          </marquee>
             <li class="nav-item">
             <a href="#" class="nav-link active " >
               <i class="nav-icon fas fa-tree"></i>
@@ -128,7 +135,48 @@
             </ul>
           </li>     
           <!--end knowleage base-->
+          <!--start permission--->
+             <marquee  direction="left" height="30%">
+            <p class="title-left-sidebar">Phân quyền</p>  
+          </marquee>
+            <li class="nav-item">
+            <a href="#" class="nav-link active " >
+              <i class="nav-icon fas fa-tree"></i>
+              <p>
+                   Phân quyền
+                <i class="fas fa-angle-left right"></i>
+              </p>
+            </a>
+            <ul class="nav nav-treeview">      
+               <li class="nav-item">
+                <a href="/group" class="nav-link active">
+                  <i class="far fa-circle nav-icon"></i>                 
+                       <p>Account và quyền</p>
+                </a>
+              </li>  
+               <li class="nav-item">
+                <a href="/group/department" class="nav-link active">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Phòng ban</p>
+                </a>
+              </li>  
+               <li class="nav-item">
+                <a href="/group/permission" class="nav-link active">
+                  <i class="far fa-circle nav-icon"></i>
+                   <p>Danh sách quyền</p>
+                </a>
+              </li>        
+              <li class="nav-item">
+                <a href="" class="nav-link active">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Thùng rác</p>
+                </a>
+              </li>      
+            </ul>
+          </li>     
+          <!--end permission-->
       </ul>
     </nav>    
-  </div>  
+  </div>
+    
 </aside>

@@ -12,7 +12,6 @@ let show = async (req, res) => {
     }
 }
 
-  
 let logout = (req, res) => {  
     req.session.destroy(function (err) {
         res.redirect('/login')

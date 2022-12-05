@@ -1,0 +1,21 @@
+
+<div class="container-fluid">   
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">id</th>               
+                <th scope="col">quyền</th>                     
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+            {{#each listPermission}}
+            <th scope="row">{{inc @index}}</th>
+                <td>{{this.id}}</td>
+                <td>{{this.name}}</td>
+            </tr>   
+            {{/each}}          
+        </tbody>
+    </table>
+</div>

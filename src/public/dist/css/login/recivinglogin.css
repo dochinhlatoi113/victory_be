@@ -38,7 +38,7 @@
     display: block;
     margin: 20px auto;
     text-align: center;
-    border: 2px solid yellow;
+    border: 4px solid white;
     padding: 14px 10px;
     width: 270px;
     outline: none;
@@ -49,7 +49,7 @@
   .box input[type="email"]:focus,
   .box input[type="password"]:focus {
     width: 370px;
-    border-color: #06df68;
+    border-color: 4px solid white;
   }
   
   #log {
@@ -58,7 +58,7 @@
     display: block;
     margin: 20px auto;
     text-align: center;
-    border: 2px solid #06df68;
+    border:4px solid white;
     padding: 14px 10px;
     width: 120px;
     outline: none;
@@ -68,8 +68,8 @@
   
   #log:hover {
     
-    border-color: aqua;
-    color: #06df68;
+    border-color: 4px solid white;
+    color: 4px solid white;
     width: 140px;
   }
   #rr{
