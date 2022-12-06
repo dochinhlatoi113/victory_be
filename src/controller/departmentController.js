@@ -1,8 +1,14 @@
 const db = require("../models/index")
-
+const { Op } = require("sequelize");
 let show = async (req, res) => {   
+    let keyWord = req.query.keyWord;
+   
    try {
-    let lists =  await db.departments.findAll();
+    let lists =  await db.departments.findAll({
+        where: { name: { [Op.like]: `%${keyWord}%`} },
+        limit: 10,
+    });
+  
     let data = {
         lists: lists,
         message:req.flash('message')
@@ -67,6 +73,7 @@ let destroy = async(req, res) => {
         res.send(err);
       }
 }
+
 
 module.exports = {
     show,create, store, edit,update,destroy

@@ -32,8 +32,7 @@ const routerInit = (app) => {
     router.get('/group/department/edit/:id',loginController.checkAuthenticated ,departmentController.edit)   
     router.post('/group/department/store',checkValidate.schema,basevalidator.checkvalidate.validateDepartment,loginController.checkAuthenticated ,departmentController.store)  
     router.post('/group/department/update/:id',loginController.checkAuthenticated ,departmentController.update)   
-    router.post('/group/department/delete/:id',loginController.checkAuthenticated ,departmentController.destroy)   
-
+    router.post('/group/department/delete/:id',loginController.checkAuthenticated ,departmentController.destroy)    
     return app.use('/', router)
 }
 module.exports = routerInit
