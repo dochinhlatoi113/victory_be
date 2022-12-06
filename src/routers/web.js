@@ -28,8 +28,12 @@ const routerInit = (app) => {
     router.get('/group/permission',loginController.checkAuthenticated ,permissionController.show)    
   //group/department
     router.get('/group/department',loginController.checkAuthenticated ,departmentController.show)   
-    router.get('/group/department/create',loginController.checkAuthenticated ,departmentController.create)   
+    router.get('/group/department/create',loginController.checkAuthenticated ,departmentController.create) 
+    router.get('/group/department/edit/:id',loginController.checkAuthenticated ,departmentController.edit)   
     router.post('/group/department/store',checkValidate.schema,basevalidator.checkvalidate.validateDepartment,loginController.checkAuthenticated ,departmentController.store)  
-      return app.use('/', router)
+    router.post('/group/department/update/:id',loginController.checkAuthenticated ,departmentController.update)   
+    router.post('/group/department/delete/:id',loginController.checkAuthenticated ,departmentController.destroy)   
+
+    return app.use('/', router)
 }
 module.exports = routerInit

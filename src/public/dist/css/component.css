@@ -20,3 +20,10 @@ a{
     color: white;  
    
 }
+.icon-edit{
+    color:black
+}
+.btn-destroy{
+    background-color: white;
+    border: none;
+}
