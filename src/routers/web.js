@@ -6,8 +6,10 @@ const groupController = require('../controller/groupController')
 const permissionController = require('../controller/permissionController')
 const departmentController = require('../controller/departmentController')
 const LocalStrategy   = require('passport-local').Strategy;
-const checkvalidate = require("../validate/basevalidator")
+const basevalidator = require("../validate/basevalidator")
+const checkValidate = require("../validate/checkvalidator")
 const initPassportLocal = require('../controller/auth/passport');
+const {check, body, validationResult } = require('express-validator');
 let router = express.Router();
 
 const routerInit = (app) => {
@@ -27,7 +29,7 @@ const routerInit = (app) => {
   //group/department
     router.get('/group/department',loginController.checkAuthenticated ,departmentController.show)   
     router.get('/group/department/create',loginController.checkAuthenticated ,departmentController.create)   
-    router.post('/group/department/store',checkvalidate.checkvalidate.validateDepartment,loginController.checkAuthenticated ,departmentController.store)  
+    router.post('/group/department/store',checkValidate.schema,basevalidator.checkvalidate.validateDepartment,loginController.checkAuthenticated ,departmentController.store)  
       return app.use('/', router)
 }
 module.exports = routerInit
