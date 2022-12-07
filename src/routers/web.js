@@ -9,6 +9,8 @@ const LocalStrategy   = require('passport-local').Strategy;
 const basevalidator = require("../validate/basevalidator")
 const checkValidate = require("../validate/checkvalidator")
 const initPassportLocal = require('../controller/auth/passport');
+const userController = require("../controller/userController")
+const userPermissionController = require("../controller/userPermissionController")
 const {check, body, validationResult } = require('express-validator');
 let router = express.Router();
 
@@ -27,12 +29,31 @@ const routerInit = (app) => {
     //group/permssion
     router.get('/group/permission',loginController.checkAuthenticated ,permissionController.show)    
   //group/department
-    router.get('/group/department',loginController.checkAuthenticated ,departmentController.show)   
+    router.get('/group/department',loginController.checkAuthenticated ,departmentController.show)    
+    // router.get('/group/department/edit/:id',loginController.checkAuthenticated ,departmentController.edit)   
     router.get('/group/department/create',loginController.checkAuthenticated ,departmentController.create) 
     router.get('/group/department/edit/:id',loginController.checkAuthenticated ,departmentController.edit)   
     router.post('/group/department/store',checkValidate.schema,basevalidator.checkvalidate.validateDepartment,loginController.checkAuthenticated ,departmentController.store)  
-    router.post('/group/department/update/:id',loginController.checkAuthenticated ,departmentController.update)   
-    router.post('/group/department/delete/:id',loginController.checkAuthenticated ,departmentController.destroy)    
+    router.post('/group/department/update/:id',loginController.checkAuthenticated,checkValidate.schema,basevalidator.checkvalidate.validateDepartment,departmentController.update)   
+    router.post('/group/department/delete/:id',loginController.checkAuthenticated ,departmentController.destroy) 
+    //user 
+    app.group("/group/user",(router) => {
+      router.use(loginController.checkAuthenticated)
+      router.get('/',userController.show)
+      router.get('/create',userController.create)   
+      router.post('delete/:id',userController.destroy)
+      router.post('/store',checkValidate.checkRegisterUser,basevalidator.checkvalidate.checkRegisterUser,userController.store)   
+    })
+    //user 
+    app.group("/group/user-permission",(router) => {
+      router.use(loginController.checkAuthenticated)
+      router.get('/',userPermissionController.show)
+      router.get('/create',userPermissionController.create)   
+      router.post('delete/:id',userPermissionController.destroy)
+      router.post('/store',checkValidate.checkRegisterUser,basevalidator.checkvalidate.checkRegisterUser,userPermissionController.store)   
+      router.post('/update/:id',userPermissionController.update)   
+
+    })
     return app.use('/', router)
 }
 module.exports = routerInit

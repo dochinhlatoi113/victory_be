@@ -7,9 +7,18 @@ let validateDepartment = (req,res, next) => {
    }
    next()
 }
+
+let checkRegisterUser = (req,res, next) => {
+   const errors = validationResult(req);
+   if (!errors.isEmpty()){
+      // {"errors":[{"value":"","msg":"email is required","param":"email","location":"body"},{"value":"","msg":"password is required","param":"password","location":"body"}]}
+      return  res.redirect("/group/user/create",errors)
+   }
+   next()
+}
 let checkvalidate = {
   validateDepartment: validateDepartment,
-  
+  checkRegisterUser:checkRegisterUser
 };
 
 module.exports = {checkvalidate};

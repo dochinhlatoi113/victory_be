@@ -11,7 +11,7 @@ const session =  require("express-session")
 const flash = require('connect-flash');
 const db = require("./src/config/db/connect")
 const multer  =   require('multer');
-
+require('express-group-routes');
 
 const passport = require('passport');
 var LocalStrategy   = require('passport-local').Strategy;

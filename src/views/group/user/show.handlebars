@@ -52,9 +52,9 @@
 <div class="container-fluid">
     <div class="box-search">
         <button type="button"  class="btn btn-primary" id="btnCreate">
-            <a href="/group/department/create">Create</a>    
+            <a href="/group/user/create">Create</a>    
         </button> 
-         <form class="search-form" method="get" action="/group/department">
+         <form class="search-form" method="get" action="/group/user">
             <div class="input-group">
                 <div class="input-group2">
                     <label><input type="search" class="search-field" placeholder="search..." value="" name="keyWord"></label>
@@ -95,8 +95,10 @@
         <thead>
             <tr>
                 <th scope="col">#</th>
-                <th scope="col">id</th>             
-                <th scope="col">phòng</th>
+                <th scope="col">id</th> 
+                <th scope="col">firstname</th>               
+                <th scope="col">lastname</th>   
+                <th scope="col">account</th>
                 <th scope="col">action</th>                             
             </tr>
         </thead>
@@ -105,13 +107,15 @@
              {{#each lists}}
             <th scope="row">{{inc @index}}</th>
                 <td>{{this.id}}</td>
-                <td>{{this.name}}</td>
+                <td>{{this.firstName}}</td>
+                <td>{{this.lastName}}</td>
+                <td>{{this.email}}</td>
                   <td style="display: flex;">
-                    <a class="icon-edit"href="/group/department/edit/{{this.id}}">
+                    {{!-- <a class="icon-edit"href="/group/department/edit/{{this.id}}">
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil" viewBox="0 0 16 16">
                             <path d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168l10-10zM11.207 2.5 13.5 4.793 14.793 3.5 12.5 1.207 11.207 2.5zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293l6.5-6.5zm-9.761 5.175-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325z"/>                  
                         </svg>     
-                    </a>         
+                    </a>          --}}
                     <button type="submit" class="btn-destroy"  id="btn-delete" data-toggle="modal" data-target="#deleteModal" data-id="{{this.id}}">
                         <i class="bi bi-trash2"  data-id="{{this.id}}"></i>
                     </button>   
@@ -157,7 +161,8 @@
              id = button.data('id') 
            $("#btn-delete").click(function(){
              console.log(submitDelete);
-               submitDelete.action="/group/department/delete/"+id;
+             console.log(id)
+               submitDelete.action="/group/user/delete/"+id;
                submitDelete.submit()
            })
         })
