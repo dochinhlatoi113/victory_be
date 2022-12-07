@@ -4,16 +4,30 @@ let show = async (req, res) => {
     let keyWord = req.query.keyWord;
    
    try {
-    let lists =  await db.departments.findAll({
-        where: { name: { [Op.like]: `%${keyWord}%`} },
-        limit: 10,
-    });
-  
-    let data = {
-        lists: lists,
-        message:req.flash('message')
+    if(keyWord != undefined) {
+        let lists =  await db.departments.findAll({
+            where: { name: { [Op.like]: `%${keyWord}%`} },
+            limit: 10,
+        });
+      
+        let data = {
+            lists: lists,
+            message:req.flash('message')
+        }
+        res.render("../views/group/department/show.handlebars", data)
+    }else{
+        let lists =  await db.departments.findAll({
+
+            limit: 10,
+        });
+      
+        let data = {
+            lists: lists,
+            message:req.flash('message')
+        }
+        res.render("../views/group/department/show.handlebars", data)
     }
-    res.render("../views/group/department/show.handlebars", data)
+  
    } catch (error) {
       error
    }
