@@ -10,9 +10,17 @@ let validateDepartment = (req,res, next) => {
 
 let checkRegisterUser = (req,res, next) => {
    const errors = validationResult(req);
+   
    if (!errors.isEmpty()){
+      let data = 1;
+      let arrMessErr;
+    
+      const extractedErrors = []
+      errors.array({ onlyFirstError: true }).map(err => extractedErrors.push({ [err.param]: err.msg }));
+      console.log(extractedErrors)
+    
       // {"errors":[{"value":"","msg":"email is required","param":"email","location":"body"},{"value":"","msg":"password is required","param":"password","location":"body"}]}
-      return  res.redirect("/group/user/create",errors)
+      return   res.render("../views/group/user/create.handlebars", { errors: errors})
    }
    next()
 }

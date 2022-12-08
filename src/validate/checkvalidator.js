@@ -4,9 +4,9 @@ const schema = [
   ];
 
 const checkRegisterUser = [
-  check('email').notEmpty().withMessage('email is required'),
+  check('email').notEmpty().withMessage('email is required ha'),
  
-  check('password').notEmpty().withMessage('password is required'),
+  check('password').notEmpty().withMessage('password is required ss'),
   
 ];
 module.exports = {

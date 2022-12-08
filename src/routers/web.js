@@ -44,7 +44,7 @@ const routerInit = (app) => {
       router.post('delete/:id',userController.destroy)
       router.post('/store',checkValidate.checkRegisterUser,basevalidator.checkvalidate.checkRegisterUser,userController.store)   
     })
-    //user 
+    //user permission
     app.group("/group/user-permission",(router) => {
       router.use(loginController.checkAuthenticated)
       router.get('/',userPermissionController.show)
