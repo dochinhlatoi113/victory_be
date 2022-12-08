@@ -32,11 +32,6 @@ module.exports = {
         createdAt: new Date(),
         updatedAt: new Date()
       },
-      {
-        name: 'all',
-        createdAt: new Date(),
-        updatedAt: new Date()
-      }
 
     ]);
   },

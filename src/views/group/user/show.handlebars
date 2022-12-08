@@ -160,8 +160,6 @@
             let button = $(event.relatedTarget)
              id = button.data('id') 
            $("#btn-delete").click(function(){
-             console.log(submitDelete);
-             console.log(id)
                submitDelete.action="/group/user/delete/"+id;
                submitDelete.submit()
            })

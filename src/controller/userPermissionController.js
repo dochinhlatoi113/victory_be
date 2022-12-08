@@ -1,5 +1,6 @@
 const db = require("../models/index")
-const { Op } = require("sequelize");
+const { QueryTypes,Op } = require("sequelize");
+
 let show = async (req, res) => {   
     let keyWord = req.query.keyWord;
     let itemPerPage = 3;
@@ -8,10 +9,10 @@ let show = async (req, res) => {
     let offset = (page-1) * itemPerPage
    try {
     if(keyWord != undefined) {
-        let totalItems = await db.departments.count({
+        let totalItems = await db.user_permission.count({
             where: { name: { [Op.like]: `%${keyWord}%`} },
         })
-        let lists =  await db.departments.findAll({
+        let lists =  await db.user_permission.findAll({
             where: { name: { [Op.like]: `%${keyWord}%`} },
             limit: itemPerPage,
             offset:offset
@@ -28,12 +29,16 @@ let show = async (req, res) => {
             lastPage: Math.ceil(totalItems / itemPerPage),
             message:req.flash('message')
         }
-        res.render("../views/group/department/show.handlebars", data)
+        res.render("../views/group/user-permission/show.handlebars", data)
     }else{
-        let totalItems = await db.departments.count({
+        let totalItems = await db.user_permission.count({
           
         })
-        let lists =  await db.departments.findAll({
+
+        let lists =  await db.user_permission.findAll({
+            include:[{
+                model:model.db.Admin
+            }],
             limit: itemPerPage,
             offset:offset
         });
@@ -48,21 +53,40 @@ let show = async (req, res) => {
             lastPage: Math.ceil(totalItems / itemPerPage),
             message:req.flash('message')
         }
-        res.render("../views/group/department/show.handlebars", data)
+        res.render("../views/group/user-permission/show.handlebars", data)
     }
   
    } catch (error) {
       error
    }
 }
-let create = (req,res) => {
-    res.render("../views/group/department/create.handlebars",{message:req.flash('message')})
+let create = async(req,res) => {
+    let listsUser =  await db.Admin.findAll({
+        
+    })
+    
+    let listsPermissions =  await db.permissions.findAll({
+    
+    })
+    let listsDepartments =  await db.departments.findAll({
+    
+    })
+    data = {
+        listsUser :listsUser,
+        listsPermissions:listsPermissions,
+        listsDepartments:listsDepartments,
+        message:req.flash('message')
+    }
+    res.render("../views/group/user-permission/create.handlebars",{data:data})
 }
 let store =async(req, res) => {
-    try {
-        const department = await db.departments.create({ name:req.body.name});
+    try {   
+        for(let i = 0; i < req.body.permissions.length ; i++ ){
+            const department = await db.user_permission.create({ permissionId:req.body.permissions[i],departmentId:req.body.department,userId:req.body.user});
+        }
         req.flash('message', 'saved successfully');
-        res.redirect("/group/department/create")
+        res.redirect("/group/user-permission/create")
+     
       }catch (err) {
         res.send(err);
       }
@@ -78,7 +102,7 @@ let edit =async (req,res) => {
             checkDepartment:checkDepartment,
             message:req.flash('message')
         }
-        res.render("../views/group/department/edit.handlebars",data)
+        res.render("../views/group/user-permission/edit.handlebars",data)
     }else{
         res.render("../views/error/error.handlebars",{layout: null})
     }
@@ -92,7 +116,7 @@ let update = async(req,res) => {
                 { where: { id: id } }
             )
             req.flash('message', 'updated successfully');
-            res.redirect("/group/department/edit/"+id)
+            res.redirect("/group/user-permission/edit/"+id)
       }catch (err) {
         res.send(err);
       }
@@ -105,7 +129,7 @@ let destroy = async(req, res) => {
             { where: { id: id } }
         )
             req.flash('message', 'delete successfully');
-            res.redirect("/group/department")
+            res.redirect("/group/user-permission")
       }catch (err) {
         res.send(err);
       }

@@ -41,18 +41,19 @@ const routerInit = (app) => {
       router.use(loginController.checkAuthenticated)
       router.get('/',userController.show)
       router.get('/create',userController.create)   
-      router.post('delete/:id',userController.destroy)
+      router.post('/delete/:id',userController.destroy)
       router.post('/store',checkValidate.checkRegisterUser,basevalidator.checkvalidate.checkRegisterUser,userController.store)   
     })
+
+
     //user permission
     app.group("/group/user-permission",(router) => {
       router.use(loginController.checkAuthenticated)
       router.get('/',userPermissionController.show)
       router.get('/create',userPermissionController.create)   
-      router.post('delete/:id',userPermissionController.destroy)
-      router.post('/store',checkValidate.checkRegisterUser,basevalidator.checkvalidate.checkRegisterUser,userPermissionController.store)   
+      router.post('/delete/:id',userPermissionController.destroy)
+      router.post('/store',userPermissionController.store)   
       router.post('/update/:id',userPermissionController.update)   
-
     })
     return app.use('/', router)
 }

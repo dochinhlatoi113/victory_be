@@ -4,9 +4,8 @@
         {{message}}
     </div>
     {{/if}}
-    {{#if data}}
-        {}
-    {{/if}}
+    
+
     <form action="/group/user/store" method="POST">
         <div class="form-group">
             <label for="exampleInputEmail1">Tạo account</label>
@@ -22,10 +21,16 @@
                 <input type="text" class="form-control" aria-describedby="email" placeholder="vd nguyenat@gmail.com"
                     name="email">
             </div>
+                {{#each extractedErrors}}
+                    <h5 style="color:red">{{this.email}}</h5>  
+                {{/each}}
               <div class="form-group">
                 <input type="text" class="form-control" aria-describedby="password" placeholder="vd *@_@"
                     name="password">
             </div>
+            {{#each extractedErrors}}
+                    <h5 style="color:red">{{this.password}}</h5>  
+                {{/each}}
         </div>
         <button type="submit" class="btn btn-primary">Submit</button>
     </form>

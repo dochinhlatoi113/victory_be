@@ -4,13 +4,10 @@
         {{message}}
     </div>
     {{/if}}
-      {{#each extractedErrors}}
-           <h5 style="color:red">{{this.name}}</h5>  
-        {{/each}}
-    <form action="/group/department/store" method="POST">
+    <form action="/group/department/update/{{id}}" method="POST">
         <div class="form-group">
             <label for="exampleInputEmail1">Phòng ban</label>
-            <input type="text" class="form-control" aria-describedby="emailHelp" placeholder="vd phòng thụ lý" name="name">
+            <input type="text" class="form-control" aria-describedby="emailHelp" placeholder="vd phòng thụ lý" name="name" value="{{checkDepartment.name}}">
         </div>
         <button type="submit" class="btn btn-primary">Submit</button>
     </form>
