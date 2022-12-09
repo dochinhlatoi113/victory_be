@@ -12,6 +12,8 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
+      const B = sequelize.define('Admin');
+      user_permission.belongsTo(B, { foreignKey:"userId" });
     }
   }
   user_permission.init({
@@ -22,9 +24,7 @@ module.exports = (sequelize, DataTypes) => {
     sequelize,
     modelName: 'user_permission',
   });
-  user_permission.associate = (models) => {
-    user_permission.belongsTo(models.Admin, {foreignKey: 'userId'});
-  };
+
 
   return user_permission;
 };

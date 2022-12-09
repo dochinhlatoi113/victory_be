@@ -2,6 +2,8 @@
 const {
   Model
 } = require('sequelize');
+const db = require("../models/index")
+
 module.exports = (sequelize, DataTypes) => {
   class permissions extends Model {
     /**
@@ -11,6 +13,8 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
+     
+
     }
   }
   permissions.init({

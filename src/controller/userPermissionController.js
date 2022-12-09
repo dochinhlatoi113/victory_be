@@ -36,9 +36,9 @@ let show = async (req, res) => {
         })
 
         let lists =  await db.user_permission.findAll({
-            include:[{
-                model:model.db.Admin
-            }],
+            include: [
+                {model:db.Admin}
+             ],
             limit: itemPerPage,
             offset:offset
         });

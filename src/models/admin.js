@@ -1,4 +1,5 @@
 'use strict';
+const db = require("../models/index")
 const {
   Model
 } = require('sequelize');
@@ -11,6 +12,7 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
+     
     }
   }
   Admin.init({
