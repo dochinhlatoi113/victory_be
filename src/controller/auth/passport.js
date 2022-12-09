@@ -11,11 +11,28 @@ let LocalStrategy = passportLocal.Strategy;
   }, async (req, email, password, done)=> {
     try {
         $arrUserInfo = "";
-        const user = await db.Admin.findOne({ where: { email: req.body,email } });
-          if (user.email === req.body.email && user.password === req.body.password) {
+        const user = await db.user_permission.findOne({ 
+              include:[{
+                model:db.departments
+            },
+            {
+                model:db.permissions
+            },
+            {
+                model:db.Admin
+            }],
+              where: { 
+                '$Admin.email$': req.body.email 
+          
+                } 
+        });
+     
+          if (user.Admin.email === req.body.email && user.Admin.password === req.body.password) {
             return done(null, {
               email,
               password,
+              departments:user.department.name,
+              permission:user.permission.name,
               active: true
           })          
           } else {
@@ -31,10 +48,11 @@ let LocalStrategy = passportLocal.Strategy;
   
 
   passport.serializeUser(function(user, done) {
-    done(null, user.email);
+    done(null, user);
+    
   });
   
   passport.deserializeUser(function(user, done) {
      done(null, user);
-
+     
   });

@@ -10,7 +10,8 @@
         </div>
       </div> --}}
 
-      <!-- Sidebar Menu -->
+      <!-- Sidebar Menu --><h1 style="color: red;"></h1>
+
         <div style="margin-top: 10px;">
           <h1 style="color: white;"> </h1>
               <form action="/logout" method="POST">                
@@ -188,5 +189,11 @@
     
 </aside>
 <script>
-
+  $(jQuery).ready(function(){
+    console.log(111)
+    alert( Cookies.get("connect.sid") );
+   console.log($.cookie())
+  })
 </script>
+
+{{!-- s%3AQZ_IVyPbAXLYqp-x2sgoCcSEnyQ6HXap.SVud0Us1K8r2MDhoQ9nU%2BiB%2B1DNkR5dGr%2Fl4yeDqpJE --}}

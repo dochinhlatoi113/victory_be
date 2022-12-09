@@ -9,6 +9,7 @@ const LocalStrategy   = require('passport-local').Strategy;
 const basevalidator = require("../validate/basevalidator")
 const checkValidate = require("../validate/checkvalidator")
 const initPassportLocal = require('../controller/auth/passport');
+const sideBarController = require("../controller/sideBarController")
 const userController = require("../controller/userController")
 const userPermissionController = require("../controller/userPermissionController")
 const {check, body, validationResult } = require('express-validator');
@@ -55,6 +56,9 @@ const routerInit = (app) => {
       router.post('/store',userPermissionController.store)   
       router.post('/update/:id',userPermissionController.update)   
     })
-    return app.use('/', router)
+    // sidebar 
+    router.get('/sideBar',sideBarController.show)   
+    
+    return app.use('/',router)
 }
 module.exports = routerInit

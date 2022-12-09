@@ -10,10 +10,29 @@ let show = async (req, res) => {
    try {
     if(keyWord != undefined) {
         let totalItems = await db.user_permission.count({
-            where: { name: { [Op.like]: `%${keyWord}%`} },
+            include:[{
+                model:db.departments
+            },
+            {
+                model:db.permissions
+            },
+            {
+                model:db.Admin
+            }],
+            where: {  '$Admin.email$': { [Op.like]: `%${keyWord}%`} },
         })
+       
         let lists =  await db.user_permission.findAll({
-            where: { name: { [Op.like]: `%${keyWord}%`} },
+            include:[{
+                model:db.departments
+            },
+            {
+                model:db.permissions
+            },
+            {
+                model:db.Admin
+            }],
+            where: { '$Admin.email$': { [Op.like]: `%${keyWord}%`} },
             limit: itemPerPage,
             offset:offset
         });
@@ -32,18 +51,23 @@ let show = async (req, res) => {
         res.render("../views/group/user-permission/show.handlebars", data)
     }else{
         let totalItems = await db.user_permission.count({
+            
           
         })
-
         let lists =  await db.user_permission.findAll({
-            include: [
-                {model:db.Admin}
-             ],
+            include:[{
+                model:db.departments
+            },
+            {
+                model:db.permissions
+            },
+            {
+                model:db.Admin
+            }],
             limit: itemPerPage,
             offset:offset
         });
-      
-        let data = {
+        let data = {  
             lists: lists,
             currentPage: page,
             hasNextPage: (itemPerPage * page) < totalItems,

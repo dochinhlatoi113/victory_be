@@ -57,7 +57,7 @@
         <button type="button" class="btn btn-primary" id="btnCreate">
             <a href="/group/user-permission/create">Create</a>
         </button>
-        <form class="search-form" method="get" action="/group/department">
+        <form class="search-form" method="get" action="/group/user-permission/">
             <div class="input-group">
                 <div class="input-group2">
                     <label><input type="search" class="search-field" placeholder="search..." value=""
@@ -112,9 +112,9 @@
                 {{#each lists}}
                 <th scope="row">{{inc @index}}</th>
                 <td>{{this.id}}</td>
-                <td>{{this.name}}</td>
-                <td>{{this.email}}</td>
-                <td>{{this.name}}</td>
+                <td>{{this.department.name}}</td>
+                <td>{{this.Admin.email}}</td>
+                <td>{{this.permission.name}}</td>
                 <td style="display: flex;">
                     <a class="icon-edit" href="/group/department/edit/{{this.id}}">
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"

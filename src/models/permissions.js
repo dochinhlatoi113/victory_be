@@ -1,9 +1,9 @@
 'use strict';
+const db = require("../models/index")
 const {
   Model
 } = require('sequelize');
-const db = require("../models/index")
-
+const user_permission = require("./user_permission");
 module.exports = (sequelize, DataTypes) => {
   class permissions extends Model {
     /**
@@ -13,8 +13,8 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-     
-
+      const user_permission = sequelize.define('user_permission');
+      permissions.hasMany(user_permission)
     }
   }
   permissions.init({

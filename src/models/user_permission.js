@@ -12,8 +12,14 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      const B = sequelize.define('Admin');
-      user_permission.belongsTo(B, { foreignKey:"userId" });
+      const Admin = sequelize.define('Admin');
+      const permissions = sequelize.define('permissions');
+      const departments = sequelize.define('departments');
+    
+      user_permission.belongsTo(Admin, { foreignKey:"userId" })
+      user_permission.belongsTo(departments, { foreignKey:"departmentId" })
+      user_permission.belongsTo(permissions, { foreignKey:"permissionId" })
+      
     }
   }
   user_permission.init({
