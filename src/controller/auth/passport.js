@@ -30,7 +30,7 @@ let LocalStrategy = passportLocal.Strategy;
           if (user.Admin.email === req.body.email && user.Admin.password === req.body.password) {
             return done(null, {
               email,
-              password,
+              departmentsId : user.department.id,
               departments:user.department.name,
               permission:user.permission.name,
               active: true
