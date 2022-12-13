@@ -23,6 +23,7 @@ let show = async (req, res) => {
         })
        
         let lists =  await db.user_permission.findAll({
+           
             include:[{
                 model:db.departments
             },
@@ -117,13 +118,39 @@ let store =async(req, res) => {
 }
 
 let edit =async (req,res) => {
-    let id = req.params.id
-    const checkDepartment = await db.departments.findOne({ where: { id: id } });
    
-    if(checkDepartment){
+    let id = req.params.id
+    let listsUser =  await db.Admin.findAll({
+        
+    })
+    
+    let listsPermissions =  await db.permissions.findAll({
+    
+    })
+    let listsDepartments =  await db.departments.findAll({
+    
+    })
+    let listUserPermissions = await db.user_permission.findAll({
+        where:{id:id},
+        include: [
+            {
+                model:db.departments
+            },
+            {
+                model:db.permissions
+            },
+            {
+                model:db.Admin
+            }
+        ]
+    })
+    
+    if(listUserPermissions){
         let data = {
-            id : id,
-            checkDepartment:checkDepartment,
+            listsUser :listsUser,
+            listsPermissions:listsPermissions,
+            listsDepartments:listsDepartments,
+            listUserPermissions:listUserPermissions,
             message:req.flash('message')
         }
         res.render("../views/group/user-permission/edit.handlebars",data)
@@ -148,12 +175,12 @@ let update = async(req,res) => {
 let destroy = async(req, res) => {
     let id = req.params.id
     try {
-        await db.departments.destroy(
+        await db.user_permission.destroy(
         
             { where: { id: id } }
         )
             req.flash('message', 'delete successfully');
-            res.redirect("/group/user-permission")
+            res.redirect("/group/user-permission/")
       }catch (err) {
         res.send(err);
       }

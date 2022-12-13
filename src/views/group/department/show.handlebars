@@ -50,19 +50,6 @@
 }
 </style>
 <div class="container-fluid">
-    <div class="box-search">
-        {{!-- <button type="button"  class="btn btn-primary" id="btnCreate">
-            <a href="/group/department/create">Create</a>    
-        </button>  --}}
-         <form class="search-form" method="get" action="/group/department">
-            <div class="input-group">
-                <div class="input-group2">
-                    <label><input type="search" class="search-field" placeholder="search..." value="" name="keyWord"></label>
-                    <input type="submit" class="rstore-domain-search-button search-submit btn btn-primary" value="Search">
-                </div>
-            </div>
-        </form>
-    </div>
    <!--modals confirm delete-->
  <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
         <div class="modal-dialog">
@@ -102,7 +89,7 @@
         </thead>
         <tbody>
             <tr>
-             {{#each lists}}
+             {{#each data.lists}}
             <th scope="row">{{inc @index}}</th>
                 <td>{{this.id}}</td>
                 <td>{{this.name}}</td>
@@ -121,31 +108,6 @@
             </tr>  
         </tbody>
     </table>
-     <div class="container mt-4">
-        <nav aria-label="Page navigation example">
-            <ul class="pagination justify-content-center">
-               {{#if hasPreviousPage}}
-                <li class="page-item">
-                    <a class="page-link" href="?page=1">First</a>
-                </li>
-                <li class="page-item">
-                    <a class="page-link" href="?page={{previousPage}}&keyWord={{keyWord}}">{{previousPage}}</a>
-                </li>
-               {{/if}}
-                <li class="page-item active">
-                    <a class="page-link" href="?page={{currentPage}}">{{currentPage}}</a>
-                </li>
-                {{#if hasNextPage}}
-                <li class="page-item">
-                    <a class="page-link" href="?page={{nextPage}}{{#if keyWord}}&keyWord={{keyWord}} {{/if}}">{{nextPage}}</a>
-                </li>
-                {{!-- <li class="page-item">
-                    <a class="page-link" href="?page={{lastPage}}">Last</a>
-                </li> --}}
-                {{/if}}
-            </ul>
-        </nav>
-    </div>
 </div>
 <script>
     $(document).ready(function(){

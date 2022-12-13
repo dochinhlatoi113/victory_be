@@ -4,47 +4,49 @@
         {{message}}
     </div>
     {{/if}}
-      {{#each extractedErrors}}
-           <h5 style="color:red">{{this.name}}</h5>  
-        {{/each}}
+    {{#each extractedErrors}}
+    <h5 style="color:red">{{this.name}}</h5>
+    {{/each}}
     <form action="/group/user-permission/store" method="POST">
-        <div class="form-group">
-            <label for="exampleInputEmail1">Tạo account và quyền</label>
-            <div class="container">
-                <div class="row">
-                    <div class="col-sm">
-                        <label for="exampleInputEmail1">Account</label>
-                       <div>   
+        <table class="table">
+            <thead>
+                <tr>
+
+                    <th scope="col">Account</th>
+                    <th scope="col">Phòng</th>
+                    <th scope="col">Quyền</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                   
+                    <td>
                         {{#each data.listsUser}}
-                            <input type="radio" id="id{{this.id}}" name="user" value="{{this.id}}">
-                            <label for="id{{this.id}}"> {{this.email}} </label>  <br>
-                       {{/each}} 
-                       </div>
-                    </div>
-                    <div class="col-sm">
-                        <label for="exampleInputEmail1">Phòng</label>
-                       <div>   
+                        <input type="radio" id="id{{this.id}}" name="user" value="{{this.id}}">
+                        <label for="id{{this.id}}"> {{this.email}} </label> <br>
+                        {{/each}}
+                    </td>
+                    <td>
                         {{#each data.listsDepartments}}
-                            <input type="radio" id="id{{this.id}}"  name="department" value="{{this.id}}">
-                            <label for="id{{this.id}}"> {{this.name}} </label>  <br>
-                       {{/each}} 
-                       </div>
-                    </div>
-                    <div class="col-sm">
-                        <label for="exampleInputEmail1">Quyền</label>
-                         <div> 
-                            {{#each data.listsPermissions}}
-                                <input type="checkbox" class="permission" id="id_permission{{this.id}}" name="permissions[]" value="{{this.id}}">
-                                <label for="id_permission{{this.id}}"> {{this.name}} </label>  <br>
-                        {{/each}} 
-                       </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+                        <input type="radio" id="id{{this.id}}" name="department" value="{{this.id}}">
+                        <label for="id{{this.id}}"> {{this.name}} </label> <br>
+                        {{/each}}
+                    </td>
+                    <td>
+                        {{#each data.listsPermissions}}
+                        <input type="checkbox" class="permission" id="id_permission{{this.id}}" name="permissions[]"
+                            value="{{this.id}}">
+                        <label for="id_permission{{this.id}}"> {{this.name}} </label> <br>
+                        {{/each}}
+                    </td>
+                </tr>
+            </tbody>
+        </table>
         <button type="submit" class="btn btn-primary" class="btn">Submit</button>
     </form>
 </div>
+
+
 <script>
-   
+
 </script>

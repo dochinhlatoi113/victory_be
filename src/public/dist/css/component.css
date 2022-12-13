@@ -27,3 +27,11 @@ a{
     background-color: white;
     border: none;
 }
+
+.sidebar-overflow{
+    height: 750px;
+    overflow-y: scroll;
+    overflow-x: hidden;
+    border-top: 3px solid white;
+    margin-top: 10px;
+}

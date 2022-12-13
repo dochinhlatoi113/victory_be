@@ -21,8 +21,10 @@ let logout = (req, res) => {
 
 function checkAuthenticated(req, res, next) {
     if (req.isAuthenticated()){
+        res.locals.user = req.user || null;
         return next();
-      }    
+      }
+
       console.log("aaaa Not Authenticated");     
       // IF A USER ISN'T LOGGED IN, THEN REDIRECT THEM SOMEWHERE
       return res.render("../views/recivingLogin.handlebars",{layout: null})
@@ -32,16 +34,12 @@ function checkAuthenticated(req, res, next) {
   function checkNotAuthenticated(req, res, next) {
    
     if (req.isAuthenticated()) {
-        let data = {
-            email:req.user.email,
-            department : req.user.departments
-        }
         if(req.user.departments =='phòng thụ lý' ){
-            console.log("aa",req.user.departments)
+           
             return res.redirect("/reciving-room/")
         }
         if(req.user.departments =='phòng giám đốc'){
-            console.log("aa",req.user.departments)
+          
             return res.redirect("/group/user-permission/")
         }
        

@@ -104,6 +104,7 @@
                 <th scope="col">phòng</th>
                 <th scope="col">account</th>
                 <th scope="col">quyền</th>
+                <th scope="col">ngày tạo</th>
                 <th scope="col">action</th>
             </tr>
         </thead>
@@ -115,8 +116,11 @@
                 <td>{{this.department.name}}</td>
                 <td>{{this.Admin.email}}</td>
                 <td>{{this.permission.name}}</td>
+                 <td>{{formatDate this.createdAt "short"}}
+                 
+                 </td>
                 <td style="display: flex;">
-                    <a class="icon-edit" href="/group/department/edit/{{this.id}}">
+                    <a class="icon-edit" href="/group/user-permission/edit/{{this.userId}}">
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                             class="bi bi-pencil" viewBox="0 0 16 16">
                             <path
@@ -160,7 +164,9 @@
         </nav>
     </div>
 </div>
+
 <script>
+    
     $(document).ready(function () {
         let id = "";
         let submitDelete = document.forms['submit-delete']
@@ -170,7 +176,7 @@
             id = button.data('id')
             $("#btn-delete").click(function () {
                 console.log(submitDelete);
-                submitDelete.action = "/group/department/delete/" + id;
+                submitDelete.action = "/group/user-permission/delete/" + id;
                 submitDelete.submit()
             })
         })

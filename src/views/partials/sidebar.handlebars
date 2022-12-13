@@ -1,204 +1,217 @@
 <aside class="main-sidebar sidebar-dark-primary elevation-4">
-{{!-- <div class="form-inline">
-        <div class="input-group" data-widget="sidebar-search">
-          <input class="form-control form-control-sidebar" type="search" placeholder="Search" aria-label="Search">
-          <div class="input-group-append">
-            <button class="btn btn-sidebar">
-              <i class="fas fa-search fa-fw"></i>
-            </button>
+  {{!-- <div class="form-inline">
+    <div class="input-group" data-widget="sidebar-search">
+      <input class="form-control form-control-sidebar" type="search" placeholder="Search" aria-label="Search">
+      <div class="input-group-append">
+        <button class="btn btn-sidebar">
+          <i class="fas fa-search fa-fw"></i>
+        </button>
+      </div>
+    </div>
+  </div> --}}
+
+  <!-- Sidebar Menu -->
+
+  <div style="margin-top: 10px;background-color:#7E1416;height:75px;">
+    <div class="container">
+      <div class="row">
+        <div class="col-sm" style="margin:auto;">
+          <img src="/image/avatar.jpg" style="height: 60px;">
+        </div>
+        <div class="col-sm">
+          <span style="color: white;">{{user.email}}</span>
+          <div style="margin-top: 10px;">
+            <h1 style="color: white;"> </h1>
+            <form action="/logout" method="POST">
+              <button type="submit" class="btn btn-warning">Logout</button>
+            </form>
           </div>
         </div>
-      </div> --}}
-
-      <!-- Sidebar Menu --><h1 style="color: red;"></h1>
-        <div style="margin-top: 10px;">
-          <h1 style="color: white;"> </h1>
-              <form action="/logout" method="POST">                
-                <button type="submit" class="btn btn-warning">Logout</button>
-            </form>            
-          </div>
-        <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">  
-         
-          
-           
-        
-         <marquee  direction="left" height="30%">
-            <p class="title-left-sidebar">Phòng thụ lý</p>  
-          </marquee>
-            <li class="nav-item">
-            <a href="#" class="nav-link active " >
-              <i class="nav-icon fas fa-tree"></i>
-              <p>
-                 Phòng thụ lý
-                <i class="fas fa-angle-left right"></i>
-              </p>
-            </a>
-            <ul class="nav nav-treeview">
-              <li class="nav-item">
-                <a href="/" class="nav-link active">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Danh sách khách hàng </p>
-                </a>
-              </li>  
-              <li class="nav-item">
-                <a href="/create-reciving-room" class="nav-link active">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Thêm khách hàng</p>
-                </a>
-              </li> 
-               <li class="nav-item">
-                <a href="/create-reciving-room" class="nav-link active">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Thêm chương trình</p>
-                </a>
-              </li> 
-               <li class="nav-item">
-                <a href="/" class="nav-link active">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Nhiệm vụ </p>
-                </a>
-              </li>  
-              <li class="nav-item">
-                <a href="" class="nav-link active">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Nhật ký làm việc</p>
-                </a>
-              </li>     
-              <li class="nav-item">
-                <a href="" class="nav-link active">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Thùng rác</p>
-                </a>
-              </li>      
-            </ul>
-          </li>     
-          <!--contract-->
-              <li class="nav-item">
-            <a href="#" class="nav-link active " >
-              <i class="nav-icon fas fa-tree"></i>
-              <p>
-                 Contract
-                <i class="fas fa-angle-left right"></i>
-              </p>
-            </a>
-            <ul class="nav nav-treeview">
-              <li class="nav-item">
-                <a href="/" class="nav-link active">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Danh sách hợp đồng</p>
-                </a>
-              </li>  
-              <li class="nav-item">
-                <a href="/create-reciving-room" class="nav-link active">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Thêm hợp đồng</p>
-                </a>
-              </li>     
-              <li class="nav-item">
-                <a href="" class="nav-link active">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Thùng rác</p>
-                </a>
-              </li>      
-            </ul>
-          </li>     
-          <!--end contract-->
-           <!--knowleage base-->
-              <li class="nav-item">
-            <a href="#" class="nav-link active " >
-              <i class="nav-icon fas fa-tree"></i>
-              <p>
-                 Knowleage base
-                <i class="fas fa-angle-left right"></i>
-              </p>
-            </a>
-            <ul class="nav nav-treeview">
-              <li class="nav-item">
-                <a href="/" class="nav-link active">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Danh sách kiến thức</p>
-                </a>
-              </li>  
-               <li class="nav-item">
-                <a href="/" class="nav-link active">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Thêm kiến thức</p>
-                </a>
-              </li>  
-              <li class="nav-item">
-                <a href="/create-reciving-room" class="nav-link active">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Thêm category</p>
-                </a>
-              </li>     
-              <li class="nav-item">
-                <a href="" class="nav-link active">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Thùng rác</p>
-                </a>
-              </li>      
-            </ul>
-          </li>     
-         
-          <!--end knowleage base-->
-          <!--start permission--->
-           
-             <marquee  direction="left" height="30%">
-            <p class="title-left-sidebar">Phân quyền</p>  
-          </marquee>
-            <li class="nav-item">
-            <a href="#" class="nav-link active " >
-              <i class="nav-icon fas fa-tree"></i>
-              <p>
-                   Phân quyền
-                <i class="fas fa-angle-left right"></i>
-              </p>
-            </a>
-            <ul class="nav nav-treeview">      
-               <li class="nav-item">
-                <a href="/group/user-permission/" class="nav-link active">
-                  <i class="far fa-circle nav-icon"></i>                 
-                       <p>Account và quyền</p>
-                </a>
-              </li>  
-               <li class="nav-item">
-                <a href="/group/department" class="nav-link active">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Phòng ban</p>
-                </a>
-              </li> 
-               <li class="nav-item">
-                <a href="/group/user/" class="nav-link active">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Admin</p>
-                </a>
-              </li>   
-               <li class="nav-item">
-                <a href="/group/permission" class="nav-link active">
-                  <i class="far fa-circle nav-icon"></i>
-                   <p>Danh sách quyền</p>
-                </a>
-              </li>        
-              <li class="nav-item">
-                <a href="" class="nav-link active">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Thùng rác</p>
-                </a>
-              </li>      
-            </ul>
-          </li> 
-        
-          <!--end permission-->
-      </ul>
-    </nav>    
+      </div>
+    </div>
   </div>
-    
+
+  <div class="sidebar-overflow">
+    <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+      {{#orIf user.departmentsId 0 user.departmentsId 1}}
+      <marquee direction="left" height="30%">
+        <p class="title-left-sidebar">Phòng thụ lý</p>
+      </marquee>
+      <li class="nav-item">
+        <a href="#" class="nav-link active ">
+        <i class="bi bi-file-earmark-ruled-fill"></i>
+          <p>
+            Phòng thụ lý
+            <i class="fas fa-angle-left right"></i>
+          </p>
+        </a>
+        <ul class="nav nav-treeview">
+          <li class="nav-item">
+            <a href="/" class="nav-link active">
+              <i class="far fa-circle nav-icon"></i>
+              <p>Danh sách khách hàng </p>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="/create-reciving-room" class="nav-link active">
+              <i class="far fa-circle nav-icon"></i>
+              <p>Thêm khách hàng</p>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="/create-reciving-room" class="nav-link active">
+              <i class="far fa-circle nav-icon"></i>
+              <p>Thêm chương trình</p>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="/" class="nav-link active">
+              <i class="far fa-circle nav-icon"></i>
+              <p>Nhiệm vụ </p>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="" class="nav-link active">
+              <i class="far fa-circle nav-icon"></i>
+              <p>Nhật ký làm việc</p>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="" class="nav-link active">
+              <i class="far fa-circle nav-icon"></i>
+              <p>Thùng rác</p>
+            </a>
+          </li>
+        </ul>
+      </li>
+      <!--contract-->
+      <li class="nav-item">
+        <a href="#" class="nav-link active ">
+         <i class="bi bi-book-half"></i>
+          <p>
+            Contract
+            <i class="fas fa-angle-left right"></i>
+          </p>
+        </a>
+        <ul class="nav nav-treeview">
+          <li class="nav-item">
+            <a href="/" class="nav-link active">
+              <i class="far fa-circle nav-icon"></i>
+              <p>Danh sách hợp đồng</p>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="/create-reciving-room" class="nav-link active">
+              <i class="far fa-circle nav-icon"></i>
+              <p>Thêm hợp đồng</p>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="" class="nav-link active">
+              <i class="far fa-circle nav-icon"></i>
+              <p>Thùng rác</p>
+            </a>
+          </li>
+        </ul>
+      </li>
+      <!--end contract-->
+      <!--knowleage base-->
+      <li class="nav-item">
+        <a href="#" class="nav-link active ">
+          <i class="bi bi-shop"></i>
+          <p>
+            Knowleage base
+            <i class="fas fa-angle-left right"></i>
+          </p>
+        </a>
+        <ul class="nav nav-treeview">
+          <li class="nav-item">
+            <a href="/" class="nav-link active">
+              <i class="far fa-circle nav-icon"></i>
+              <p>Danh sách kiến thức</p>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="/" class="nav-link active">
+              <i class="far fa-circle nav-icon"></i>
+              <p>Thêm kiến thức</p>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="/create-reciving-room" class="nav-link active">
+              <i class="far fa-circle nav-icon"></i>
+              <p>Thêm category</p>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="" class="nav-link active">
+              <i class="far fa-circle nav-icon"></i>
+              <p>Thùng rác</p>
+            </a>
+          </li>
+        </ul>
+      </li>
+      {{/orIf}}
+      <!--end knowleage base-->
+      <!--start permission--->
+      {{#xIf user.departmentsId 0 }}
+      <marquee direction="left" height="30%">
+        <p class="title-left-sidebar">Phân quyền</p>
+      </marquee>
+      <li class="nav-item">
+        <a href="#" class="nav-link active ">
+          <i class="nav-icon fas fa-tree"></i>
+          <p>
+            Phân quyền
+            <i class="fas fa-angle-left right"></i>
+          </p>
+        </a>
+        <ul class="nav nav-treeview">
+          <li class="nav-item">
+            <a href="/group/user-permission/" class="nav-link active">
+              <i class="far fa-circle nav-icon"></i>
+              <p>Account và quyền</p>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="/group/department" class="nav-link active">
+              <i class="far fa-circle nav-icon"></i>
+              <p>Phòng ban</p>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="/group/user/" class="nav-link active">
+              <i class="far fa-circle nav-icon"></i>
+              <p>Admin</p>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="/group/permission" class="nav-link active">
+              <i class="far fa-circle nav-icon"></i>
+              <p>Danh sách quyền</p>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="" class="nav-link active">
+              <i class="far fa-circle nav-icon"></i>
+              <p>Thùng rác</p>
+            </a>
+          </li>
+        </ul>
+      </li>
+      {{/xIf}}
+      <!--end permission-->
+    </ul>
+  </div>
+  </nav>
+  </div>
+
 </aside>
 <script>
-  $(jQuery).ready(function(){
+  $(jQuery).ready(function () {
     console.log(111)
-    alert( Cookies.get("connect.sid") );
-   console.log($.cookie())
+    alert(Cookies.get("connect.sid"));
+    console.log($.cookie())
   })
 </script>
 

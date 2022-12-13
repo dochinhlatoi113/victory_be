@@ -59,7 +59,12 @@ let create = (req,res) => {
 }
 let store =async(req, res) => {
     try {
-        const User = await db.Admin.create({ name:req.body.name});
+        const user = await db.Admin.create({
+             email:req.body.email, 
+             password:req.body.password,
+             firstName:req.body.firstName,
+             lastName:req.body.lastName,
+        });
         req.flash('message', 'saved successfully');
         res.redirect("/group/user/create")
       }catch (err) {

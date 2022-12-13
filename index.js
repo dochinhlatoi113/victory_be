@@ -5,6 +5,7 @@ const apiRouterInit = require("./src/routers/api")
 const path = require("path")
 const bodyParser = require('body-parser');
 const port = 1225
+
 const cookieParser = require('cookie-parser');
 const session =  require("express-session")
 const flash = require('connect-flash');
@@ -47,6 +48,7 @@ app.set('views', path.join(__dirname, './src/views'));
 // connect db
 // static file
 app.use(express.static(path.join(__dirname, './src/public')))
+
  db.connectDb()
 //static file
 

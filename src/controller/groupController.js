@@ -1,5 +1,10 @@
+const db = require("../models/index")
 let show = async (req, res) => {   
-    res.render("../views/group/show.handlebars")
+    const lists = await db.departments.findAll();
+    const data = {
+        lists:lists
+    }
+    res.render("../views/group/department/show.handlebars",{data})
 }
 let create = (req,res) => {
     res.render("../views/recivingRoom/create.handlebars")
