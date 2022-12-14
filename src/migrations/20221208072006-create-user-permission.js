@@ -13,7 +13,7 @@ module.exports = {
         type: Sequelize.BIGINT
       },
       permissionId: {
-        type: Sequelize.BIGINT
+        type: Sequelize.TEXT
       },
       departmentId: {
         type: Sequelize.BIGINT

@@ -1,6 +1,6 @@
 const db = require("../models/index")
 const { QueryTypes,Op } = require("sequelize");
-
+const checkArr = require("../helper/isset")
 let show = async (req, res) => {   
     let keyWord = req.query.keyWord;
     let itemPerPage = 3;
@@ -35,7 +35,8 @@ let show = async (req, res) => {
             }],
             where: { '$Admin.email$': { [Op.like]: `%${keyWord}%`} },
             limit: itemPerPage,
-            offset:offset
+            offset:offset,
+            order: [['id', 'DESC']],
         });
       
         let data = {
@@ -66,7 +67,8 @@ let show = async (req, res) => {
                 model:db.Admin
             }],
             limit: itemPerPage,
-            offset:offset
+            offset:offset,
+            order: [['id', 'DESC']],
         });
         let data = {  
             lists: lists,
@@ -86,6 +88,15 @@ let show = async (req, res) => {
    }
 }
 let create = async(req,res) => {
+    let listsUserPermission =  await db.user_permission.findAll({
+           
+        include:[
+        {
+            model:db.Admin
+        }],
+        order: [['id', 'DESC']],
+    });
+  
     let listsUser =  await db.Admin.findAll({
         
     })
@@ -98,17 +109,33 @@ let create = async(req,res) => {
     })
     data = {
         listsUser :listsUser,
+        listsUserPermission,
         listsPermissions:listsPermissions,
         listsDepartments:listsDepartments,
         message:req.flash('message')
     }
-    res.render("../views/group/user-permission/create.handlebars",{data:data})
+    res.render("../views/group/user-permission/create.handlebars",{data})
 }
 let store =async(req, res) => {
     try {   
-        for(let i = 0; i < req.body.permissions.length ; i++ ){
-            const department = await db.user_permission.create({ permissionId:req.body.permissions[i],departmentId:req.body.department,userId:req.body.user});
+        let user =await db.user_permission.findOne({ where: { userId: req.body.user } })
+        if(user){ await db.Admin.update(
+            { name: req.body.name },
+            { where: { id: id } }
+        )
+            for(let i = 0; i < req.body.permissions.length ; i++ ){
+                await db.user_permission.update(
+                    { permissionId:req.body.permissions[i],departmentId:req.body.department,userId:req.body.user},
+                    { where: { userId: id } }
+                )
+            }
+        }else{
+            for(let i = 0; i < req.body.permissions.length ; i++ ){
+                const permission = await db.user_permission.create({ permissionId:req.body.permissions[i],departmentId:req.body.department,userId:req.body.user});
+            }
         }
+      
+          
         req.flash('message', 'saved successfully');
         res.redirect("/group/user-permission/create")
      

@@ -11,7 +11,6 @@
         <table class="table">
             <thead>
                 <tr>
-                   
                     <th scope="col">Account</th>
                     <th scope="col">Phòng</th>
                     <th scope="col">Quyền</th>
@@ -20,9 +19,9 @@
             <tbody>
                 <tr>
                     <td>
-                       {{#each listUserPermissions }}
+                        {{listUserPermissions.Admin.email}} 
                         <label > {{ this.id}} </label> <br>
-                        {{/each}}
+                       
                     </td>
                     <td>
                         {{#each listsDepartments}}

@@ -11,7 +11,6 @@
         <table class="table">
             <thead>
                 <tr>
-
                     <th scope="col">Account</th>
                     <th scope="col">Phòng</th>
                     <th scope="col">Quyền</th>
@@ -19,11 +18,11 @@
             </thead>
             <tbody>
                 <tr>
-                   
-                    <td>
-                        {{#each data.listsUser}}
-                        <input type="radio" id="id{{this.id}}" name="user" value="{{this.id}}">
-                        <label for="id{{this.id}}"> {{this.email}} </label> <br>
+                    <td>       
+                      {{#each data.listsUser}}
+                            <input type="radio" id="id{{this.id}}" name="user" value="{{this.id}}" class="listsId">
+                            <input type="hidden" id="id{{this.id}}" name="user" value="{{this.email}}" class="listsUser">
+                            <label for="id{{this.id}}"> {{this.email}} </label> <br>  
                         {{/each}}
                     </td>
                     <td>
@@ -44,9 +43,53 @@
         </table>
         <button type="submit" class="btn btn-primary" class="btn">Submit</button>
     </form>
+     <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col">Account đã thêm quyền </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>
+                        {{#each data.listsUserPermission}}
+                            <input type="hidden" value="{{this.Admin.email}}" class="listsUserPermission">
+                        {{/each}}
+                        <div>
+                            <label class="email"></label>
+                        </div>         
+                    </td>
+                </tr>
+            </tbody>
+        </table>
 </div>
 
 
 <script>
+    $(document).ready(function(){
+       let arr = []; 
+       let arrUser = [];
+
+        $(".listsUserPermission").each(function () {                  
+            let text = $(this).val(); 
+            arr.push(text)
+        });
+        $(".listsUser").each(function () {                  
+            let text = $(this).val(); 
+            arrUser.push(text)
+        });   
+     
+   let arrUserId = Array.from(new Set(arr))
+   for(let i =0; i< arrUserId.length ; i++){
+       $(".email").append(arrUserId[i]).append('<br />')
+   }
+console.log("arrUserId",arrUserId)
+console.log("arrUser",arrUser)
+
+const newUserEmail = arrUser.filter(item => !arrUserId.includes(item));
+console.log(newUserEmail)
+
+})
+
 
 </script>
