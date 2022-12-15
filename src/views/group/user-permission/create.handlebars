@@ -7,6 +7,12 @@
     {{#each extractedErrors}}
     <h5 style="color:red">{{this.name}}</h5>
     {{/each}}
+  
+  {{#if message}}
+
+  {{/if}}
+    <h5 style="color:red">{{this.name}}</h5>
+
     <form action="/group/user-permission/store" method="POST">
         <table class="table">
             <thead>
@@ -21,7 +27,7 @@
                     <td>       
                       {{#each data.listsUser}}
                             <input type="radio" id="id{{this.id}}" name="user" value="{{this.id}}" class="listsId">
-                            <input type="hidden" id="id{{this.id}}" name="user" value="{{this.email}}" class="listsUser">
+                            <input type="hidden" id="id{{this.id}}"  value="{{this.email}}" class="listsUser">
                             <label for="id{{this.id}}"> {{this.email}} </label> <br>  
                         {{/each}}
                     </td>

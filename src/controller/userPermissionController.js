@@ -112,23 +112,16 @@ let create = async(req,res) => {
         listsUserPermission,
         listsPermissions:listsPermissions,
         listsDepartments:listsDepartments,
-        message:req.flash('message')
+        message:req.flash('message',['err','ok'])
     }
     res.render("../views/group/user-permission/create.handlebars",{data})
 }
 let store =async(req, res) => {
     try {   
         let user =await db.user_permission.findOne({ where: { userId: req.body.user } })
-        if(user){ await db.Admin.update(
-            { name: req.body.name },
-            { where: { id: id } }
-        )
-            for(let i = 0; i < req.body.permissions.length ; i++ ){
-                await db.user_permission.update(
-                    { permissionId:req.body.permissions[i],departmentId:req.body.department,userId:req.body.user},
-                    { where: { userId: id } }
-                )
-            }
+        if(user){
+            req.flash('message', 'eerr');
+           return res.redirect("/group/user-permission/create")
         }else{
             for(let i = 0; i < req.body.permissions.length ; i++ ){
                 const permission = await db.user_permission.create({ permissionId:req.body.permissions[i],departmentId:req.body.department,userId:req.body.user});
