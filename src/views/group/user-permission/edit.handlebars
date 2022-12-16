@@ -7,7 +7,12 @@
     {{#each extractedErrors}}
     <h5 style="color:red">{{this.name}}</h5>
     {{/each}}
-    <form action="/group/user-permission/store" method="POST">
+    {{#if messageErr}}
+    <div class="alert alert-warning" role="alert">
+        {{messageErr}}
+    </div>
+    {{/if}}
+    <form action="/group/user-permission/update/{{listUserPermissions.id}}" method="POST">
         <table class="table">
             <thead>
                 <tr>
@@ -19,36 +24,37 @@
             <tbody>
                 <tr>
                     <td>
-                        {{listUserPermissions.Admin.email}} 
-                        <label > {{ this.id}} </label> <br>
-                       
+                        <label> {{listUserPermissions.Admin.email}} </label> <br>
                     </td>
                     <td>
                         {{#each listsDepartments}}
-                         <input type="radio" id="id{{this.id}}" name="department" value="{{this.id}}" {{{setChecked this.id listUserPermissions.departmentId}}}>  
-                         <label for="id{{this.id}}"> {{this.name}} </label> <br>
+                        <input type="radio" id="id{{this.id}}" name="department" value="{{this.id}}" {{#xIf this.id
+                            ../listUserPermissions.departmentId}} checked {{/xIf}}>
+                        <label for="id{{this.id}}"> {{this.name}} </label> <br>
                         {{/each}}
                     </td>
                     <td>
                         {{#each listsPermissions}}
-                            {{#each listUserPermissions}}
-                            <input type="checkbox" class="permission" id="id_permission{{this.id}}" name="permissions[]"
-                                value="{{this.id}}"  {{#xIf this.id this.permissionId}} checked {{/xIf}} >
-                            <label for="id_permission{{this.id}}"> {{this.name}} </label> <br>
-                            {{/each}}
+                        <input type="checkbox" class="permission" id="id_permission{{this.id}}" name="permissions[]"
+                            value="{{this.id}}" {{#each ../listUserPermissions}} {{#xIf ../this.id this.permissionId}}
+                            checked {{/xIf}} 
+                            
+                        {{/each}}>
+                        <label for="id_permission{{this.id}}"> {{this.name}} </label> <br>
                         {{/each}}
                     </td>
                 </tr>
             </tbody>
         </table>
+         <input type="text" value="{{listUserPermissions.userId}}" name="userIds">
         <button type="submit" class="btn btn-primary" class="btn">Submit</button>
     </form>
 </div>
 
 
 <script>
-    $(jQuery).ready(function(){
-       console.log($('.checked').val())
-        
+    $(jQuery).ready(function () {
+        console.log($('.checked').val())
+
     })
 </script>

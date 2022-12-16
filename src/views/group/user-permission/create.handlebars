@@ -1,16 +1,17 @@
 <div class="container-fluid">
-    {{#if message}}
-    <div class="alert alert-success" role="alert">
-        {{message}}
+     {{#if data.messageErr}}
+    <div class="alert alert-warning" role="alert">
+        {{this.messageErr}}
     </div>
     {{/if}}
     {{#each extractedErrors}}
     <h5 style="color:red">{{this.name}}</h5>
     {{/each}}
-  
-  {{#if message}}
-
-  {{/if}}
+    {{#if data.message}}
+    <div class="alert alert-success" role="alert">
+        {{this.message}}
+    </div>
+    {{/if}}
     <h5 style="color:red">{{this.name}}</h5>
 
     <form action="/group/user-permission/store" method="POST">
