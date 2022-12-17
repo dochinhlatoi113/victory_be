@@ -187,27 +187,34 @@ let update = async (req, res) => {
     // console.log(id)
     // return false
     try {
-        let user = await db.user_permission.findOne({ where: { id: id, permissionId: req.body.permissions } }) 
-   
-        if (user) {
-            req.flash('messageErr', 'đã tồn tại quyền của account này');
-            return res.redirect("/group/user-permission/edit/"+id)
-        }else{
-            let userId = await db.user_permission.findOne({ where: { userId:req.body.userIds , permissionId:req.body.permissions } }) 
-            if(userId){
-                req.flash('messageErr', 'đã tồn tại quyền của account này');
-                 return res.redirect("/group/user-permission/edit/"+id)
-            }else{
-                for (let i = 0; i < req.body.permissions.length; i++) {
-               console.log(222)
-               console.log(id)
-              }
-              return false
-                req.flash('message', 'updated successfully');
-                return res.redirect("/group/user-permission/edit/"+id)
-            }
+       
+        if(req.body.permissions == undefined){
+            await db.user_permission.destroy(
+
+                { where: { id: id } }
+            )
+            req.flash('message', 'delete successfully');
+           return res.redirect("/group/user-permission/")
         }
-              
+      
+        let user = await db.user_permission.findOne({ where: { id: id, permissionId: req.body.permissions } }) 
+       
+        if(user) {
+            let userUpdate = await db.user_permission.findOne({where:{id:id}})
+            await db.user_permission.destroy(
+
+                { where: { id: id } }
+            )
+            
+            for (let i = 0; i < req.body.permissions.length; i++) {
+                const permission = await db.user_permission.create({ permissionId: req.body.permissions[i], departmentId: req.body.departmentIds, userId: req.body.userIds });
+            }
+    
+        }
+  
+    //   return false
+        req.flash('message', 'updated successfully');
+        return res.redirect("/group/user-permission/")      
          
   
     } catch (err) {

@@ -1,19 +1,18 @@
 <div class="container-fluid">
-     {{#if data.messageErr}}
-    <div class="alert alert-warning" role="alert">
-        {{this.messageErr}}
+    {{#if message}}
+    <div class="alert alert-success" role="alert">
+        {{message}}
     </div>
     {{/if}}
     {{#each extractedErrors}}
     <h5 style="color:red">{{this.name}}</h5>
     {{/each}}
-    {{#if data.message}}
+     {{#if data.message}}
     <div class="alert alert-success" role="alert">
         {{this.message}}
     </div>
     {{/if}}
     <h5 style="color:red">{{this.name}}</h5>
-
     <form action="/group/user-permission/store" method="POST">
         <table class="table">
             <thead>
@@ -28,13 +27,19 @@
                     <td>       
                       {{#each data.listsUser}}
                             <input type="radio" id="id{{this.id}}" name="user" value="{{this.id}}" class="listsId">
-                            <input type="hidden" id="id{{this.id}}"  value="{{this.email}}" class="listsUser">
+                            <input type="hidden" id="id{{this.id}}" name="user" value="{{this.email}}" class="listsUser">
                             <label for="id{{this.id}}"> {{this.email}} </label> <br>  
                         {{/each}}
                     </td>
                     <td>
                         {{#each data.listsDepartments}}
-                        <input type="radio" id="id{{this.id}}" name="department" value="{{this.id}}">
+                        <input type="radio" id="id{{this.id}}" name="department" value="{{this.id}}" 
+                             {{#each ../data.lists}}  
+   
+                           
+                               {{this.departmentId}} 
+                            {{/each}}
+                        >
                         <label for="id{{this.id}}"> {{this.name}} </label> <br>
                         {{/each}}
                     </td>
@@ -62,8 +67,8 @@
                         {{#each data.listsUserPermission}}
                             <input type="hidden" value="{{this.Admin.email}}" class="listsUserPermission">
                         {{/each}}
-                        <div>
-                            <label class="email"></label>
+                        <div class="email">
+                            
                         </div>         
                     </td>
                 </tr>
@@ -94,7 +99,7 @@ console.log("arrUserId",arrUserId)
 console.log("arrUser",arrUser)
 
 const newUserEmail = arrUser.filter(item => !arrUserId.includes(item));
-console.log(newUserEmail)
+$(".email").html(newUserEmail).append('<br />');
 
 })
 
