@@ -35,9 +35,7 @@
                         {{#each data.listsDepartments}}
                         <input type="radio" id="id{{this.id}}" name="department" value="{{this.id}}" 
                              {{#each ../data.lists}}  
-   
-                           
-                               {{this.departmentId}} 
+                                {{this.departmentId}} 
                             {{/each}}
                         >
                         <label for="id{{this.id}}"> {{this.name}} </label> <br>

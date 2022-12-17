@@ -12,7 +12,7 @@
         {{messageErr}}
     </div>
     {{/if}}
-    <form action="/group/user-permission/update/{{listUserPermissions.id}}" method="POST">
+    <form action="/group/user-permission/update/" method="POST">
         <table class="table">
             <thead>
                 <tr>
@@ -36,7 +36,7 @@
                     <td>
                         {{#each listsPermissions}}
                         <input type="checkbox" class="permission" id="id_permission{{this.id}}" name="permissions[]"
-                            value="{{this.id}}" {{#each ../listUserPermissions}} {{#xIf ../this.id this.permissionId}}
+                            value="{{this.id}}" {{#each ../listUserPermission}} {{#xIf ../this.id this.permissionId}}
                             checked {{/xIf}} 
                             
                         {{/each}}>

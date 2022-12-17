@@ -141,6 +141,9 @@ let store = async (req, res) => {
 let edit = async (req, res) => {
 
     let id = req.params.id
+    let userId = req.params.userid
+  
+  
     let listsUser = await db.Admin.findAll({
 
     })
@@ -166,12 +169,28 @@ let edit = async (req, res) => {
         ]
     })
 
+    let listUserPermission = await db.user_permission.findAll({
+        where: { userId: userId },
+        include: [
+            {
+                model: db.departments
+            },
+            {
+                model: db.permissions
+            },
+            {
+                model: db.Admin
+            }
+        ]
+    })
+   
     if (listUserPermissions) {
         let data = {
             listsUser: listsUser,
             listsPermissions: listsPermissions,
             listsDepartments: listsDepartments,
             listUserPermissions: listUserPermissions,
+            listUserPermission:listUserPermission,
             message: req.flash('message'),
             messageErr: req.flash('messageErr'),
         }
@@ -181,33 +200,34 @@ let edit = async (req, res) => {
     }
 }
 let update = async (req, res) => {
-    let id = req.params.id
+    
     // console.log(req.body.permissions)
     // console.log(req.body.permissionId)
     // console.log(id)
     // return false
+
     try {
        
         if(req.body.permissions == undefined){
             await db.user_permission.destroy(
 
-                { where: { id: id } }
+                { where: { userId: req.body.userIds } }
             )
             req.flash('message', 'delete successfully');
-           return res.redirect("/group/user-permission/")
+            return res.redirect("/group/user-permission/")    
         }
+    
+        let user = await db.user_permission.findAll({ where: { userId: req.body.userIds } }) 
       
-        let user = await db.user_permission.findOne({ where: { id: id, permissionId: req.body.permissions } }) 
-       
-        if(user) {
-            let userUpdate = await db.user_permission.findOne({where:{id:id}})
+        if(user) {  
+         
             await db.user_permission.destroy(
 
-                { where: { id: id } }
+                { where: { userId: req.body.userIds } }
             )
             
             for (let i = 0; i < req.body.permissions.length; i++) {
-                const permission = await db.user_permission.create({ permissionId: req.body.permissions[i], departmentId: req.body.departmentIds, userId: req.body.userIds });
+                const permission = await db.user_permission.update({ permissionId: req.body.permissions[i], departmentId: req.body.departmentIds, userId: req.body.userIds });
             }
     
         }

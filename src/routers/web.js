@@ -74,10 +74,10 @@ const routerInit = (app) => {
     })
     router.get('/', userPermissionController.show)
     router.get('/create', userPermissionController.create)
-    router.get('/edit/:id', userPermissionController.edit)
+    router.get('/edit/:id&:userid', userPermissionController.edit)
     router.post('/delete/:id', userPermissionController.destroy)
     router.post('/store', userPermissionController.store)
-    router.post('/update/:id', userPermissionController.update)
+    router.post('/update/', userPermissionController.update)
   })
   // sidebar 
 

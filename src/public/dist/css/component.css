@@ -35,3 +35,6 @@ a{
     border-top: 3px solid white;
     margin-top: 10px;
 }
+::-webkit-scrollbar {
+    width: 10px;
+  }
