@@ -1,57 +1,3 @@
-<style>
-    .search-field {
-
-        padding: 10px 15px;
-        min-width: 55%;
-        font-size: 1rem;
-        line-height: 1.5em;
-        color: #373D41;
-        background-color: #FFF;
-        background-clip: padding-box;
-        border: 1px solid #C5C5C7;
-        border-radius: 6px;
-        -webkit-box-shadow: none;
-        box-shadow: none;
-        flex-grow: 1;
-        border-right: none;
-        border-top-right-radius: 0;
-        border-bottom-right-radius: 0;
-    }
-
-    .search-submit {
-        /* this class is for submit button, if in your code its different, just substitute the class name '.search-submit' */
-        background-color: #1a1a1a;
-        color: #ffffff;
-        font-weight: 700;
-        text-decoration: none;
-        white-space: normal;
-        -webkit-transition: none;
-        transition: none;
-        cursor: pointer;
-        outline: 0;
-        padding: 14px 24px 13px;
-        font-size: 1rem;
-        line-height: 1.25rem;
-        border-radius: 6px;
-        border-width: 0;
-        border-top-left-radius: 0;
-        border-bottom-left-radius: 0;
-    }
-
-    .search-form .input-group {
-        text-align: center;
-    }
-
-    .search-form {
-        margin: 30px 0;
-    }
-
-    .box-search {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-    }
-</style>
 <div class="container-fluid">
     <div class="box-search">
         <button type="button" class="btn btn-primary" id="btnCreate">
@@ -66,6 +12,15 @@
                         value="Search">
                 </div>
             </div>
+        
+    </div>
+    <!--show hide option--->
+    <div class="">
+        <label>sắp xếp theo:</label>
+       <input type="text" name="asc">ss
+        <select id="cars">
+            <option  name="desc" value="desc">DESC</option>
+        </select>
         </form>
     </div>
     <!--modals confirm delete-->
@@ -96,31 +51,31 @@
         {{message}}
     </div>
     {{/if}}
+
     <table class="table">
         <thead>
             <tr>
                 <th scope="col">#</th>
-                <th scope="col">id</th>
                 <th scope="col">phòng</th>
-                <th scope="col">account</th>
+                <th scope="col">account </th>
                 <th scope="col">quyền</th>
                 <th scope="col">ngày tạo</th>
                 <th scope="col">action</th>
             </tr>
         </thead>
         <tbody>
+            {{#if lists}}
             <tr>
                 {{#each lists}}
                 <th scope="row">{{inc @index}}</th>
-                <td>{{this.id}}</td>
                 <td>{{this.department.name}}</td>
                 <td>{{this.Admin.email}}</td>
                 <td>{{this.permission.name}}</td>
-                 <td>{{formatDate this.createdAt "short"}}
-                 {{this.userId}}
-                 </td>
+                <td>{{formatDate this.createdAt "short"}}
+                    {{this.userId}}
+                </td>
                 <td style="display: flex;">
-                       
+
                     <a class="icon-edit" href="/group/user-permission/edit/{{this.id}}&{{this.userId}}">
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                             class="bi bi-pencil" viewBox="0 0 16 16">
@@ -136,6 +91,9 @@
             </tr>
             {{/each}}
             </tr>
+            {{else}}
+            Data not found
+            {{/if}}
         </tbody>
     </table>
     <div class="container mt-4">
@@ -167,8 +125,14 @@
 </div>
 
 <script>
-    
+
     $(document).ready(function () {
+        $('#expander').on('click', function () {
+            $(this).siblings().slideToggle('fast');
+            // jQuery(this).find('i').toggleClass('fa-plus fa-minus');
+            $(this).find('i').toggleClass('fa-chevron-down fa-chevron-up');
+        });
+
         let id = "";
         let submitDelete = document.forms['submit-delete']
 

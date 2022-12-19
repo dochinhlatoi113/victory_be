@@ -3,9 +3,10 @@ const { QueryTypes, Op } = require("sequelize");
 const checkArr = require("../helper/isset")
 let show = async (req, res) => {
     let keyWord = req.query.keyWord;
+    let sortByAsc = req.query.asc
+    console.log("xcs",sortByAsc)
     let itemPerPage = 3;
     let page = +req.query.page || 1
-
     let offset = (page - 1) * itemPerPage
     try {
         if (keyWord != undefined) {
@@ -113,7 +114,7 @@ let create = async (req, res) => {
         listsPermissions: listsPermissions,
         listsDepartments: listsDepartments,
         message: req.flash('message'),
-        messageErr: req.flash('messageErr'),
+        messageErr: req.flash('messageErr'),   
     }
     res.render("../views/group/user-permission/create.handlebars", { data })
 }
@@ -200,12 +201,7 @@ let edit = async (req, res) => {
     }
 }
 let update = async (req, res) => {
-    
-    // console.log(req.body.permissions)
-    // console.log(req.body.permissionId)
-    // console.log(id)
-    // return false
-
+    let id = req.params.id
     try {
        
         if(req.body.permissions == undefined){
@@ -227,7 +223,8 @@ let update = async (req, res) => {
             )
             
             for (let i = 0; i < req.body.permissions.length; i++) {
-                const permission = await db.user_permission.update({ permissionId: req.body.permissions[i], departmentId: req.body.departmentIds, userId: req.body.userIds });
+              
+                const permission = await db.user_permission.create({ permissionId: req.body.permissions[i], departmentId: req.body.department, userId: req.body.userIds });
             }
     
         }
