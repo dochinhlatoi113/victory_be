@@ -1,10 +1,7 @@
 const db = require("../models/index")
 const { QueryTypes, Op } = require("sequelize");
-const checkArr = require("../helper/isset")
 let show = async (req, res) => {
     let keyWord = req.query.keyWord;
-    let sortByAsc = req.query.asc
-    console.log("xcs",sortByAsc)
     let itemPerPage = 3;
     let page = +req.query.page || 1
     let offset = (page - 1) * itemPerPage
@@ -37,7 +34,7 @@ let show = async (req, res) => {
                 where: { '$Admin.email$': { [Op.like]: `%${keyWord}%` } },
                 limit: itemPerPage,
                 offset: offset,
-                order: [['id', 'DESC']],
+                order: [['$Admin.email$', 'ASC']],
             });
 
             let data = {
@@ -119,23 +116,25 @@ let create = async (req, res) => {
     res.render("../views/group/user-permission/create.handlebars", { data })
 }
 let store = async (req, res) => {
-    try {
-        let user = await db.user_permission.findOne({ where: { userId: req.body.user } })
-        if (user) {
-            req.flash('messageErr', 'đã phân quyền cho account này rồi');
-            return res.redirect("/group/user-permission/create")
-        } else {
-            for (let i = 0; i < req.body.permissions.length; i++) {
-                const permission = await db.user_permission.create({ permissionId: req.body.permissions[i], departmentId: req.body.department, userId: req.body.user });
+    if(req.method == "POST") {
+        try {
+            
+            let user = await db.user_permission.findOne({ where: { userId: req.body.user } })
+            if (user) {
+                req.flash('messageErr', 'đã phân quyền cho account này rồi');
+                return res.redirect("/group/user-permission/create")
+            } else {
+                for (let i = 0; i < req.body.permissions.length; i++) {
+                    const permission = await db.user_permission.create({ permissionId: req.body.permissions[i], departmentId: req.body.department, userId: req.body.user });
+                }
             }
+
+            req.flash('message', 'saved successfully');
+            res.redirect("/group/user-permission/create")
+
+        } catch (err) {
+            res.send(err);
         }
-
-
-        req.flash('message', 'saved successfully');
-        res.redirect("/group/user-permission/create")
-
-    } catch (err) {
-        res.send(err);
     }
 }
 

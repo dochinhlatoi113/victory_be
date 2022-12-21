@@ -32,7 +32,8 @@
     "nodemon": "^2.0.19",
     "passport": "^0.6.0",
     "passport-local": "^1.0.0",
-    "sequelize": "^6.26.0"
+    "sequelize": "^6.26.0",
+    "tinymce": "^6.3.1"
   },
   "devDependencies": {
     "sequelize-cli": "^6.5.2"

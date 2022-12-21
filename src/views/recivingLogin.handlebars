@@ -6,8 +6,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Login Page</title>
   <link rel="stylesheet" href="Assets/CSS/CSS.css" />
+  {{!-- cái ni ko có--}}
       <!-- Theme compontn style -->
-  <link rel="stylesheet" href="dist/css/login/recivinglogin.css">
+  <link rel="stylesheet" href="http://127.0.0.1:1225/dist/css/login/recivinglogin.css">
   <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@1,500&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
     integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
@@ -242,9 +243,10 @@
 
         <div class="bor">
           <form action="/login" method="POST" class="box">
-            <img src="Assets/CSS/p.gif" class="gif" alt="" />
+            <img src="../../Assets/CSS/p.gif" class="gif" alt="" />
+            {{!-- ? cái ni ở đâu? --}}
             <br />
-            <img src="image/logotrang-victory.png"> <br>            
+            <img src="http://127.0.0.1:1225/image/logotrang-victory.png"> <br>            
             <br />
             <input type="email" name="email" placeholder="Email" />
             <input type="password" name="password" placeholder="Password"  />

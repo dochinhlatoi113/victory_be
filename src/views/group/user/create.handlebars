@@ -1,46 +1,52 @@
 <div class="container-fluid">
-    {{#if message}}
+    {{#if data.message}}
     <div class="alert alert-success" role="alert">
-        {{message}}
+        {{data.message}}
     </div>
     {{/if}}
-    
+    {{#if data.messageErr}}
+    <div class="alert alert-warning" role="alert">
+        {{data.messageErr}}
+    </div>
+    {{/if}}
 
-    <form action="/group/user/store" method="POST">
-        <div class="form-group">
-            <label for="exampleInputEmail1">Tạo account</label><br>
-              <label for="exampleInputEmail1">first name</label>
+    {{#each extractedErrors}}
+    <div class="alert alert-warning" role="alert">
+        {{this.email}}
+        {{this.password}}
+    </div>
+    {{/each}}
+
+    <div>
+        <form action="/group/user/store" method="POST">
             <div class="form-group">
-                <input type="text" class="form-control" aria-describedby="firstname" placeholder="vd anh nguyễn"
-                    name="firstName">
+                <label for="exampleInputEmail1">Tạo account</label><br>
+                <label for="exampleInputEmail1">first name</label>
+                <div class="form-group">
+                    <input type="text" class="form-control" aria-describedby="firstname" placeholder="vd anh nguyễn"
+                        name="firstName">
+                </div>
+                <label for="exampleInputEmail1">last name</label>
+                <div class="form-group">
+                    <input type="text" class="form-control" aria-describedby="lastname" placeholder="vd trần"
+                        name="lastName">
+                </div>
+                <label for="exampleInputEmail1">email</label>
+                <div class="form-group">
+                    <input type="text" class="form-control" aria-describedby="email" placeholder="vd nguyenat@gmail.com"
+                        name="email">
+                </div>
+                <label for="exampleInputEmail1">password</label>
+                <div class="form-group">
+                    <input type="text" class="form-control" aria-describedby="password" placeholder="vd *@_@"
+                        name="password">
+                </div>
             </div>
-            <label for="exampleInputEmail1">last name</label>
-            <div class="form-group">
-                <input type="text" class="form-control" aria-describedby="lastname" placeholder="vd trần"
-                    name="lastName">
-            </div>
-            <label for="exampleInputEmail1">email</label>
-            <div class="form-group">
-                <input type="text" class="form-control" aria-describedby="email" placeholder="vd nguyenat@gmail.com"
-                    name="email">
-            </div>
-                {{#each extractedErrors}}
-                    <h5 style="color:red">{{this.email}}</h5>  
-                {{/each}}
-            <label for="exampleInputEmail1">password</label>
-              <div class="form-group">
-                <input type="text" class="form-control" aria-describedby="password" placeholder="vd *@_@"
-                    name="password">
-            </div>
-            {{#each extractedErrors}}
-                    <h5 style="color:red">{{this.password}}</h5>  
-                {{/each}}
-        </div>
-        <button type="submit" class="btn btn-primary">Submit</button>
-    </form>
-</div>
-<script>
-    $(jQuery).ready(function(){
-        console.log(errors)
-    })
-</script>
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+    </div>
+    <script>
+        $(jQuery).ready(function () {
+            console.log(errors)
+        })
+    </script>

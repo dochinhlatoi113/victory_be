@@ -35,12 +35,13 @@
                     </td>
                     <td>
                         {{#each listsPermissions}}
-                        <input type="checkbox" class="permission" id="id_permission{{this.id}}" name="permissions[]"
-                            value="{{this.id}}" {{#each ../listUserPermission}} {{#xIf ../this.id this.permissionId}}
-                            checked {{/xIf}} 
-                            
+                        <div class="custom-control custom-switch">
+                             <input type="checkbox" class="custom-control-input" id="customSwitch1{{this.id}}"  name="permissions[]"
+                                value="{{this.id}}" {{#each ../listUserPermission}} {{#xIf ../this.id this.permissionId}}
+                            checked {{/xIf}}       
                         {{/each}}>
-                        <label for="id_permission{{this.id}}"> {{this.name}} </label> <br>
+                             <label class="custom-control-label" for="customSwitch1{{this.id}}">{{this.name}}</label> 
+                        </div>
                         {{/each}}
                     </td>
                 </tr>

@@ -12,17 +12,17 @@
                         value="Search">
                 </div>
             </div>
-        
+         </form>
     </div>
     <!--show hide option--->
-    <div class="">
+    {{!-- <div class="">
         <label>sắp xếp theo:</label>
-       <input type="text" name="asc">ss
-        <select id="cars">
+        <select id="cars" class="sortBy" name="sortBy">
+            <option  name="asc" value="asc">ASC</option>
             <option  name="desc" value="desc">DESC</option>
         </select>
-        </form>
-    </div>
+       
+    </div> --}}
     <!--modals confirm delete-->
     <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
         <div class="modal-dialog">
@@ -101,11 +101,11 @@
             <ul class="pagination justify-content-center">
                 {{#if hasPreviousPage}}
                 <li class="page-item">
-                    <a class="page-link" href="?page=1">First</a>
+                    <a class="page-link" href="?page=1">1</a>
                 </li>
-                <li class="page-item">
+                {{!-- <li class="page-item">
                     <a class="page-link" href="?page={{previousPage}}&keyWord={{keyWord}}">{{previousPage}}</a>
-                </li>
+                </li> --}}
                 {{/if}}
                 <li class="page-item active">
                     <a class="page-link" href="?page={{currentPage}}">{{currentPage}}</a>
@@ -127,6 +127,21 @@
 <script>
 
     $(document).ready(function () {
+        $(".sortBy").change(function(){
+            let sortBy = $(".sortBy").val()
+        
+            $.ajax({
+                    url: "/group/user-permission/",
+                    type: "get",
+                    data: {
+                        sortBy: sortBy								
+                    },
+                    cache: false,
+                    success: function(dataResult){
+                    }
+                })      
+        })
+
         $('#expander').on('click', function () {
             $(this).siblings().slideToggle('fast');
             // jQuery(this).find('i').toggleClass('fa-plus fa-minus');

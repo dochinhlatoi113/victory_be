@@ -47,13 +47,14 @@ configView(app)
 app.set('views', path.join(__dirname, './src/views'));
 // connect db
 // static file
-app.use(express.static(path.join(__dirname, 'src/public')))
-
+//app.use(express.static(path.join(__dirname, '../../public/')))
+app.use(express.static(path.join(__dirname, 'src/public/')))
  db.connectDb()
-//static file
-
+//static fil
 
 app.use(flash());
+// tiny mce
+app.use('/tinymce', express.static(path.join(__dirname, 'node_modules', 'tinymce')));
 
 ///port    
 app.listen(port, () => {

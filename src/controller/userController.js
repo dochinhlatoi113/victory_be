@@ -45,7 +45,7 @@ let show = async (req, res) => {
             nextPage: page + 1,
             previousPage: page - 1,
             lastPage: Math.ceil(totalItems / itemPerPage),
-            message:req.flash('message')
+          
         }
         res.render("../views/group/user/show.handlebars", data)
     }
@@ -55,10 +55,20 @@ let show = async (req, res) => {
    }
 }
 let create = (req,res) => {
-    res.render("../views/group/user/create.handlebars",{message:req.flash('message')})
+    let data = {
+        message:req.flash('message'),
+        messageErr:req.flash('messageErr')
+    }
+    res.render("../views/group/user/create.handlebars",{data:data})
 }
 let store =async(req, res) => {
+    
     try {
+       let lists = await db.Admin.findOne({ where: { email: req.body.email } }) 
+        if(lists){
+            req.flash('messageErr', 'đã tồn tại account này');
+            return  res.redirect("/group/user/create")
+        }
         const user = await db.Admin.create({
              email:req.body.email, 
              password:req.body.password,
@@ -66,7 +76,7 @@ let store =async(req, res) => {
              lastName:req.body.lastName,
         });
         req.flash('message', 'saved successfully');
-        res.redirect("/group/user/create")
+      return  res.redirect("/group/user/create")
       }catch (err) {
         res.send(err);
       }

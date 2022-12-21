@@ -9,10 +9,13 @@ const LocalStrategy = require('passport-local').Strategy;
 const basevalidator = require("../validate/basevalidator")
 const checkPermission = require('../controller/auth/checkPermissionController');
 const checkValidate = require("../validate/checkvalidator")
-const initPassportLocal = require('../controller/auth/passport');
+const initPassportLocal = require('../controller/auth/passport')
 const userController = require("../controller/userController")
+const categoryProgramController = require("../controller/categoryProgramController")
+const qsController = require("../controller/qsController")
+const salesController = require("../controller/salesController")
 const userPermissionController = require("../controller/userPermissionController")
-const { check, body, validationResult } = require('express-validator');
+const { check, body, validationResult } = require('express-validator')
 const e = require("express");
 let router = express.Router();
 
@@ -31,8 +34,11 @@ const routerInit = (app) => {
 
   app.group("/reciving-room", (router) => {
     router.use(loginController.checkAuthenticated)
-    router.get('/', loginController.checkAuthenticated, recivingController.getIndexPage)
+    router.get('/',recivingController.getIndexPage)
     router.get('/create-reciving-room', recivingController.create)
+    //program
+    router.get('/program/',categoryProgramController.show)
+    router.get('/program/create',categoryProgramController.create)
   })
   app.group("/group", (router) => {
     router.use(loginController.checkAuthenticated)
@@ -76,11 +82,41 @@ const routerInit = (app) => {
     router.get('/create', userPermissionController.create)
     router.get('/edit/:id&:userid', userPermissionController.edit)
     router.post('/delete/:id', userPermissionController.destroy)
-    router.post('/store', userPermissionController.store)
-    router.post('/update/', userPermissionController.update)
+    router.post('/store',checkValidate.checkUserPermission, basevalidator.checkvalidate.checkUserPermission, userPermissionController.store)
+    router.post('/update/',checkValidate.checkUserPermission, basevalidator.checkvalidate.checkUserPermission, userPermissionController.update)
   })
-  // sidebar 
+  // sales
+  app.group("/sales", (router) => {
+    router.use(loginController.checkAuthenticated)
+    router.get('', loginController.checkAuthenticated, salesController.show)
+    router.get('/create', loginController.checkAuthenticated, salesController.create)
+    router.get('/edit/:id', loginController.checkAuthenticated, salesController.edit)
+    router.post('/store',  basevalidator.checkvalidate.validateDepartment, loginController.checkAuthenticated, salesController.store)
+    router.post('/update/:id', loginController.checkAuthenticated, checkValidate.schema, basevalidator.checkvalidate.validateDepartment, salesController.update)
+    router.post('/delete/:id', loginController.checkAuthenticated, salesController.destroy)
+  })
+  
+ // qs
+ app.group("/qs", (router) => {
+  router.use(loginController.checkAuthenticated)
+  router.get('', loginController.checkAuthenticated, qsController.show)
+  router.get('/create', loginController.checkAuthenticated, qsController.create)
+  router.get('/edit/:id', loginController.checkAuthenticated, qsController.edit)
+  router.post('/store', basevalidator.checkvalidate.validateDepartment, loginController.checkAuthenticated, qsController.store)
+  router.post('/update/:id', loginController.checkAuthenticated, basevalidator.checkvalidate.validateDepartment, qsController.update)
+  router.post('/delete/:id', loginController.checkAuthenticated, qsController.destroy)
+})
 
+ // category_program
+ app.group("/category_program", (router) => {
+  router.use(loginController.checkAuthenticated)
+  router.get('', loginController.checkAuthenticated, categoryProgramController.show)
+  router.get('/create', loginController.checkAuthenticated, categoryProgramController.create)
+  router.get('/edit/:id', loginController.checkAuthenticated, categoryProgramController.edit)
+  router.post('/store',  basevalidator.checkvalidate.validateDepartment, loginController.checkAuthenticated, categoryProgramController.store)
+  router.post('/update/:id', loginController.checkAuthenticated,  basevalidator.checkvalidate.validateDepartment, categoryProgramController.update)
+  router.post('/delete/:id', loginController.checkAuthenticated, categoryProgramController.destroy)
+})
 
   return app.use('/', router)
 }

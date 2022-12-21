@@ -59,9 +59,9 @@
             </a>
           </li>
           <li class="nav-item">
-            <a href="/create-reciving-room" class="nav-link active">
+            <a href="/reciving-room/program/" class="nav-link active">
               <i class="far fa-circle nav-icon"></i>
-              <p>Thêm chương trình</p>
+              <p>Chương trình</p>
             </a>
           </li>
           <li class="nav-item">
@@ -201,6 +201,105 @@
       </li>
       {{/xIf}}
       <!--end permission-->
+       <!--start sales--->
+      {{#xIf user.departmentsId 0 }}
+      <marquee direction="left" height="30%">
+        <p class="title-left-sidebar">Sales</p>
+      </marquee>
+      <li class="nav-item">
+        <a href="#" class="nav-link active ">
+         <i class="bi bi-person"></i>
+          <p>
+               Khách hàng
+            <i class="fas fa-angle-left right"></i>
+          </p>
+        </a>
+        <ul class="nav nav-treeview">
+           <li class="nav-item">
+            <a href="/sales" class="nav-link active">
+              <i class="far fa-circle nav-icon"></i>
+              <p>Danh sách khách hàng</p>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="/sales/create" class="nav-link active">
+              <i class="far fa-circle nav-icon"></i>
+              <p>Thêm khách hàng mới</p>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="" class="nav-link active">
+              <i class="far fa-circle nav-icon"></i>
+              <p>Thùng rác</p>
+            </a>
+          </li>
+        </ul>
+      </li>
+      <!--câu hỏi-->
+      <li class="nav-item">
+        <a href="#" class="nav-link active ">
+         <i class="bi bi-patch-question"></i>
+          <p>
+              Câu hỏi
+            <i class="fas fa-angle-left right"></i>
+          </p>
+        </a>
+        <ul class="nav nav-treeview">
+           <li class="nav-item">
+            <a href="/qs" class="nav-link active">
+              <i class="far fa-circle nav-icon"></i>
+              <p>Danh sách câu hỏi</p>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="/qs/create" class="nav-link active">
+              <i class="far fa-circle nav-icon"></i>
+              <p>Thêm câu hỏi mới</p>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="" class="nav-link active">
+              <i class="far fa-circle nav-icon"></i>
+              <p>Thùng rác</p>
+            </a>
+          </li>
+        </ul>
+      </li>
+      {{/xIf}}
+      <!--end qs-->
+
+     <!--câu hỏi-->
+   <li class="nav-item">
+          <a href="#" class="nav-link active ">
+         <i class="bi bi-file-earmark-code-fill"></i>
+            <p>
+                Chương trình
+              <i class="fas fa-angle-left right"></i>
+            </p>
+          </a>
+          <ul class="nav nav-treeview">
+            <li class="nav-item">
+              <a href="/category_program" class="nav-link active">
+                <i class="far fa-circle nav-icon"></i>
+                <p>Danh sách chương trình</p>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a href="/category_program/create" class="nav-link active">
+                <i class="far fa-circle nav-icon"></i>
+                <p>Thêm câu chương trình</p>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a href="" class="nav-link active">
+                <i class="far fa-circle nav-icon"></i>
+                <p>Thùng rác</p>
+              </a>
+            </li>
+          </ul>
+        </li>
+      <!--end qs-->
+      
     </ul>
   </div>
   </nav>
@@ -215,4 +314,3 @@
   })
 </script>
 
-{{!-- s%3AQZ_IVyPbAXLYqp-x2sgoCcSEnyQ6HXap.SVud0Us1K8r2MDhoQ9nU%2BiB%2B1DNkR5dGr%2Fl4yeDqpJE --}}
