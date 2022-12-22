@@ -66,6 +66,9 @@ const routerInit = (app) => {
     router.get('/', userController.show)
     router.get('/create', userController.create)
     router.post('/delete/:id', userController.destroy)
+    router.get('/store', checkValidate.checkRegisterUser, basevalidator.checkvalidate.checkRegisterUser,function(res,req){
+      return res.redirect("/group/user/")
+    })
     router.post('/store', checkValidate.checkRegisterUser, basevalidator.checkvalidate.checkRegisterUser, userController.store)
   })
 
@@ -81,6 +84,9 @@ const routerInit = (app) => {
     router.get('/', userPermissionController.show)
     router.get('/create', userPermissionController.create)
     router.get('/edit/:id&:userid', userPermissionController.edit)
+    router.get('/store',function(req,res){
+      return res.redirect("/group/user-permission/create")
+    })
     router.post('/delete/:id', userPermissionController.destroy)
     router.post('/store',checkValidate.checkUserPermission, basevalidator.checkvalidate.checkUserPermission, userPermissionController.store)
     router.post('/update/',checkValidate.checkUserPermission, basevalidator.checkvalidate.checkUserPermission, userPermissionController.update)

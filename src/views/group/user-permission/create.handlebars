@@ -11,10 +11,11 @@
     </div>
     {{/if}}
     
-    {{#each extractedErrors}}
+    {{#each data.extractedErrors}}
      <div class="alert alert-warning" role="alert">
         {{this.user}}
         {{this.department}}
+         {{this.permissions}}
     </div>
     {{/each}}
      <p class="messErr"></p>
@@ -32,8 +33,8 @@
                     <td>       
                       {{#each data.listsUser}}
                             <input type="radio" id="idUser{{this.id}}" name="user" value="{{this.id}}" class="listsId">
-                            <input type="hidden" id="idUser{{this.id}}" value="{{this.email}}" class="listsUser">
                             <label for="idUser{{this.id}}"> {{this.email}} </label> <br>  
+                            <input type="hidden" id="idUser{{this.id}}" value="{{this.email}}" class="listsUser">
                         {{/each}}
                     </td>
                     <td>

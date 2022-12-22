@@ -1,15 +1,52 @@
-  {{#if message }}
-    {{message}}
+<div class="container-fluid">
+    {{#if data.message}}
+    <div class="alert alert-success" role="alert">
+        {{data.message}}
+    </div>
+    {{/if}}
+    {{#if data.messageErr}}
+    <div class="alert alert-warning" role="alert">
+        {{data.messageErr}}
+    </div>
+    {{/if}}
 
-  {{/if}}
-
-<div class="container">
-    <h1>Create Catagory Film</h1>
-    <form method="POST" action="insert-category">
-    <div class="form-group">
-        <label for="nameCategory">Name Category</label>
-        <input type="text" name="name" class="form-control" id="name" >       
-    </div>   
-    <button type="submit" class="btn btn-primary">Submit</button>
-    </form>
-</div>
+    {{#each extractedErrors}}
+    <div class="alert alert-warning" role="alert">
+        {{this.email}}
+        {{this.password}}
+    </div>
+    {{/each}}
+    <div>
+        <form action="/group/user/store" method="POST">
+            <div class="form-group">
+                <label for="exampleInputEmail1">Tạo chương trình</label><br>
+                <label for="exampleInputEmail1">Mã chương trình</label>
+                <div class="form-group">
+                    <input type="text" class="form-control" aria-describedby="firstname"  
+                        name="code">
+                </div>
+                <label for="exampleInputEmail1">Quốc gia</label>
+                <div class="form-group">
+                  <input type="text" id="country" name="country">
+                </div>
+                <label for="exampleInputEmail1">Tên Chương Trình</label>
+                <div class="form-group">
+                    <input type="text" class="form-control" aria-describedby="email"
+                        name="name">
+                </div>
+                 <div class="form-check form-switch">
+                  <div class="custom-control custom-switch">
+                      <input type="checkbox" class="custom-control-input" id="customSwitch1" name="status"
+                        value="1">
+                      <label class="custom-control-label" for="customSwitch1">Trạng Thái</label> 
+                  </div>
+              </div>
+            </div>
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+    </div>
+    <script>
+        $(document).ready(function(){
+              $("#country").countrySelect();
+        })
+    </script>

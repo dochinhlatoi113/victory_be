@@ -25,12 +25,37 @@ let checkRegisterUser = (req,res, next) => {
 }
 
 let checkUserPermission = async(req,res, next) => {
+  
    const errors = validationResult(req);
    if (!errors.isEmpty()){
       const extractedErrors = []
       errors.array({ onlyFirstError: true }).map(err => extractedErrors.push({ [err.param]: err.msg }));
-      res.cookie("err", extractedErrors, { httpOnly: true });
-      return res.redirect("/group/user-permission/create")
+   
+      let listsUserPermission = await db.user_permission.findAll({
+
+     });
+ 
+     let listsUser = await db.Admin.findAll({
+ 
+     })
+ 
+     let listsPermissions = await db.permissions.findAll({
+ 
+     })
+     let listsDepartments = await db.departments.findAll({
+ 
+     })
+ 
+     data = {
+         listsUser: listsUser,
+         listsUserPermission,
+         listsPermissions: listsPermissions,
+         listsDepartments: listsDepartments,
+         message: req.flash('message'),
+         messageErr: req.flash('messageErr'),   
+         extractedErrors:extractedErrors
+     }
+     return res.render("../views/group/user-permission/create.handlebars", { data })
    }
    next()
 }
