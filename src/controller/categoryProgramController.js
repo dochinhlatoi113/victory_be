@@ -7,10 +7,10 @@ let show = async (req, res) => {
     let offset = (page-1) * itemPerPage
    try {
     if(keyWord != undefined) {
-        let totalItems = await db.departments.count({
+        let totalItems = await db.programs.count({
             where: { name: { [Op.like]: `%${keyWord}%`} },
         })
-        let lists =  await db.departments.findAll({
+        let lists =  await db.programs.findAll({
             where: { name: { [Op.like]: `%${keyWord}%`} },
             limit: itemPerPage,
             offset:offset
@@ -28,10 +28,10 @@ let show = async (req, res) => {
         }
         res.render("../views/category_program/show.handlebars", data)
     }else{
-        let totalItems = await db.departments.count({
+        let totalItems = await db.programs.count({
           
         })
-        let lists =  await db.departments.findAll({
+        let lists =  await db.programs.findAll({
             limit: itemPerPage,
             offset:offset
         });
@@ -44,7 +44,8 @@ let show = async (req, res) => {
             nextPage: page + 1,
             previousPage: page - 1,
             lastPage: Math.ceil(totalItems / itemPerPage),
-            message:req.flash('message')
+            message:req.flash('message'),
+           
         }
         res.render("../views/category_program/show.handlebars", data)
     }
@@ -54,13 +55,22 @@ let show = async (req, res) => {
    }
 }
 let create = (req,res) => {
-    res.render("../views//category_program/create.handlebars",{message:req.flash('message')})
+    let data = {
+        messageErr: req.flash('messageErr'),   
+        message:req.flash('message')
+    }
+    res.render("../views/category_program/create.handlebars",{data})
 }
 let store =async(req, res) => {
     try {
-        const department = await db.departments.create({ name:req.body.name});
+        let lists = await db.programs.findOne({where:{ code:req.body.code , name: req.body.name}})
+        if(lists) {
+            req.flash('messageErr', 'đã tồn tại chương trình này rồi');
+            return  res.redirect("/category_program/create")
+        }
+        await db.programs.create({ code:req.body.code ,country:req.body.country,name:req.body.name, status:req.body.status ? req.body.status : 0});
         req.flash('message', 'saved successfully');
-        res.redirect("/reciving-room/program/create")
+        res.redirect("/category_program/")
       }catch (err) {
         res.send(err);
       }
@@ -68,7 +78,7 @@ let store =async(req, res) => {
 
 let edit =async (req,res) => {
     let id = req.params.id
-    const checkDepartment = await db.departments.findOne({ where: { id: id } });
+    const checkDepartment = await db.programs.findOne({ where: { id: id } });
    
     if(checkDepartment){
         let data = {
@@ -85,7 +95,7 @@ let update = async(req,res) => {
     let id = req.params.id
  
     try {
-       await db.departments.update(
+       await db.programs.update(
                 { name: req.body.name },
                 { where: { id: id } }
             )

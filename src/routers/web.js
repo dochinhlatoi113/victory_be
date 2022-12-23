@@ -116,7 +116,7 @@ const routerInit = (app) => {
  // category_program
  app.group("/category_program", (router) => {
   router.use(loginController.checkAuthenticated)
-  router.get('', loginController.checkAuthenticated, categoryProgramController.show)
+  router.get('/', loginController.checkAuthenticated, categoryProgramController.show)
   router.get('/create', loginController.checkAuthenticated, categoryProgramController.create)
   router.get('/edit/:id', loginController.checkAuthenticated, categoryProgramController.edit)
   router.post('/store',  basevalidator.checkvalidate.validateDepartment, loginController.checkAuthenticated, categoryProgramController.store)
