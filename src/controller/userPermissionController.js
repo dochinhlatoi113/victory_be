@@ -4,7 +4,7 @@ let show = async (req, res) => {
     let keyWord = req.query.keyWord;
     let itemPerPage = 3;
     let page = +req.query.page || 1
-    let offset = (page - 1) * itemPerPage
+    let offset = (page - 1) * itemPerPage   
     try {
         if (keyWord != undefined) {
             let totalItems = await db.user_permission.count({
@@ -19,7 +19,7 @@ let show = async (req, res) => {
                 }],
                 where: { '$Admin.email$': { [Op.like]: `%${keyWord}%` } },
             })
-
+            
             let lists = await db.user_permission.findAll({
 
                 include: [{
@@ -34,9 +34,8 @@ let show = async (req, res) => {
                 where: { '$Admin.email$': { [Op.like]: `%${keyWord}%` } },
                 limit: itemPerPage,
                 offset: offset,
-                order: [['$Admin.email$', 'ASC']],
             });
-
+           
             let data = {
                 lists: lists,
                 currentPage: page,

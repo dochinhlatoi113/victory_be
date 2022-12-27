@@ -1,0 +1,149 @@
+<div class="container-fluid">
+    {{#if data.message}}
+    <div class="alert alert-success" role="alert">
+        {{data.message}}
+    </div>
+    {{/if}}
+    {{#if data.messageErr}}
+    <div class="alert alert-warning" role="alert">
+        {{data.messageErr}}
+    </div>
+    {{/if}}
+
+    {{#each extractedErrors}}
+    <div class="alert alert-warning" role="alert">
+        {{this.email}}
+        {{this.password}}
+    </div>
+    {{/each}}
+    <div>
+        <form action="/customer/store" method="POST">
+            <div class="form-group">
+                <label for="exampleInputEmail1">Tạo khách hàng</label><br>
+                <label for="exampleInputEmail1">Chương trình</label> <br>
+                <select class="form-select" name="programs" aria-label="Default select example">
+                    <option selected>Open this select programs</option>
+                    {{#each data.lists}}
+                    <option value="{{this.id}}">{{this.name}}</option>
+                    {{/each}}
+                </select><br>
+                <div class="form-group">
+                    <label for="exampleInputEmail1">Email</label>
+                    <input type="text" class="form-control" aria-describedby="email" name="email">
+                </div>
+                   <div class="form-group">
+                    <label for="exampleInputEmail1">password</label>
+                    <input type="text" class="form-control" aria-describedby="email" name="password">
+                </div>
+                <div class="form-group">
+                    <label for="exampleInputEmail1">Tên khách hàng</label>
+                    <input type="text" class="form-control" aria-describedby="email" name="name">
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" id="flexRadioDefault1" name="sex" value="man">
+                    <label class="form-check-label" for="flexRadioDefault1" >
+                        Nam
+                    </label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" id="flexRadioDefault2" name="sex" value="woman">
+                    <label class="form-check-label" for="flexRadioDefault2">
+                        Nữ
+                    </label>
+                </div>
+                <div class="form-group">
+                    <label for="exampleInputEmail1">Phone</label>
+                    <input type="text" class="form-control" aria-describedby="email" name="phone">
+                </div>
+                <div class="form-group">
+                    <label for="exampleInputEmail1">Ngày/tháng/năm/sinh</label>
+                    <input  type="text" id="datepicker" placeholder="vd:14-02-1996" name="dob">
+                </div>
+                <div class="form-group">
+                    <label for="exampleInputEmail1">Vợ/Chồng</label>
+                    <input type="text" class="form-control" aria-describedby="email" name="name-relation" >
+                </div>
+                <div class="form-group">
+                    <div class="container1">
+                        <label for="exampleInputEmail1">Con</label> <br>
+                        <div class="form-group">
+                            <label for="exampleInputEmail1">Họ và tên cháu</label>
+                            <input type="text" class="form-control" aria-describedby="email" name="children[]">
+                        </div>
+                        <div class="form-group">
+                            <label for="exampleInputEmail1">Ngày/tháng/năm/sinh</label>
+                              <input  id="datepicker" name="date[]">
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio"  id="" name="childrenSex[]" value="man">
+                            <label class="form-check-label" for="" >
+                                Nam
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" id="" name="childrenSex[]" value="wonman"
+                                >
+                            <label class="form-check-label" for="" >
+                                Nữ
+                            </label>
+                        </div>
+                        <button type="button" class="btn btn-primary add_form_field">Thêm</button>
+                    </div>
+                </div>
+            </div>
+            {{!-- <div class="form-check form-switch">
+                <div class="custom-control custom-switch">
+                    <input type="checkbox" class="custom-control-input" id="customSwitch1" name="status" value="1">
+                    <label class="custom-control-label" for="customSwitch1">Trạng Thái</label>
+                </div>
+            </div> --}}
+            <div class="form-group">
+                <label for="">Ghi chú</label><br>
+                <textarea id="my-expressjs-tinymce-app" name="note"></textarea>
+            </div>
+    </div>
+    <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+</div>
+<script>
+    $(document).ready(function () {
+        $("#country").countrySelect();
+        $("#datepicker").datepicker({ dateFormat: 'dd-mm-yy' });
+        var max_fields = 4;
+        var wrapper = $(".container1");
+        var add_button = $(".add_form_field");
+        var template = `    <div class="form-group">
+                            <label for="exampleInputEmail1">Họ và tên cháu</label>
+                            <input type="text" class="form-control" aria-describedby="email" name="children[]">
+                        </div>
+                        <div class="form-group">
+                            <label for="exampleInputEmail1">Ngày/tháng/năm/sinh</label>
+                            <input  id="datepicker" name="date[]" placeholder="vd:14-02-1996">
+                        </div>
+                          <div class="form-check">
+                   <select class="form-select" name="childrenSex[]" aria-label="Default select example">
+                    <option selected>giới tính</option>
+                    <option value="man">nam</option>
+                    <option value="woman">nữ</option>       
+                 </select><br>`;
+        var x = 1;
+        $(add_button).click(function (e) {
+            e.preventDefault();
+            if (x < max_fields) {
+                x++;
+
+                $(wrapper).append(
+                    template
+                );
+            } else {
+                alert('You Reached the limits')
+            }
+        });
+
+        $(wrapper).on("click", ".delete", function (e) {
+            e.preventDefault();
+            $(this).parent('div').remove();
+            x--;
+        })
+    })
+</script>

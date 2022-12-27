@@ -16,7 +16,7 @@ let show = async (req, res) => {
             limit: itemPerPage,
             offset:offset
         });
-      
+    
         let data = {
             lists: lists,
             currentPage: page,

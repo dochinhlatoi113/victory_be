@@ -1,0 +1,87 @@
+<div class="container-fluid">
+    <!--modals confirm delete-->
+    <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    Bạn có muốn xóa không ?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" id="btn-delete" class="btn btn-primary">Xóa</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Hủy</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <form name="submit-delete" method="POST">
+
+    </form>
+    <!--end modals comfirm delete-->
+    {{#if message}}
+    <div class="alert alert-success" role="alert">
+        {{message}}
+    </div>
+    {{/if}}
+    <div class="row" style="margin: auto;">
+        <div class="col-sm-2">
+            <button type="button" class="btn btn-primary" id="btnCreate">
+             <a href="/customer/create">Create</a>
+            </button>
+        </div>
+        <div class="col-sm-10">
+            <div class="input-group mb-3" style="padding-top: 10px;">
+                <input type="text" class="form-control" placeholder="Search ......" aria-label="Recipient's username">
+                <div class="input-group-append">
+                    <span class="input-group-text"><i class="fa fa-search"></i></span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Mã chương trình</th>
+                <th scope="col">Tên chương trình</th>
+                <th scope="col">Quốc gia</th>
+                <th scope="col">Trạng thái</th>
+                 <th scope="col">Action</th>
+                {{!-- <th scope="col">action</th> --}}
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                {{#each data.lists}}
+                <th scope="row">{{inc @index}}</th>
+                <td>xx</td>
+                <td>xx</td>
+                <td>xx</td>
+                <td>xx</td>
+                <td>xx</td>
+            </tr>
+            {{/each}}
+            </tr>
+        </tbody>
+    </table>
+</div>
+<script>
+    $(document).ready(function () {
+        let id = "";
+        let submitDelete = document.forms['submit-delete']
+
+        $('#deleteModal').on('show.bs.modal', function (event) {
+            let button = $(event.relatedTarget)
+            id = button.data('id')
+            $("#btn-delete").click(function () {
+                console.log(submitDelete);
+                submitDelete.action = "/group/department/delete/" + id;
+                submitDelete.submit()
+            })
+        })
+    });
+</script>

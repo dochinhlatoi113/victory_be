@@ -4,19 +4,17 @@ let show = async (req, res) => {
     let keyWord = req.query.keyWord;
     let itemPerPage = 3;
     let page = +req.query.page || 1
-    
     let offset = (page-1) * itemPerPage
    try {
     if(keyWord != undefined) {
-        let totalItems = await db.departments.count({
+        let totalItems = await db.programs.count({
             where: { name: { [Op.like]: `%${keyWord}%`} },
         })
-        let lists =  await db.departments.findAll({
+        let lists =  await db.programs.findAll({
             where: { name: { [Op.like]: `%${keyWord}%`} },
             limit: itemPerPage,
             offset:offset
         });
-      
         let data = {
             lists: lists,
             currentPage: page,
@@ -28,13 +26,12 @@ let show = async (req, res) => {
             lastPage: Math.ceil(totalItems / itemPerPage),
             message:req.flash('message')
         }
-        
-        res.render("../views/group/department/show.handlebars", data)
+        res.render("../views/customer/show.handlebars", data)
     }else{
-        let totalItems = await db.departments.count({
+        let totalItems = await db.programs.count({
           
         })
-        let lists =  await db.departments.findAll({
+        let lists =  await db.programs.findAll({
             limit: itemPerPage,
             offset:offset
         });
@@ -47,23 +44,46 @@ let show = async (req, res) => {
             nextPage: page + 1,
             previousPage: page - 1,
             lastPage: Math.ceil(totalItems / itemPerPage),
-            message:req.flash('message')
+            message:req.flash('message'),
+           
         }
-        res.render("../views/group/department/show.handlebars", data)
+        res.render("../views/customer/show.handlebars", data)
     }
   
    } catch (error) {
       error
    }
 }
-let create = (req,res) => {
-    res.render("../views/group/department/create.handlebars",{message:req.flash('message')})
+let create = async(req,res) => {
+    let lists = await db.programs.findAll();
+    let data = {
+        messageErr: req.flash('messageErr'),   
+        message:req.flash('message'),
+        lists:lists
+    }
+    res.render("../views/customer/create.handlebars",{data})
 }
 let store =async(req, res) => {
+    console.log(req.body.programs)
+    console.log(req.body.email)
+    console.log(req.body.password)
+    console.log(req.body.name)
+    console.log(req.body.sex)
+    console.log(req.body.phone)
+    console.log(req.body.dob)
+    console.log(req.body.name-relation)
+    console.log(req.body.childrenSex)
+    console.log(req.body.note)
+    return false
     try {
-        const department = await db.departments.create({ name:req.body.name});
+        let lists = await db.programs.findOne({where:{ code:req.body.code , name: req.body.name}})
+        if(lists) {
+            req.flash('messageErr', 'đã tồn tại chương trình này rồi');
+            return  res.redirect("/customer/create")
+        }
+        await db.programs.create({ code:req.body.code ,country:req.body.country,name:req.body.name, status:req.body.status ? req.body.status : 0});
         req.flash('message', 'saved successfully');
-        res.redirect("/group/department/create")
+        res.redirect("/customer/")
       }catch (err) {
         res.send(err);
       }
@@ -71,7 +91,7 @@ let store =async(req, res) => {
 
 let edit =async (req,res) => {
     let id = req.params.id
-    const checkDepartment = await db.departments.findOne({ where: { id: id } });
+    const checkDepartment = await db.programs.findOne({ where: { id: id } });
    
     if(checkDepartment){
         let data = {
@@ -79,7 +99,7 @@ let edit =async (req,res) => {
             checkDepartment:checkDepartment,
             message:req.flash('message')
         }
-        res.render("../views/group/department/edit.handlebars",data)
+        res.render("../views/customer/edit.handlebars",data)
     }else{
         res.render("../views/error/error.handlebars",{layout: null})
     }
@@ -88,12 +108,12 @@ let update = async(req,res) => {
     let id = req.params.id
  
     try {
-       await db.departments.update(
+       await db.programs.update(
                 { name: req.body.name },
                 { where: { id: id } }
             )
             req.flash('message', 'updated successfully');
-            res.redirect("/group/department/edit/"+id)
+            res.redirect("/group/customer/edit/"+id)
       }catch (err) {
         res.send(err);
       }

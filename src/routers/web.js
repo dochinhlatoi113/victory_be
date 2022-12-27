@@ -9,11 +9,12 @@ const LocalStrategy = require('passport-local').Strategy;
 const basevalidator = require("../validate/basevalidator")
 const checkPermission = require('../controller/auth/checkPermissionController');
 const checkValidate = require("../validate/checkvalidator")
-const initPassportLocal = require('../controller/auth/passport')
+const initPassportLocal = require('../controller/auth/passport') 
 const userController = require("../controller/userController")
 const categoryProgramController = require("../controller/categoryProgramController")
 const qsController = require("../controller/qsController")
 const salesController = require("../controller/salesController")
+const customerProgramController = require("../controller/customerProgramController")
 const userPermissionController = require("../controller/userPermissionController")
 const { check, body, validationResult } = require('express-validator')
 const e = require("express");
@@ -124,6 +125,16 @@ const routerInit = (app) => {
   router.post('/delete/:id', loginController.checkAuthenticated, categoryProgramController.destroy)
 })
 
+ // customer
+ app.group("/customer", (router) => {
+  router.use(loginController.checkAuthenticated)
+  router.get('/', loginController.checkAuthenticated, customerProgramController.show)
+  router.get('/create', loginController.checkAuthenticated, customerProgramController.create)
+  router.get('/edit/:id', loginController.checkAuthenticated, customerProgramController.edit)
+  router.post('/store',  basevalidator.checkvalidate.validateDepartment, loginController.checkAuthenticated,customerProgramController.store)
+  router.post('/update/:id', loginController.checkAuthenticated,  basevalidator.checkvalidate.validateDepartment, customerProgramController.update)
+  router.post('/delete/:id', loginController.checkAuthenticated, customerProgramController.destroy)
+})
   return app.use('/', router)
 }
 module.exports = routerInit
