@@ -16,6 +16,8 @@ const qsController = require("../controller/qsController")
 const salesController = require("../controller/salesController")
 const customerProgramController = require("../controller/customerProgramController")
 const userPermissionController = require("../controller/userPermissionController")
+const uploadFile = require("../controller/uploadFile/file")
+
 const { check, body, validationResult } = require('express-validator')
 const e = require("express");
 let router = express.Router();
@@ -131,7 +133,7 @@ const routerInit = (app) => {
   router.get('/', loginController.checkAuthenticated, customerProgramController.show)
   router.get('/create', loginController.checkAuthenticated, customerProgramController.create)
   router.get('/edit/:id', loginController.checkAuthenticated, customerProgramController.edit)
-  router.post('/store',  basevalidator.checkvalidate.validateDepartment, loginController.checkAuthenticated,customerProgramController.store)
+  router.post('/store',  basevalidator.checkvalidate.validateDepartment,uploadFile.upload.array("files") ,loginController.checkAuthenticated,customerProgramController.store)
   router.post('/update/:id', loginController.checkAuthenticated,  basevalidator.checkvalidate.validateDepartment, customerProgramController.update)
   router.post('/delete/:id', loginController.checkAuthenticated, customerProgramController.destroy)
 })
