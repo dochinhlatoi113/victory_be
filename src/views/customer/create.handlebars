@@ -16,6 +16,7 @@
         {{this.password}}
     </div>
     {{/each}}
+  
     <div>
         <form action="/customer/store" method="POST" enctype="multipart/form-data">
             <div class="form-group">
@@ -27,17 +28,12 @@
                     <option value="{{this.id}}">{{this.name}}</option>
                     {{/each}}
                 </select><br>
-                <div class="form-group">
-                    <label for="exampleInputEmail1">Email</label>
-                    <input type="text" class="form-control" aria-describedby="email" name="email">
-                </div>
-                <div class="form-group">
-                    <label for="exampleInputEmail1">password</label>
-                    <input type="text" class="form-control" aria-describedby="email" name="password">
+                <div class="sub-title">
+                    <h4 class="sub-text-title">Thông tin khách hàng</h4>
                 </div>
                 <div class="form-group">
                     <label for="exampleInputEmail1">Tên khách hàng</label>
-                    <input type="text" class="form-control" aria-describedby="email" name="name">
+                    <input type="text" class="form-control" aria-describedby="email" name="name" value="{{oldInput}}">
                 </div>
                 <div class="form-group">
                     <label for="exampleInputEmail1">Giới tính</label>
@@ -53,7 +49,7 @@
                 </div>
                 <div class="form-group">
                     <label for="exampleInputEmail1">Ngày/tháng/năm/sinh</label>
-                    <input type="text" id="datepicker"  class="form-control" placeholder="vd:14-02-1996" name="dob">
+                    <input type="text" id="datepicker" class="form-control" placeholder="vd:14-02-1996" name="dob">
                 </div>
                 <div class="sub-title">
                     <h4 class="sub-text-title">Relation</h4>
@@ -62,23 +58,17 @@
                     <label for="exampleInputEmail1">Vợ/Chồng</label>
                     <input type="text" class="form-control" aria-describedby="email" name="nameRelation">
                 </div>
-                  <div class="form-group">
+                <div class="form-group">
+                    <label for="exampleInputEmail1">Giới tính</label>
+                    <select class="custom-select " id="inlineFormCustomSelect" name="sex2">
+                        <option selected>Choose...</option>
+                        <option value="1">Nam</option>
+                        <option value="2">Nữ</option>
+                    </select>
+                </div>
+                <div class="form-group">
                     <label for="exampleInputEmail1">Ngày/tháng/năm/sinh</label>
                     <input type="text" class="form-control" aria-describedby="email" name="dob2">
-                </div>
-                <div class="form-group">
-                    <div class="card">
-                        <div class="field" align="left">
-                            <label>Upload your files</label>
-                            <input type="file" id="files" name="files" multiple />
-                        </div>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label for="exampleInputEmail1">Link</label>
-                    <input type="text" class="form-control" name="links[]">
-                    <div class="container1"></div>
-                    <button type="button" class="btn btn-primary add_form_field_link" style="margin-top: 10px;">Thêm</button>
                 </div>
                 <div class="form-group">
                     <label for="exampleInputEmail1">Con</label> <br>
@@ -103,10 +93,45 @@
                     <div class="container2"></div>
                     <button type="button" class="btn btn-primary add_form_field">Thêm</button>
                 </div>
+                <div class="sub-title">
+                    <h4 class="sub-text-title">Upload files</h4>
+                </div>
+                <div class="form-group">
+                    <div class="card">
+                        <div class="field" align="left">
+                            <label>Upload your files</label>
+                            <input type="file" id="files" name="files" multiple />
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="exampleInputEmail1">Link</label>
+                    <input type="text" class="form-control" name="links[]">
+                    <div class="container1"></div>
+                    <button type="button" class="btn btn-primary add_form_field_link"
+                        style="margin-top: 10px;">Thêm</button>
+                </div>
             </div>
             <div class="form-group">
                 <label for="">Ghi chú</label><br>
-                <textarea id="my-expressjs-tinymce-app" name="note"></textarea>
+                <textarea id="my-expressjs-tinymce-app" name="notes"></textarea>
+            </div>
+            <div class="account">
+                <div class="sub-title">
+                    <h4 class="sub-text-title">Tạo thông tin đăng nhập</h4>
+                </div>
+                <div class="row">
+                    <div class="col-sm form-group">
+                        <label for="exampleInputEmail1">Email</label>
+                        <input type="text" class="form-control" aria-describedby="email" name="email" value="">
+                    </div>
+                    <div class="col-sm form-group">
+                        <label for="exampleInputEmail1">password</label>
+                        <input type="text" class="form-control" aria-describedby="email" name="password">
+                    </div>
+                </div>
+                <small id="emailHelp" class="form-text text-muted"><span style="color: red;">(*)email và password sẽ
+                        dùng làm thông tin đăng nhập cho khách hàng</span></small>
             </div>
     </div>
     <button type="submit" class="btn btn-primary">Submit</button>
@@ -175,9 +200,9 @@
             }
 
         })
-           $(".container2").on("click", ".deletes", function (e) {
-                e.preventDefault();
-                $(this).parent("div").remove();
+        $(".container2").on("click", ".deletes", function (e) {
+            e.preventDefault();
+            $(this).parent("div").remove();
             x--;
         })
 

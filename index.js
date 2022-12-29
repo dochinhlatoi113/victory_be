@@ -5,7 +5,7 @@ const apiRouterInit = require("./src/routers/api")
 const path = require("path")
 const bodyParser = require('body-parser');
 const port = 1225
-
+var oldInput = require('old-input');
 const cookieParser = require('cookie-parser');
 const session =  require("express-session")
 const flash = require('connect-flash');
@@ -24,11 +24,12 @@ require('dotenv').config();
 // flash message
 app.use(session({ 
   secret: 'passport-tutorial', 
-  cookie: { maxAge: 60000 },
+  cookie: { maxAge: 6000000000 },
    resave: false, 
    saveUninitialized: false }));
 
 app.use(flash())
+app.use(oldInput)
 //validate
 //passport
 app.use(passport.initialize());

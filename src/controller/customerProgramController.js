@@ -1,5 +1,7 @@
 const db = require("../models/index")
 const { Op } = require("sequelize");
+var oldInput = require('old-input');
+
 let show = async (req, res) => {
     let keyWord = req.query.keyWord;
     let itemPerPage = 3;
@@ -47,6 +49,7 @@ let show = async (req, res) => {
                 message: req.flash('message'),
 
             }
+            
             res.render("../views/customer/show.handlebars", data)
         }
 
@@ -59,40 +62,54 @@ let create = async (req, res) => {
     let data = {
         messageErr: req.flash('messageErr'),
         message: req.flash('message'),
+        oldInput: req.oldInput,
         lists: lists
     }
     res.render("../views/customer/create.handlebars", { data })
 }
+
 let store = async (req, res) => {
-    let dataCreate = {
-        programs: req.body.programs,
-        email: req.body.email,
-        password: req.body.password,
-        name: req.body.name,
-        sex: req.body.sex,
-        phone: req.body.phone,
-        dob: req.body.dob,
-        nameRelation: req.body.nameRelation,
-        childrenSex: req.body.childrenSex,
-        note: req.body.note,
-        date:req.body.date,
-        children:req.body.children
-    }
-    console.log("child>>",dataCreate.children.toString())
-    console.log("date>>",dataCreate.date.toString())
-    return false
-    // for(let i = 0 ; i < req.files.length ; i++) {
-    //         console.log(req.files[i].filename)
-    // }return false
     try {
-        let lists = await db.programs.findOne({ where: { code: req.body.code, name: req.body.name } })
-        if (lists) {
-            req.flash('messageErr', 'đã tồn tại chương trình này rồi');
-            return res.redirect("/customer/create")
+      
+        let dataCreateCustomer = {
+            name: req.body.name,
+            phone: req.body.phone,
+            sex: req.body.sex,
+            dob: new Date(req.body.dob).toLocaleDateString("vi"),
+            nameRelation: req.body.nameRelation,
+            sex2:req.body.sex2,
+            dob2: new Date(req.body.dob2).toLocaleDateString("vi")
         }
-        await db.programs.create({ code: req.body.code, country: req.body.country, name: req.body.name, status: req.body.status ? req.body.status : 0 });
+       let listCustomer = await db.customers.create(dataCreateCustomer);
+
+        let dataCreateChildren = {
+            sex: req.body.childrenSex.toString(),
+            dob:req.body.date.toString(),
+            name:req.body.childrenName.toString(),
+            customerId :listCustomer.id
+        }
+     
+        let dataNotes = {
+            customerId :listCustomer.id,
+            content:req.body.notes
+        }
+       
+        let dataLinkMedia = {
+            modelId: listCustomer.id,
+            model:'customers',
+            mediaFiles : req.files.filename
+        }
+       let dataLinks = {
+            modelId: listCustomer.id,
+            model:'customers',
+            linkFiles : req.body.links
+       }
+       await db.childrens.create(dataCreateChildren)
+       await db.notesCustomers.create(dataNotes)
+       await db.medias.bulkCreate([dataLinkMedia, {returning: true}])
+       await db.links.blukCreate([dataLinks,{returning: true}])
         req.flash('message', 'saved successfully');
-        res.redirect("/customer/")
+        res.redirect("/customer/create")
     } catch (err) {
         res.send(err);
     }
@@ -145,3 +162,6 @@ let destroy = async (req, res) => {
 module.exports = {
     show, create, store, edit, update, destroy
 }
+
+
+// 
