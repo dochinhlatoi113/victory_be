@@ -14,8 +14,11 @@ module.exports = (sequelize, DataTypes) => {
       // define association here
       const customers = sequelize.define('customers');
       const programs = sequelize.define('programs');
-      customers.belongsToMany(programs, { through: customer_programs });
-      programs.belongsToMany(customers, { through: customer_programs });
+      customers.belongsToMany(programs, { through: customer_programs, onDelete: 'cascade', onUpdate:'CASCADE',
+      hooks: true,  });
+      programs.belongsToMany(customers, { through: customer_programs, onDelete: 'cascade', onUpdate:'CASCADE',
+      hooks: true,  });
+      
     }
   }
   customer_programs.init({

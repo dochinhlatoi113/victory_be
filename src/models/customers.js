@@ -13,12 +13,12 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       // define association here
       const childrens = sequelize.define('childrens');
-      customers.hasMany(childrens,{ foreignKey:"customerId" , onDelete: "CASCADE"});
+      customers.hasMany(childrens,{ foreignKey:"customerId" , onDelete: 'cascade',
+      hooks: true, });
     }
   }
   customers.init({
     email: DataTypes.STRING,
-    password: DataTypes.STRING,
     name: DataTypes.STRING,
     sex: DataTypes.INTEGER,
     sex2: DataTypes.INTEGER,

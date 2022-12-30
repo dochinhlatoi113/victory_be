@@ -13,6 +13,8 @@ module.exports = {
       },
       customerId: {
         type: Sequelize.INTEGER,
+        onDelete: 'CASCADE',
+        onUpdate:'CASCADE',
         references: {
           model: "customers", // 'Movies' would also work
           key: 'id'
@@ -20,6 +22,8 @@ module.exports = {
       },
       programId: {
         type: Sequelize.INTEGER,
+        onDelete: 'CASCADE',
+        onUpdate:'CASCADE',
         references: {
           model: "programs", // 'Movies' would also work
           key: 'id'

@@ -9,9 +9,7 @@
         {{data.messageErr}}
     </div>
     {{/if}}
-    {{#if messDateErr}}
-        {{messDateErr}}
-    {{/if}}
+
     {{!-- {{#each extractedErrors}}
     <div class="alert alert-warning" role="alert">
         {{this.email}}
@@ -25,6 +23,7 @@
                 <label for="exampleInputEmail1">Tạo khách hàng</label><br>
                 <label for="exampleInputEmail1">Chương trình</label> <br>
                 <select class="form-select" name="programs" aria-label="Default select example">
+                    <option selected>Open this select programs</option>
                     {{#each data.lists}}
                     <option value="{{this.id}}">{{this.name}}</option>
                     {{/each}}
@@ -39,7 +38,8 @@
                 <div class="form-group">
                     <label for="exampleInputEmail1">Giới tính</label>
                     <select class="custom-select " id="inlineFormCustomSelect" name="sex">
-                        <option selected value="1">Nam</option>
+                        <option selected>Choose...</option>
+                        <option value="1">Nam</option>
                         <option value="2">Nữ</option>
                     </select>
                 </div>
@@ -49,7 +49,7 @@
                 </div>
                 <div class="form-group">
                     <label for="exampleInputEmail1">Ngày/tháng/năm/sinh</label>
-                    <input type="text" class="form-control datepicker" placeholder="vd:14-02-1996" name="dob">
+                    <input type="text" id="datepicker" class="form-control" placeholder="vd:14-02-1996" name="dob">
                 </div>
                 <div class="sub-title">
                     <h4 class="sub-text-title">Relation</h4>
@@ -61,13 +61,14 @@
                 <div class="form-group">
                     <label for="exampleInputEmail1">Giới tính</label>
                     <select class="custom-select " id="inlineFormCustomSelect" name="sex2">
-                        <option selected value="1">Nam</option>
+                        <option selected>Choose...</option>
+                        <option value="1">Nam</option>
                         <option value="2">Nữ</option>
                     </select>
                 </div>
                 <div class="form-group">
                     <label for="exampleInputEmail1">Ngày/tháng/năm/sinh</label>
-                    <input type="text"  class="form-control datepicker" aria-describedby="email" name="dob2">
+                    <input type="text" class="form-control" aria-describedby="email" name="dob2">
                 </div>
                 <div class="form-group">
                     <label for="exampleInputEmail1">Con</label> <br>
@@ -78,12 +79,13 @@
                         </div>
                         <div class="form-group col-sm">
                             <label for="exampleInputEmail1">Ngày/tháng/năm/sinh</label>
-                            <input type="text" class="form-control datepicker" aria-describedby="email" name="date[]">
+                            <input type="text" class="form-control" aria-describedby="email" name="date[]">
                         </div>
                         <div class="form-group col-sm">
                             <label for="exampleInputEmail1">Giới tính</label>
                             <select class="custom-select " id="inlineFormCustomSelect" name="childrenSex[]">
-                                <option selected value="1">Nam</option>
+                                <option selected>Choose...</option>
+                                <option value="1">Nam</option>
                                 <option value="2">Nữ</option>
                             </select>
                         </div>
@@ -130,6 +132,11 @@
 </div>
 <script>
     $(document).ready(function () {
+
+        /* date picker*/
+        $("#datepicker").datepicker({ dateFormat: 'dd-mm-yy' });
+        var max_fields = 10;
+        var x = 1;
         /*add field link*/
         $(".add_form_field_link").click(function (e) {
             e.preventDefault();
@@ -158,26 +165,27 @@
             e.preventDefault();
             let template = ` 
                             <div>
-                                <div class="row">
-                                    <div class="form-group col-sm">
-                                        <label for="exampleInputEmail1">Họ và Tên</label>
-                                        <input type="text" class="form-control" aria-describedby="email" name="childrenName[]">
+                                <div class="row add-children-field">
+                                        <div class="form-group col-sm">
+                                            <label for="exampleInputEmail1">Họ và Tên</label>
+                                            <input type="text" class="form-control" aria-describedby="email" name="childrenName[]">
+                                        </div>
+                                        <div class="form-group col-sm">
+                                            <label for="exampleInputEmail1">Ngày/tháng/năm/sinh</label>
+                                            <input type="text" class="form-control" aria-describedby="email" name="date[]">
+                                            </div>
+                                        <div class="form-group col-sm">
+                                            <label for="exampleInputEmail1">Giới tính</label>
+                                            <select class="custom-select " id="inlineFormCustomSelect" name="childrenSex[]">
+                                                <option selected>Choose...</option>
+                                                <option value="1">Nam</option>
+                                                <option value="2">Nữ</option>
+                                            </select>
+                                        </div>  
                                     </div>
-                                    <div class="form-group col-sm">
-                                        <label for="exampleInputEmail1">Ngày/tháng/năm/sinh</label>
-                                        <input type="text" class="form-control datepicker" aria-describedby="email" name="date[]">
-                                    </div>
-                                    <div class="form-group col-sm">
-                                        <label for="exampleInputEmail1">Giới tính</label>
-                                        <select class="custom-select " id="inlineFormCustomSelect" name="childrenSex[]">
-                                            <option selected value="1">Nam</option>
-                                            <option value="2">Nữ</option>
-                                        </select>
-                                    </div>
-                                </div>
                                 <button type="button" class="btn btn-danger delete-children-button deletes">Delete</button>
                                 </div>  
-                             `                
+                             `
             if (x < max_fields) {
                 $(".container2").append(template); //add input box
             } else {
@@ -190,9 +198,6 @@
             $(this).parent("div").remove();
             x--;
         })
-   /* date picker*/
-        $(".datepicker").datepicker({ dateFormat: 'dd-mm-yy'});
-        var max_fields = 10;
-        var x = 1;
+
     })
 </script>

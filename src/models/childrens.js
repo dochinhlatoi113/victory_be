@@ -13,8 +13,10 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       // define association here
       const customers = sequelize.define('customers');
-      childrens.belongsTo(customers,{ foreignKey: {name:"customerId" , allowNull: false}, onDelete: "CASCADE" });
-      customers.hasMany(childrens,{foreignKey: {name:"customerId" , allowNull: false}, onDelete: "CASCADE" })
+      childrens.belongsTo(customers, {foreignKey:"customerId" , allowNull: false , onDelete: 'cascade', onUpdate:'CASCADE',
+      hooks: true,  });
+      customers.hasMany(childrens,{foreignKey:"customerId" , allowNull: false,  onDelete: 'cascade', onUpdate:'CASCADE',
+      hooks: true, })
     }
   }
   childrens.init({

@@ -13,7 +13,8 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       // define association here
       const customers = sequelize.define('customers');
-      notesCustomers.hasOne(customers,{ foreignKey: {name:"customerId" , allowNull: false}, onDelete: "CASCADE" });
+      notesCustomers.hasOne(customers,{ foreignKey: {name:"customerId" , allowNull: false ,  onDelete: 'cascade', onUpdate:'CASCADE',
+      hooks: true, }});
     }
   }
   notesCustomers.init({

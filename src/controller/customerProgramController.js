@@ -1,7 +1,8 @@
 const db = require("../models/index")
 const { Op } = require("sequelize");
-var oldInput = require('old-input');
-
+let oldInput = require('old-input');
+const moment = require("moment");
+const regexPhoneNumber = require("../helper/phone")
 let show = async (req, res) => {
     let keyWord = req.query.keyWord;
     let itemPerPage = 3;
@@ -9,11 +10,36 @@ let show = async (req, res) => {
     let offset = (page - 1) * itemPerPage
     try {
         if (keyWord != undefined) {
-            let totalItems = await db.programs.count({
-                where: { name: { [Op.like]: `%${keyWord}%` } },
+            let totalItems = await db.customers.count({
+                // where: { name: { [Op.like]: `%${keyWord}%` } },
+                where: {
+                    [Op.or]: [{
+                            name: {
+                                [Op.like]:`%${keyWord}%`
+                            }
+                        },
+                        {
+                            phone: {
+                                [Op.like]: `%${keyWord}%`
+                            }
+                        }
+                    ]
+                }
             })
-            let lists = await db.programs.findAll({
-                where: { name: { [Op.like]: `%${keyWord}%` } },
+            let lists = await db.customers.findAll({
+                where: {
+                    [Op.or]: [{
+                            name: {
+                                [Op.like]:`%${keyWord}%`
+                            }
+                        },
+                        {
+                            phone: {
+                                [Op.like]: `%${keyWord}%`
+                            }
+                        }
+                    ]
+                },
                 limit: itemPerPage,
                 offset: offset
             });
@@ -30,10 +56,10 @@ let show = async (req, res) => {
             }
             res.render("../views/customer/show.handlebars", data)
         } else {
-            let totalItems = await db.programs.count({
+            let totalItems = await db.customers.count({
 
             })
-            let lists = await db.programs.findAll({
+            let lists = await db.customers.findAll({
                 limit: itemPerPage,
                 offset: offset
             });
@@ -49,7 +75,7 @@ let show = async (req, res) => {
                 message: req.flash('message'),
 
             }
-            
+
             res.render("../views/customer/show.handlebars", data)
         }
 
@@ -70,44 +96,51 @@ let create = async (req, res) => {
 
 let store = async (req, res) => {
     try {
-      
+        if(regexPhoneNumber.regexPhoneNumber(req.body.phone)){
+            console.log(111)
+        }else{
+            console.log(222)
+        }
+        return false
         let dataCreateCustomer = {
             name: req.body.name,
             phone: req.body.phone,
             sex: req.body.sex,
-            dob: new Date(req.body.dob).toLocaleDateString("vi"),
+            // dob: new Date(req.body.dob).toLocaleDateString("vi"),
+            dob:moment(req.body.dob).format("dd-mm-YYYY"),
             nameRelation: req.body.nameRelation,
-            sex2:req.body.sex2,
-            dob2: new Date(req.body.dob2).toLocaleDateString("vi")
+            sex2: req.body.sex2,
+            email:req.body.email,
+            dob2: moment(req.body.dob2).format("dd-mm-YYYY")
         }
-       let listCustomer = await db.customers.create(dataCreateCustomer);
+        let listCustomer = await db.customers.create(dataCreateCustomer);
 
         let dataCreateChildren = {
             sex: req.body.childrenSex.toString(),
-            dob:req.body.date.toString(),
-            name:req.body.childrenName.toString(),
-            customerId :listCustomer.id
+            dob: moment(req.body.date).format("dd-mm-YYYY"),
+            name: req.body.childrenName.toString(),
+            customerId: listCustomer.id
         }
-     
+
         let dataNotes = {
-            customerId :listCustomer.id,
-            content:req.body.notes
+            customerId: listCustomer.id,
+            content: req.body.notes
+        }  
+        let dataCustomerPrograms = {
+            customerId:listCustomer.id,
+            programId:	req.body.programs
         }
-       
-        let dataLinkMedia = {
-            modelId: listCustomer.id,
-            model:'customers',
-            mediaFiles : req.files.filename
+        await db.childrens.create(dataCreateChildren)
+        await db.notesCustomers.create(dataNotes)
+        for(let i = 0 ; i < req.files.length ; i++){
+            await db.medias.create({  modelId: listCustomer.id,  model: 'customers',  mediaFiles: req.files[i].filename});
         }
-       let dataLinks = {
-            modelId: listCustomer.id,
-            model:'customers',
-            linkFiles : req.body.links
-       }
-       await db.childrens.create(dataCreateChildren)
-       await db.notesCustomers.create(dataNotes)
-       await db.medias.bulkCreate([dataLinkMedia, {returning: true}])
-       await db.links.blukCreate([dataLinks,{returning: true}])
+        // await db.medias.bulkCreate(dataLinkMedia, { returning: true, ignoreDuplicates: true })
+        // await db.links.bulkCreate(dataLinks, { returning: true })
+        for(let i = 0 ; i < req.body.links.length ; i++){
+            await db.links.create({  modelId: listCustomer.id,  model: 'customers',  linkFiles: req.body.links[i]});
+        }
+        await db.customer_programs.create(dataCustomerPrograms)
         req.flash('message', 'saved successfully');
         res.redirect("/customer/create")
     } catch (err) {
@@ -117,12 +150,10 @@ let store = async (req, res) => {
 
 let edit = async (req, res) => {
     let id = req.params.id
-    const checkDepartment = await db.programs.findOne({ where: { id: id } });
-
+    const checkDepartment = await db.customers.findOne({ where: { id: id } });
     if (checkDepartment) {
         let data = {
             id: id,
-            checkDepartment: checkDepartment,
             message: req.flash('message')
         }
         res.render("../views/customer/edit.handlebars", data)
@@ -132,7 +163,6 @@ let edit = async (req, res) => {
 }
 let update = async (req, res) => {
     let id = req.params.id
-
     try {
         await db.programs.update(
             { name: req.body.name },
@@ -147,12 +177,11 @@ let update = async (req, res) => {
 let destroy = async (req, res) => {
     let id = req.params.id
     try {
-        await db.departments.destroy(
-
+        await db.customers.destroy(
             { where: { id: id } }
         )
         req.flash('message', 'delete successfully');
-        res.redirect("/group/department")
+        res.redirect("/customer/")
     } catch (err) {
         res.send(err);
     }

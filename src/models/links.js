@@ -16,7 +16,8 @@ module.exports = (sequelize, DataTypes) => {
   links.init({
     model: DataTypes.STRING,
     modelId: DataTypes.BIGINT,
-    linkFiles: DataTypes.STRING
+    linkFiles: DataTypes.TEXT('long')
+
   }, {
     sequelize,
     modelName: 'links',

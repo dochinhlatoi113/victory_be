@@ -17,7 +17,7 @@ module.exports = {
         type: Sequelize.INTEGER,
       },
       linkFiles: {
-        type: Sequelize.STRING
+        type: Sequelize.TEXT('long')
       },
       createdAt: {
         allowNull: false,

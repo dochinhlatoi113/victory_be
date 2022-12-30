@@ -136,7 +136,9 @@ input[type="file"] {
     margin-top:10px ;
     margin-bottom: 10px;
   }
-
+button{
+    border: none;
+}
 
 .sub-title{
     text-align: center;
