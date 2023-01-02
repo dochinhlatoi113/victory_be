@@ -1,7 +1,7 @@
 'use strict';
-/** @type {import('sequelize-cli').Migration} */
 const customers = require("../models/customers")
 const programs = require("../models/programs")
+/** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
     await queryInterface.createTable('customer_programs', {
@@ -16,8 +16,9 @@ module.exports = {
         onDelete: 'CASCADE',
         onUpdate:'CASCADE',
         references: {
-          model: "customers", // 'Movies' would also work
-          key: 'id'
+          model: "customers",
+          key: 'id',
+          as:'customerId'
         }
       },
       programId: {
@@ -25,8 +26,9 @@ module.exports = {
         onDelete: 'CASCADE',
         onUpdate:'CASCADE',
         references: {
-          model: "programs", // 'Movies' would also work
-          key: 'id'
+          model: "programs", 
+          key: 'id',
+          as:'programId'
         }
       },
       createdAt: {

@@ -14,30 +14,30 @@ let show = async (req, res) => {
                 // where: { name: { [Op.like]: `%${keyWord}%` } },
                 where: {
                     [Op.or]: [{
-                            name: {
-                                [Op.like]:`%${keyWord}%`
-                            }
-                        },
-                        {
-                            phone: {
-                                [Op.like]: `%${keyWord}%`
-                            }
+                        name: {
+                            [Op.like]: `%${keyWord}%`
                         }
+                    },
+                    {
+                        phone: {
+                            [Op.like]: `%${keyWord}%`
+                        }
+                    }
                     ]
                 }
             })
             let lists = await db.customers.findAll({
                 where: {
                     [Op.or]: [{
-                            name: {
-                                [Op.like]:`%${keyWord}%`
-                            }
-                        },
-                        {
-                            phone: {
-                                [Op.like]: `%${keyWord}%`
-                            }
+                        name: {
+                            [Op.like]: `%${keyWord}%`
                         }
+                    },
+                    {
+                        phone: {
+                            [Op.like]: `%${keyWord}%`
+                        }
+                    }
                     ]
                 },
                 limit: itemPerPage,
@@ -95,29 +95,24 @@ let create = async (req, res) => {
 }
 
 let store = async (req, res) => {
-    try {
-        if(regexPhoneNumber.regexPhoneNumber(req.body.phone)){
-            console.log(111)
-        }else{
-            console.log(222)
-        }
-        return false
+    try {  
+       
         let dataCreateCustomer = {
             name: req.body.name,
             phone: req.body.phone,
             sex: req.body.sex,
             // dob: new Date(req.body.dob).toLocaleDateString("vi"),
-            dob:moment(req.body.dob).format("dd-mm-YYYY"),
+            dob:new Date(req.body.dob).toLocaleDateString("vi-VI"),
             nameRelation: req.body.nameRelation,
             sex2: req.body.sex2,
-            email:req.body.email,
-            dob2: moment(req.body.dob2).format("dd-mm-YYYY")
+            email: req.body.email,
+            dob2:new Date(req.body.dob2).toLocaleDateString("vi-VI")
         }
         let listCustomer = await db.customers.create(dataCreateCustomer);
-
+        
         let dataCreateChildren = {
             sex: req.body.childrenSex.toString(),
-            dob: moment(req.body.date).format("dd-mm-YYYY"),
+            dob: req.body.date.toString(),
             name: req.body.childrenName.toString(),
             customerId: listCustomer.id
         }
@@ -125,24 +120,25 @@ let store = async (req, res) => {
         let dataNotes = {
             customerId: listCustomer.id,
             content: req.body.notes
-        }  
+        }
         let dataCustomerPrograms = {
-            customerId:listCustomer.id,
-            programId:	req.body.programs
+            customerId: listCustomer.id,
+            programId: req.body.programs
         }
         await db.childrens.create(dataCreateChildren)
         await db.notesCustomers.create(dataNotes)
-        for(let i = 0 ; i < req.files.length ; i++){
-            await db.medias.create({  modelId: listCustomer.id,  model: 'customers',  mediaFiles: req.files[i].filename});
+        for (let i = 0; i < req.files.length; i++) {
+            await db.medias.create({ modelId: listCustomer.id, model: 'customers', mediaFiles: req.files[i].filename });
         }
         // await db.medias.bulkCreate(dataLinkMedia, { returning: true, ignoreDuplicates: true })
         // await db.links.bulkCreate(dataLinks, { returning: true })
-        for(let i = 0 ; i < req.body.links.length ; i++){
-            await db.links.create({  modelId: listCustomer.id,  model: 'customers',  linkFiles: req.body.links[i]});
+        for (let i = 0; i < req.body.links.length; i++) {
+            await db.links.create({ modelId: listCustomer.id, model: 'customers', linkFiles: req.body.links[i] });
         }
         await db.customer_programs.create(dataCustomerPrograms)
         req.flash('message', 'saved successfully');
         res.redirect("/customer/create")
+   
     } catch (err) {
         res.send(err);
     }
@@ -150,29 +146,99 @@ let store = async (req, res) => {
 
 let edit = async (req, res) => {
     let id = req.params.id
-    const checkDepartment = await db.customers.findOne({ where: { id: id } });
-    if (checkDepartment) {
+    // const customers = sequelize.define('customers');
+    //   const programs = sequelize.define('programs');
+    //   customers.belongsToMany(programs, { through: "customer_programs", onDelete: 'cascade', onUpdate:'CASCADE',
+    //    });
+    //   programs.belongsToMany(customers, { through: "customer_programs",onDelete: 'cascade', onUpdate:'CASCADE',
+    // });
+    const lists = await db.customers.findOne(
+        {
+            include:
+                [
+                    {
+                        model: db.childrens
+                    },
+                    {
+                        model: db.programs
+                    },
+                ],
+
+            where: { id: id }
+        });
+    if (lists) {
         let data = {
             id: id,
             message: req.flash('message')
         }
-        res.render("../views/customer/edit.handlebars", data)
+       return res.render("../views/customer/edit.handlebars", {data})
     } else {
-        res.render("../views/error/error.handlebars", { layout: null })
+        return  res.render("../views/error/error.handlebars", { layout: null })
     }
 }
 let update = async (req, res) => {
-    let id = req.params.id
-    try {
-        await db.programs.update(
-            { name: req.body.name },
-            { where: { id: id } }
-        )
-        req.flash('message', 'updated successfully');
-        res.redirect("/group/customer/edit/" + id)
+    try {    
+        let id = req.params.id
+        let dataCreateCustomer = {
+            name: req.body.name,
+            phone: req.body.phone,
+            sex: req.body.sex,
+            // dob: new Date(req.body.dob).toLocaleDateString("vi"),
+            dob:new Date(req.body.dob).toLocaleDateString("vi-VI"),
+            nameRelation: req.body.nameRelation,
+            sex2: req.body.sex2,
+            email: req.body.email,
+            dob2:new Date(req.body.dob2).toLocaleDateString("vi-VI")
+        }
+        console.log(dataCreateCustomer)
+         listCustomer = await db.customers.update(
+            dataCreateCustomer,
+            {where:{id:id}},
+            {include:[{
+                model:db.customer_programs,
+                attributes: {programId:id,customerId:req.body.programs}
+            }]}
+            );
+        // console.log(">>>>>> thi is sis",dataCreateCustomer)
+    //    let list = await db.customers.update(
+    //         {name:},
+    //         { where: {id:id }}
+    //       )
+          
+         
+        let dataCreateChildren = {
+            sex: req.body.childrenSex.toString(),
+            dob: req.body.date.toString(),
+            name: req.body.childrenName.toString(),
+            customerId: listCustomer.id
+        }
+         await db.childrens.update(dataCreateChildren,{where:{customerId:id}});
+         return res.json("oke")
+        // let dataNotes = {
+        //     customerId: listCustomer.id,
+        //     content: req.body.notes
+        // }
+        // let dataCustomerPrograms = {
+        //     customerId: listCustomer.id,
+        //     programId: req.body.programs
+        // }
+        // await db.childrens.create(dataCreateChildren)
+        // await db.notesCustomers.create(dataNotes)
+        // for (let i = 0; i < req.files.length; i++) {
+        //     await db.medias.create({ modelId: listCustomer.id, model: 'customers', mediaFiles: req.files[i].filename });
+        // }
+        // // await db.medias.bulkCreate(dataLinkMedia, { returning: true, ignoreDuplicates: true })
+        // // await db.links.bulkCreate(dataLinks, { returning: true })
+        // for (let i = 0; i < req.body.links.length; i++) {
+        //     await db.links.create({ modelId: listCustomer.id, model: 'customers', linkFiles: req.body.links[i] });
+        // }
+        // await db.customer_programs.create(dataCustomerPrograms)
+        req.flash('message', 'saved successfully');
+        res.redirect("/customer/create")
+   
     } catch (err) {
         res.send(err);
-    }
+    } 
 }
 let destroy = async (req, res) => {
     let id = req.params.id

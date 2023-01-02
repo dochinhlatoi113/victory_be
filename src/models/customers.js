@@ -14,7 +14,7 @@ module.exports = (sequelize, DataTypes) => {
       // define association here
       const childrens = sequelize.define('childrens');
       customers.hasMany(childrens,{ foreignKey:"customerId" , onDelete: 'cascade',
-      hooks: true, });
+       hooks: true, });
     }
   }
   customers.init({

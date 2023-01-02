@@ -1,8 +1,9 @@
 'use strict';
-const db = require("../models/index")
+const customers = require("../models/index")
 const {
   Model
 } = require('sequelize');
+const db = require(".");
 module.exports = (sequelize, DataTypes) => {
   class customer_programs extends Model {
     /**
@@ -11,19 +12,19 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      // define association here
-      const customers = sequelize.define('customers');
-      const programs = sequelize.define('programs');
-      customers.belongsToMany(programs, { through: customer_programs, onDelete: 'cascade', onUpdate:'CASCADE',
-      hooks: true,  });
-      programs.belongsToMany(customers, { through: customer_programs, onDelete: 'cascade', onUpdate:'CASCADE',
-      hooks: true,  });
-      
+     
+
+    //   const customers = sequelize.define('customers');
+    //   const programs = sequelize.define('programs');
+    //  customers.belongsToMany(programs, { through: customer_programs, as:'customerId', onDelete: 'cascade', onUpdate:'CASCADE',
+    //    });
+    //   programs.belongsToMany(customers, { through: customer_programs, as:'programId',onDelete: 'cascade', onUpdate:'CASCADE',
+    // });
     }
   }
   customer_programs.init({
-    customerId: DataTypes.INTEGER,
-    programId: DataTypes.INTEGER
+    // customerId: DataTypes.INTEGER,
+    // programId: DataTypes.INTEGER
   }, {
     sequelize,
     modelName: 'customer_programs',

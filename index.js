@@ -1,12 +1,12 @@
 const express = require("express")
+const bodyParser = require('body-parser');
+const cookieParser = require('cookie-parser');
 const configView = require("./src/config/configView")
 const routerInit =  require("./src/routers/web")
 const apiRouterInit = require("./src/routers/api")
 const path = require("path")
-const bodyParser = require('body-parser');
 const port = 1225
 var oldInput = require('old-input');
-const cookieParser = require('cookie-parser');
 const session =  require("express-session")
 const flash = require('connect-flash');
 const db = require("./src/config/db/connect")
@@ -29,21 +29,20 @@ app.use(session({
    saveUninitialized: false }));
 
 app.use(flash())
-app.use(oldInput)
 //validate
 //passport
 app.use(passport.initialize());
 app.use(passport.authenticate('session'));
-app.use(bodyParser.urlencoded({ extended: true }))
-const {key} = process.env
 // parse application/json
 app.use(bodyParser.json())
+app.use(bodyParser.urlencoded({ extended: true }))
+
 //init web route
 routerInit(app)
 //init api route
 apiRouterInit(app)
 // init web view
-
+const {key} = process.env
 configView(app)
 app.set('views', path.join(__dirname, './src/views'));
 // connect db

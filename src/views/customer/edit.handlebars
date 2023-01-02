@@ -16,9 +16,9 @@
         {{this.password}}
     </div>
     {{/each}}
-   --}}
+    --}}
     <div>
-        <form action="/customer/store" method="POST" enctype="multipart/form-data">
+        <form method="POST" action="/customer/update/{{data.id}}">
             <div class="form-group">
                 <label for="exampleInputEmail1">Tạo khách hàng</label><br>
                 <label for="exampleInputEmail1">Chương trình</label> <br>
@@ -33,7 +33,7 @@
                 </div>
                 <div class="form-group">
                     <label for="exampleInputEmail1">Tên khách hàng</label>
-                    <input type="text" class="form-control" aria-describedby="email" name="name" value="{{oldInput}}">
+                    <input type="text" class="form-control name" aria-describedby="email" name="name">
                 </div>
                 <div class="form-group">
                     <label for="exampleInputEmail1">Giới tính</label>
@@ -123,12 +123,13 @@
                         <input type="text" class="form-control" aria-describedby="email" name="email" value="">
                     </div>
                 </div>
-                {{!-- <small id="emailHelp" class="form-text text-muted"><span style="color: red;">(*)email và password sẽ
+                {{!-- <small id="emailHelp" class="form-text text-muted"><span style="color: red;">(*)email và password
+                        sẽ
                         dùng làm thông tin đăng nhập cho khách hàng</span></small> --}}
             </div>
+            <button type="submit" class="btn btn-primary btn-submit-customer">Submit</button>
+        </form>
     </div>
-    <button type="submit" class="btn btn-primary">Submit</button>
-    </form>
 </div>
 <script>
     $(document).ready(function () {
@@ -198,6 +199,8 @@
             $(this).parent("div").remove();
             x--;
         })
+
+
 
     })
 </script>
