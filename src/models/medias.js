@@ -2,6 +2,7 @@
 const {
   Model
 } = require('sequelize');
+const db = require('.');
 module.exports = (sequelize, DataTypes) => {
   class medias extends Model {
     /**
@@ -11,12 +12,14 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
+      const customers = sequelize.define("customers");
+      medias.belongsTo(customers,{  foreignKey: "modelId",})
     }
   }
   medias.init({
     model: DataTypes.STRING,
     modelId: DataTypes.BIGINT,
-    mediaFiles: DataTypes.STRING
+    mediaFiles: DataTypes.TEXT('long')
   }, {
     sequelize,
     modelName: 'medias',

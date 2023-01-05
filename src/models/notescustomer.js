@@ -1,5 +1,5 @@
 'use strict';
-const customers = require("../models/customers")
+const customers = require("./customers")
 const {
   Model
 } = require('sequelize');
@@ -12,14 +12,12 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      const customers = sequelize.define('customers');
-      notesCustomers.hasOne(customers,{ foreignKey: {name:"customerId" , allowNull: false ,  onDelete: 'cascade', onUpdate:'CASCADE',
-      hooks: true, }});
+  
     }
   }
   notesCustomers.init({
     customerId: DataTypes.INTEGER,
-    content: DataTypes.STRING
+    content: DataTypes.TEXT('long')
   }, {
     sequelize,
     modelName: 'notesCustomers',

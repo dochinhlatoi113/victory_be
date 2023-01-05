@@ -6,11 +6,11 @@ const { Module } = require("module");
 
 // const upload = multer({ dest:'../public/image/fileCustomer' })
 const storage = multer.diskStorage({
-  // destination: function (req, file, cb) {
-  //   let pathImg =  path.join(__dirname, '../../public/image/fileCustomer');
-  //   //files khi upload xong sẽ nằm trong thư mục "uploads" này - các bạn có thể tự định nghĩa thư mục này
-  //   cb(null, pathImg) 
-  // },
+  destination: function (req, file, cb) {
+    let pathImg =  path.join(__dirname, '../../public/image/fileCustomer');
+    //files khi upload xong sẽ nằm trong thư mục "uploads" này - các bạn có thể tự định nghĩa thư mục này
+    cb(null, pathImg) 
+  },
   filename: function (req, file, cb) {
     // tạo tên file = thời gian hiện tại nối với số ngẫu nhiên => tên file chắc chắn không bị trùng
 

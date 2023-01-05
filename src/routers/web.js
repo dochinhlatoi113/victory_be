@@ -12,6 +12,7 @@ const checkValidate = require("../validate/checkvalidator")
 const initPassportLocal = require('../controller/auth/passport') 
 const userController = require("../controller/userController")
 const categoryProgramController = require("../controller/categoryProgramController")
+const contractController = require("../controller/contractController")
 const qsController = require("../controller/qsController")
 const salesController = require("../controller/salesController")
 const customerProgramController = require("../controller/customerProgramController")
@@ -130,13 +131,27 @@ const routerInit = (app) => {
  // customer
  app.group("/customer", (router) => {
   router.use(loginController.checkAuthenticated)
-  router.get('/', loginController.checkAuthenticated, customerProgramController.show)
-  router.get('/create', loginController.checkAuthenticated, customerProgramController.create)
-  router.get('/edit/:id', loginController.checkAuthenticated, customerProgramController.edit)
-  router.post('/store', uploadFile.upload.array("files") ,loginController.checkAuthenticated,customerProgramController.store)
-  router.post('/update/:id/', uploadFile.upload.array("files"), loginController.checkAuthenticated, customerProgramController.update)
-  router.post('/delete/:id', loginController.checkAuthenticated, customerProgramController.destroy)
+  router.get('/', customerProgramController.show)
+  router.get('/create',  customerProgramController.create)
+  router.get('/edit/:id',uploadFile.upload.array("files"), customerProgramController.edit)
+  router.post('/store', uploadFile.upload.array("files") ,customerProgramController.store)
+  router.post('/delete/medias/:idDelete', uploadFile.upload.array("files") ,customerProgramController.deleteMedias)
+  router.post('/delete/links/:idDelete', uploadFile.upload.array("files") ,customerProgramController.deleteLinks)
+  router.post('/update/:id/', uploadFile.upload.array("files"), customerProgramController.update)
+  router.post('/delete/:id', customerProgramController.destroy)
 })
+
+//contract
+app.group("/contract", (router) => {
+  router.use(loginController.checkAuthenticated)
+  router.get('/', contractController.show)
+  router.get('/create',  contractController.create)
+  router.get('/edit/:id',uploadFile.upload.array("files"), contractController.edit)
+  router.post('/store', uploadFile.upload.array("files") ,contractController.store)
+  router.post('/update/:id/', uploadFile.upload.array("files"), contractController.update)
+  router.post('/delete/:id',contractController.destroy)
+})
+
   return app.use('/', router)
 }
 module.exports = routerInit

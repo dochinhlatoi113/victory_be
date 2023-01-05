@@ -20,6 +20,9 @@ const configView = (app) => {
                 xIf: function (arg1, arg2, options) {
                     return (arg1 == arg2) ? options.fn(this) : options.inverse(this);
                 },
+                xIf2: function (arg1, arg2, options) {
+                    return (arg1 != arg2) ? options.fn(this) : options.inverse(this);
+                },
                 orIf: function (arg1, arg2, arg3, arg4, options) {
                     return (arg1 == arg2 || arg3 == arg4) ? options.fn(this) : options.inverse(this);
                 },
@@ -40,6 +43,13 @@ const configView = (app) => {
                 setChecked: function (arg1, arg2) {
                     if (arg1 == arg2) {
                         return "checked";
+                    } else {
+                        return "";
+                    }
+                },
+                setSelected: function (arg1, arg2) {
+                    if (arg1 == arg2) {
+                        return "selected";
                     } else {
                         return "";
                     }

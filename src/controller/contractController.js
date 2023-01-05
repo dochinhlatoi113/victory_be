@@ -56,7 +56,7 @@ let show = async (req, res) => {
                 lastPage: Math.ceil(totalItems / itemPerPage),
                 message: req.flash('message')
             }
-            res.render("../views/customer/show.handlebars", data)
+            res.render("../views/contract/show.handlebars", data)
         } else {
 
 
@@ -80,7 +80,7 @@ let show = async (req, res) => {
 
             }
 
-            res.render("../views/customer/show.handlebars", data)
+            res.render("../views/contract/show.handlebars", data)
         }
 
     } catch (error) {
@@ -88,14 +88,14 @@ let show = async (req, res) => {
     }
 }
 let create = async (req, res) => {
-    let lists = await db.programs.findAll();
+    let lists = await db.customers.findAll();
     let data = {
         messageErr: req.flash('messageErr'),
         message: req.flash('message'),
         oldInput: req.oldInput,
         lists: lists
     }
-    res.render("../views/customer/create.handlebars", { data })
+    res.render("../views/contract/create.handlebars", { data })
 }
 
 let store = async (req, res) => {
@@ -154,7 +154,7 @@ let store = async (req, res) => {
         await db.notesCustomers.create(dataNotes)
         await db.customer_programs.create(dataCustomerPrograms)
         req.flash('message', 'saved successfully');
-        res.redirect("/customer/create")
+        res.redirect("/contract/create")
 
     } catch (err) {
         res.send(err);
@@ -203,7 +203,7 @@ let edit = async (req, res) => {
             listsCustomers: listsCustomers,
             message: req.flash('message')
         }
-        return res.render("../views/customer/edit.handlebars", { data })
+        return res.render("../views/contract/edit.handlebars", { data })
     } else {
         return res.render("../views/error/error.handlebars", { layout: null })
     }
@@ -310,7 +310,7 @@ let destroy = async (req, res) => {
         await db.medias.destroy({ where: { model: "customers", modelId: id } })
         await db.links.destroy({ where: { model: "customers", modelId: id } })
         req.flash('message', 'delete successfully');
-        res.redirect("/customer/")
+        res.redirect("/contract/")
     } catch (err) {
         res.send(err);
     }
@@ -333,7 +333,7 @@ let deleteMedias = async (req, res) => {
             await db.medias.create({ modelId: modelId, model: 'customers', mediaFiles: "NULL" });
         }
         req.flash('message', 'delete successfully');
-        res.redirect("/customer/edit/" + modelId)
+        res.redirect("/contract/edit/" + modelId)
     } catch (err) {
         res.send(err);
     }
@@ -355,13 +355,13 @@ let deleteLinks = async (req, res) => {
             await db.links.create({ modelId: modelId, model: 'customers', mediaFiles: "NULL" });
         }
         req.flash('message', 'delete successfully');
-        res.redirect("/customer/edit/" + modelId)
+        res.redirect("/contract/edit/" + modelId)
     } catch (error) {
         return res.json(error)
     }
 }
 module.exports = {
-    show, create, store, edit, update, destroy, deleteMedias, deleteLinks
+    show, create, store, edit, update, destroy
 }
 
 

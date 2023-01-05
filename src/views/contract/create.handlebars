@@ -1,0 +1,91 @@
+<div class="container-fluid">
+    {{#if data.message}}
+    <div class="alert alert-success" role="alert">
+        {{data.message}}
+    </div>
+    {{/if}}
+    {{#if data.messageErr}}
+    <div class="alert alert-warning" role="alert">
+        {{data.messageErr}}
+    </div>
+    {{/if}}
+    {{#if messDateErr}}
+    {{messDateErr}}
+    {{/if}}
+    {{!-- {{#each extractedErrors}}
+    <div class="alert alert-warning" role="alert">
+        {{this.email}}
+        {{this.password}}
+    </div>
+    {{/each}}
+    --}}
+
+    <div>
+        <form action="/contract/store" method="POST" enctype="multipart/form-data">
+            <div class="form-group">
+                <label for="exampleInputEmail1">Tạo Hợp Đồng
+                </label><br>
+                <label for="exampleInputEmail1">Khách hàng</label> <br>
+                <select id="select-state" placeholder="Pick a customer...">
+                    {{#each data.lists}}
+                    <option value="">choose</option>
+                    <option value="{{this.id}}">{{this.name}}-{{this.phone}}</option>
+                    {{/each}}
+                </select>
+                <div class="form-group">
+                    <label for="exampleInputEmail1">Tên khách hàng</label>
+                    <input type="text" class="form-control" aria-describedby="email" name="name" value="{{oldInput}}">
+                </div>
+                <div class="form-group">
+                    <div class="card">
+                        <div class="field" align="left">
+                            <label>Upload your files</label>
+                            <input id="input-24" name="input24[]" type="file" multiple>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="exampleInputEmail1">Link</label>
+                    <input type="text" class="form-control" name="links[]">
+                    <div class="container1"></div>
+                    <button type="button" class="btn btn-primary add_form_field_link"
+                        style="margin-top: 10px;">Thêm</button>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="">Ghi chú</label><br>
+                <textarea id="my-expressjs-tinymce-app" name="notes"></textarea>
+            </div>
+            <div class="account">
+                <div class="row">
+                    <div class="col-sm form-group">
+                        <label for="exampleInputEmail1">Email</label>
+                        <input type="text" class="form-control" aria-describedby="email" name="email" value="">
+                    </div>
+                </div>
+                {{!-- <small id="emailHelp" class="form-text text-muted"><span style="color: red;">(*)email và password
+                        sẽ
+                        dùng làm thông tin đăng nhập cho khách hàng</span></small> --}}
+            </div>
+    </div>
+    <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+</div>
+<script>
+    $(document).ready(function () {
+
+        $('select').selectize({
+            sortField: 'text'
+        });
+
+       let a = $('#input-24').val()
+        console.log(">>",a)
+        $("#input-24").fileinput({
+            initialPreview: ["123.jfif.jpg"],
+            initialPreviewAsData: true,
+            overwriteInitial: true,
+        }).on('fileloaded', function (event, file, previewId, index, reader) {
+            console.log(file.name);
+        });
+    })
+</script>

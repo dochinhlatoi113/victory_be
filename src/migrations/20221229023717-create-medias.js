@@ -17,7 +17,8 @@ module.exports = {
         type: Sequelize.INTEGER
       },
       mediaFiles: {
-        type: Sequelize.STRING
+        type: Sequelize.TEXT('long'),
+        allowNull: true,
       },
       createdAt: {
         allowNull: false,
