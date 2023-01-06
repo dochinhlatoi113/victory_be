@@ -18,7 +18,7 @@ const salesController = require("../controller/salesController")
 const customerProgramController = require("../controller/customerProgramController")
 const userPermissionController = require("../controller/userPermissionController")
 const uploadFile = require("../controller/uploadFile/file")
-
+const uploadFileController = require("../../src/controller/uploadFile/uploadFileController")
 const { check, body, validationResult } = require('express-validator')
 const e = require("express");
 let router = express.Router();
@@ -147,11 +147,15 @@ app.group("/contract", (router) => {
   router.get('/', contractController.show)
   router.get('/create',  contractController.create)
   router.get('/edit/:id',uploadFile.upload.array("files"), contractController.edit)
-  router.post('/store', uploadFile.upload.array("files") ,contractController.store)
+  router.post('/store' ,uploadFile.upload.array("files"),contractController.store)
   router.post('/update/:id/', uploadFile.upload.array("files"), contractController.update)
   router.post('/delete/:id',contractController.destroy)
 })
 
+//files image
+
+  router.post('/upload-file/delete',uploadFileController.store)
+ 
   return app.use('/', router)
 }
 module.exports = routerInit

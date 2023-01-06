@@ -99,6 +99,7 @@
                 <div class="form-group">
                     <label for="exampleInputEmail1">Con</label> <br>
                     {{#each data.listsCustomers.childrens }}
+                    <input type="hidden" value="{{this.id}}" name="idChildren">
                     <div class="row">
                         <div class="form-group col-sm">
                             <label for="exampleInputEmail1">Họ và Tên</label>
@@ -141,6 +142,7 @@
                                         <button class="btn-delete-img btn btn-danger" value="{{this.id}}"
                                             style="margin-top: 10px;">Xóa</button>
                                     </div>
+                                    <input type="hidden" name="idMedias" value="{{this.id}}">
                                     <input type="hidden" name="modelId" value="{{this.modelId}}">
                                 </div>
                                 {{/xIf}}

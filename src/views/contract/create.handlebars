@@ -34,13 +34,14 @@
                 </select>
                 <div class="form-group">
                     <label for="exampleInputEmail1">Tên khách hàng</label>
-                    <input type="text" class="form-control" aria-describedby="email" name="name" value="{{oldInput}}">
+                    <input type="text" class="form-control" aria-describedby="email" name="name" value="">
                 </div>
                 <div class="form-group">
                     <div class="card">
                         <div class="field" align="left">
                             <label>Upload your files</label>
-                            <input id="input-24" name="input24[]" type="file" multiple>
+                            {{!-- <input id="input-24" name="input24" type="file" multiple> --}}
+                            <input id="filesImg" type="file" name="files" multiple  />
                         </div>
                     </div>
                 </div>
@@ -77,13 +78,16 @@
         $('select').selectize({
             sortField: 'text'
         });
-
-       let a = $('#input-24').val()
-        console.log(">>",a)
-        $("#input-24").fileinput({
-            initialPreview: ["123.jfif.jpg"],
+       
+        $("#filesImg").fileinput({
+            allowedFileExtensions: "",
+            uploadUrl: "/contract/store",
+            uploadAsync: true,
+            deleteUrl: "",
+            showUpload: false, // hide upload button
+            overwriteInitial: false, // append files to initial preview
+            browseOnZoneClick: true,
             initialPreviewAsData: true,
-            overwriteInitial: true,
         }).on('fileloaded', function (event, file, previewId, index, reader) {
             console.log(file.name);
         });

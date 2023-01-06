@@ -2,6 +2,7 @@ const db = require("../models/index")
 const { Op } = require("sequelize");
 let oldInput = require('old-input');
 const moment = require("moment");
+const uploadFileController = require("../controller/uploadFile/uploadFileController")
 const regexPhoneNumber = require("../helper/phone");
 const e = require("connect-flash");
 const { readFile } = require("@babel/core/lib/gensync-utils/fs");
@@ -211,6 +212,7 @@ let edit = async (req, res) => {
 let update = async (req, res) => {
     try {
         let id = req.params.id
+
         const listsCustomers = await db.customers.findOne(
             {
                 include:
@@ -242,7 +244,6 @@ let update = async (req, res) => {
                 where: { id: id }
             });
         if (listsCustomers) {
-
             let dataCreateCustomer = {
                 name: req.body.name,
                 phone: req.body.phone,
@@ -257,43 +258,35 @@ let update = async (req, res) => {
             await db.customers.update(
                 dataCreateCustomer,
                 { where: { id: id } },
-                {
-                    include: [{
-                        model: db.customer_programs,
-                        attributes: { programId: id, customerId: req.body.programs }
-                    },
-                    {
-                        model:db.childrens,
-                        where : {
-                            customerId:id
-                        }
-                    }
-                ]
-                }
             );
-        
-            return res.json("oke")
-            // let dataNotes = {
-            //     customerId: listCustomer.id,
-            //     content: req.body.notes
-            // }
-            // let dataCustomerPrograms = {
-            //     customerId: listCustomer.id,
-            //     programId: req.body.programs
-            // }
-            // await db.childrens.create(dataCreateChildren)
-            // await db.notesCustomers.create(dataNotes)
+            if (req.body.childrenName != "") {
+                for (let j = 0; j < req.body.childrenName.length; j++) {
+                    db.childrens.update(
+                        {
+                            name: req.body.childrenName[j],
+                            dob: new Date(req.body.date[j]).toLocaleDateString("vi-VI").replace(/\//g, "-"),
+                            sex: req.body.childrenSex[j]
+
+                        },
+                        { where: { customerId: id,id:req.body.idChildren[j] } }
+                    )
+                }
+            }
+         
+
+            
+            // await db.notesCustomers.update(dataNotes)
             // for (let i = 0; i < req.files.length; i++) {
-            //     await db.medias.create({ modelId: listCustomer.id, model: 'customers', mediaFiles: req.files[i].filename });
+            //     await db.medias.create({ modelId: id, model: 'customers', mediaFiles: req.files[i].filename });
             // }
             // // await db.medias.bulkCreate(dataLinkMedia, { returning: true, ignoreDuplicates: true })
             // // await db.links.bulkCreate(dataLinks, { returning: true })
             // for (let i = 0; i < req.body.links.length; i++) {
-            //     await db.links.create({ modelId: listCustomer.id, model: 'customers', linkFiles: req.body.links[i] });
+            //     await db.links.create({ modelId: id, model: 'customers', linkFiles: req.body.links[i] });
             // }
             // await db.customer_programs.create(dataCustomerPrograms)
             req.flash('message', 'saved successfully');
-            res.redirect("/customer/create")
+            res.redirect("/customer/edit/"+id)
         }
 
 
@@ -320,6 +313,16 @@ let deleteMedias = async (req, res) => {
     let id = req.params.idDelete
     let modelId = req.body.modelId
     try {
+        let medias = await db.medias.findOne(
+            {
+                where: {
+                    id: id,
+                    modelId: modelId
+                }
+            }
+        )
+        uploadFileController.getFilesInDirectory(medias.mediaFiles);
+
         await db.medias.destroy(
             { where: { id: id, model: "customers" } }
         )
@@ -333,7 +336,7 @@ let deleteMedias = async (req, res) => {
             await db.medias.create({ modelId: modelId, model: 'customers', mediaFiles: "NULL" });
         }
         req.flash('message', 'delete successfully');
-        res.redirect("/customer/edit/" + modelId)
+        res.redirect('back')
     } catch (err) {
         res.send(err);
     }

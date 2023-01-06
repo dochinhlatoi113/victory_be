@@ -99,66 +99,11 @@ let create = async (req, res) => {
 }
 
 let store = async (req, res) => {
-    try {
-        let dataCreateCustomer = {
-            name: req.body.name,
-            phone: req.body.phone,
-            sex: req.body.sex,
-            // dob: new Date(req.body.dob).toLocaleDateString("vi"),
-            dob: new Date(req.body.dob).toLocaleDateString("vi-VI").replace(/\//g, "-"),
-            nameRelation: req.body.nameRelation,
-            sex2: req.body.sex2,
-            email: req.body.email,
-            dob2: new Date(req.body.dob2).toLocaleDateString("vi-VI").replace(/\//g, "-")
-        }
-
-        let dataChildren = [
-            {
-                name: req.body.childrenName,
-                dob: req.body.date,
-                sex: req.body.childrenSex
-            }
-        ]
-        let dataCreateChildren = []
-        // console.log(dataCreateChildren)
-        let listCustomer = await db.customers.create(
-            dataCreateCustomer
-        );
-        for (let i = 0; i < dataChildren.length; i++) {
-            for (let j = 0; j < dataChildren[i].name.length; j++) {
-                dataCreateChildren.push({ sex: dataChildren[i].sex[j], customerId: listCustomer.id, name: dataChildren[i].name[j], dob: new Date(dataChildren[i].dob[j]).toLocaleDateString("vi-VI") })
-            }
-        }
-
-        let dataNotes = {
-            customerId: listCustomer.id,
-            content: req.body.notes
-        }
-        let dataCustomerPrograms = {
-            customerId: listCustomer.id,
-            programId: req.body.programs
-        }
-        if (req.files.length != 0) {
-            for (let i = 0; i < req.files.length; i++) {
-                await db.medias.create({ modelId: listCustomer.id, model: 'customers', mediaFiles: "/image/fileCustomer/" + req.files[i].filename });
-            }
-        } else {
-            await db.medias.create({ modelId: listCustomer.id, model: 'customers', mediaFiles: "NULL" });
-        }
-
-        for (let i = 0; i < req.body.links.length; i++) {
-            await db.links.create({ modelId: listCustomer.id, model: 'customers', linkFiles: req.body.links[i] });
-        }
-        // await db.childrens.create(dataCreateChildren)
-        await db.childrens.bulkCreate(dataCreateChildren)
-        await db.notesCustomers.create(dataNotes)
-        await db.customer_programs.create(dataCustomerPrograms)
-        req.flash('message', 'saved successfully');
-        res.redirect("/contract/create")
-
-    } catch (err) {
-        res.send(err);
-    }
+  try {
+    console.log(req.files)
+  } catch (error) {
+    
+  }
 }
 
 let edit = async (req, res) => {
