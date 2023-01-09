@@ -17,6 +17,7 @@
     </div>
     {{/each}}
     --}}
+   
     <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -35,21 +36,20 @@
             </div>
         </div>
     </div>
-    <div>
-        <form method="POST" action="/customer/update/{{data.id}}" class="formUpdate">
+    <div> 
+        <form method="POST" action="/customer/update/{{data.id}}" class="formUpdate" enctype="multipart/form-data">
             <div class="form-group">
                 <label for="exampleInputEmail1">Tạo khách hàng</label><br>
                 <label for="exampleInputEmail1">Chương trình</label> <br>
                 <select class="form-select" name="programs" aria-label="Default select example">
-                    <option selected>Open this select programs</option>
-                    {{#each data.lists}}
-                    <option value="{{this.id}}">{{this.name}}</option>
+                    {{#each data.programs}} 
+                        <option value="{{this.id}}"{{#each ../data.listsCustomers.programs }}{{#xIf ../this.id this.customer_programs.programId}}selected{{/xIf}}{{/each}}
+                        >{{this.name}}</option>
                     {{/each}}
                 </select><br>
                 <div class="sub-title">
                     <h4 class="sub-text-title">Thông tin khách hàng</h4>
                 </div>
-
                 <div class="form-group">
                     <label for="exampleInputEmail1">Tên khách hàng</label>
                     <input type="text" class="form-control name" aria-describedby="email" name="name"
@@ -99,7 +99,7 @@
                 <div class="form-group">
                     <label for="exampleInputEmail1">Con</label> <br>
                     {{#each data.listsCustomers.childrens }}
-                    <input type="hidden" value="{{this.id}}" name="idChildren">
+                    <input type="hidden" value="{{this.id}}" name="idChildren[]">
                     <div class="row">
                         <div class="form-group col-sm">
                             <label for="exampleInputEmail1">Họ và Tên</label>
@@ -142,6 +142,7 @@
                                         <button class="btn-delete-img btn btn-danger" value="{{this.id}}"
                                             style="margin-top: 10px;">Xóa</button>
                                     </div>
+                                    <input type="hidden" name="mediaFiles" value="{{this.mediaFiles}}">
                                     <input type="hidden" name="idMedias" value="{{this.id}}">
                                     <input type="hidden" name="modelId" value="{{this.modelId}}">
                                 </div>
@@ -245,7 +246,7 @@
                                             <label for="exampleInputEmail1">Giới tính</label>
                                             <select class="custom-select " id="inlineFormCustomSelect" name="childrenSex[]">
                                                 <option selected>Choose...</option>
-                                                <option value="1">Nam</option>
+                                                <option value="1" selected>Nam</option>
                                                 <option value="2">Nữ</option>
                                             </select>
                                         </div>  

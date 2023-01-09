@@ -12,19 +12,19 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-     
-
-    //   const customers = sequelize.define('customers');
-    //   const programs = sequelize.define('programs');
-    //  customers.belongsToMany(programs, { through: customer_programs, as:'customerId', onDelete: 'cascade', onUpdate:'CASCADE',
-    //    });
-    //   programs.belongsToMany(customers, { through: customer_programs, as:'programId',onDelete: 'cascade', onUpdate:'CASCADE',
-    // });
+      const customers = sequelize.define('customers');
+      const programs = sequelize.define('programs');
+      customers.belongsToMany(programs, {
+        through: customer_programs, as: 'customerId', onDelete: 'cascade', onUpdate: 'CASCADE',
+      });
+      programs.belongsToMany(customers, {
+        through: customer_programs, as: 'programId', onDelete: 'cascade', onUpdate: 'CASCADE',
+      });
     }
   }
   customer_programs.init({
-    // customerId: DataTypes.INTEGER,
-    // programId: DataTypes.INTEGER
+    customerId: DataTypes.INTEGER,
+    programId: DataTypes.INTEGER
   }, {
     sequelize,
     modelName: 'customer_programs',

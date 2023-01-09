@@ -23,9 +23,9 @@ module.exports = (sequelize, DataTypes) => {
       const contract = sequelize.define("contract");
       customers.hasMany(contract,{  foreignKey: "customerId",})
       customers.hasMany(links,{  foreignKey: "modelId",})
-      const notescustomer = sequelize.define("notesCustomers");
-      customers.hasOne(notescustomer,{  foreignKey: "customerId",})
-
+      const notescustomer = sequelize.define("notesCustomers");      
+      customers.hasOne(notescustomer,{  foreignKey: "customerId"})
+     
     }
   }
   customers.init({

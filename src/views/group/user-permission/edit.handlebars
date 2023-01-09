@@ -37,8 +37,11 @@
                         {{#each listsPermissions}}
                         <div class="custom-control custom-switch">
                              <input type="checkbox" class="custom-control-input" id="customSwitch1{{this.id}}"  name="permissions[]"
-                                value="{{this.id}}" {{#each ../listUserPermission}} {{#xIf ../this.id this.permissionId}}
-                            checked {{/xIf}}       
+                                value="{{this.id}}"
+                        {{#each ../listUserPermission}} 
+                            {{#xIf ../this.id this.permissionId}}
+                                checked 
+                            {{/xIf}}       
                         {{/each}}>
                              <label class="custom-control-label" for="customSwitch1{{this.id}}">{{this.name}}</label> 
                         </div>
