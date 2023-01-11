@@ -17,36 +17,37 @@
     </div>
     {{/each}}
     <div>
-        <form action="/category_program/store" method="POST">
+        <form action="/category_program/update/{{this.id}}" method="POST">
             <div class="form-group">
                 <label for="exampleInputEmail1">Tạo chương trình</label><br>
                 <label for="exampleInputEmail1">Mã chương trình</label>
                 <div class="form-group">
-                    <input type="text" class="form-control" aria-describedby="firstname" name="code">
+                    <input type="text" class="form-control" aria-describedby="firstname" name="code"
+                        value="{{lists.code}}">
                 </div>
                 <label for="exampleInputEmail1">Quốc gia</label>
                 <div class="form-group">
-                    <input type="text" id="country" name="country">
+                    <input type="text" id="country" name="country" value="{{lists.country}}">
                 </div>
                 <label for="exampleInputEmail1">Tên Chương Trình</label>
                 <div class="form-group">
-                    <input type="text" class="form-control" aria-describedby="email" name="name">
+                    <input type="text" class="form-control" aria-describedby="email" name="name" value="{{lists.name}}">
                 </div>
                 <div class="form-check form-switch">
                     <div class="custom-control custom-switch">
-                        <input type="checkbox" class="custom-control-input" id="customSwitch1" name="status"
-                            value="1">
+                        <input type="checkbox" class="custom-control-input" id="customSwitch1" name="status" value="{{lists.status}}"
+                            {{#xIf 1 lists.status}} checked {{/xIf}}>
                         <label class="custom-control-label" for="customSwitch1">Trạng Thái</label>
                     </div>
                 </div>
             </div>
-            <button type="submit" class="btn btn-primary">Submit</button>
+            <input type="hidden" value="{{this.id}}" id="id">
+            <button type="submit" class="btn btn-primary submit">Submit</button>
         </form>
     </div>
     <script>
         $(document).ready(function () {
             $("#country").countrySelect();
-             
         })
-        
+
     </script>

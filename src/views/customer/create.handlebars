@@ -26,7 +26,9 @@
                 <label for="exampleInputEmail1">Chương trình</label> <br>
                 <select class="form-select" name="programs" aria-label="Default select example">
                     {{#each data.lists}}
+                    {{#xIf 1 this.status}}
                     <option value="{{this.id}}">{{this.name}}</option>
+                    {{/xIf}}
                     {{/each}}
                 </select><br>
                 <div class="sub-title">

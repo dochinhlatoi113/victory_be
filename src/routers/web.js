@@ -114,7 +114,7 @@ const routerInit = (app) => {
   router.get('/edit/:id', loginController.checkAuthenticated, qsController.edit)
   router.post('/store', basevalidator.checkvalidate.validateDepartment, loginController.checkAuthenticated, qsController.store)
   router.post('/update/:id', loginController.checkAuthenticated, basevalidator.checkvalidate.validateDepartment, qsController.update)
-  router.post('/delete/:id', loginController.checkAuthenticated, qsController.destroy)
+  
 })
 
  // category_program
@@ -126,6 +126,7 @@ const routerInit = (app) => {
   router.post('/store',  basevalidator.checkvalidate.validateDepartment, loginController.checkAuthenticated, categoryProgramController.store)
   router.post('/update/:id', loginController.checkAuthenticated,  basevalidator.checkvalidate.validateDepartment, categoryProgramController.update)
   router.post('/delete/:id', loginController.checkAuthenticated, categoryProgramController.destroy)
+  router.post('/change-status/:idStatus/:idPrograms',  categoryProgramController.changeStatus)
 })
 
  // customer

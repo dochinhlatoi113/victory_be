@@ -30,7 +30,7 @@
     <div class="row" style="margin: auto;">
         <div class="col-sm-2">
             <button type="button" class="btn btn-primary" id="btnCreate">
-             <a href="/reciving-room/program/create">Create</a>
+                <a href="/category_program/create">Create</a>
             </button>
         </div>
         <div class="col-sm-10">
@@ -50,19 +50,41 @@
                 <th scope="col">Tên chương trình</th>
                 <th scope="col">Quốc gia</th>
                 <th scope="col">Trạng thái</th>
-                 <th scope="col">Action</th>
+                <th scope="col">Action</th>
                 {{!-- <th scope="col">action</th> --}}
             </tr>
         </thead>
         <tbody>
             <tr>
-                {{#each data.lists}}
+                {{#each lists}}
                 <th scope="row">{{inc @index}}</th>
-                <td>xx</td>
-                <td>xx</td>
-                <td>xx</td>
-                <td>xx</td>
-                <td>xx</td>
+                <td>{{this.code}}</td>
+                <td>{{this.name}}</td>
+                <td>{{this.country}}</td>
+                <td>
+                    <div class="form-check form-switch">
+                        <div class="custom-control custom-switch">
+                            <input type="hidden" value="{{this.id}}" name="getId" id="getId{{this.id}}">
+                            <input type="checkbox" class="custom-control-input customSwitch"
+                                id="customSwitch{{this.id}}" name="status" value="{{this.status}}" {{#xIf 1
+                                this.status}} checked {{/xIf}}>
+                            <label class="custom-control-label" for="customSwitch{{this.id}}"></label>
+                        </div>
+                    </div>
+                </td>
+                <td style="display: flex;">
+                    <a class="icon-edit" href="/category_program/edit/{{this.id}}">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                            class="bi bi-pencil" viewBox="0 0 16 16">
+                            <path
+                                d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168l10-10zM11.207 2.5 13.5 4.793 14.793 3.5 12.5 1.207 11.207 2.5zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293l6.5-6.5zm-9.761 5.175-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325z" />
+                        </svg>
+                    </a>
+                    <button type="submit" class="btn-destroy" id="btn-delete" data-toggle="modal"
+                        data-target="#deleteModal" data-id="{{this.id}}">
+                        <i class="bi bi-trash2" data-id="{{this.id}}"></i>
+                    </button>
+                </td>
             </tr>
             {{/each}}
             </tr>
@@ -79,9 +101,29 @@
             id = button.data('id')
             $("#btn-delete").click(function () {
                 console.log(submitDelete);
-                submitDelete.action = "/group/department/delete/" + id;
+                submitDelete.action = "/category_program/delete/" + id;
                 submitDelete.submit()
             })
         })
-    });
+
+        $('.customSwitch').change(function () {
+            let idStatus = $(this).val()
+            let getId = $("#getId"+ id).text()
+          
+            console.log(getId)
+            return false
+            $.ajax({
+                url: "/category_program/change-status/" + idStatus + "/" + idPrograms,
+                type: 'POST',
+                data: idStatus,
+                // submit post data and file
+                contentType: false,
+                cache: false,  // case when have upload file
+                processData: false, // case when h
+            });
+
+        })
+    })
+
+
 </script>

@@ -6,6 +6,11 @@ const uploadFileController = require("../controller/uploadFile/uploadFileControl
 const regexPhoneNumber = require("../helper/phone");
 const e = require("connect-flash");
 const { readFile } = require("@babel/core/lib/gensync-utils/fs");
+/**
+ * 
+ * @param {keyword,itemPerPage,page,offset} req 
+ * @param {pagination,view} res 
+ */
 let show = async (req, res) => {
     let keyWord = req.query.keyWord;
     let itemPerPage = 3;
@@ -14,7 +19,6 @@ let show = async (req, res) => {
     try {
         if (keyWord != undefined) {
             let totalItems = await db.customers.count({
-                // where: { name: { [Op.like]: `%${keyWord}%` } },
                 where: {
                     [Op.or]: [{
                         name: {
@@ -88,6 +92,11 @@ let show = async (req, res) => {
         error
     }
 }
+/**
+ * 
+ * @param {*} req 
+ * @param {view} res 
+ */
 let create = async (req, res) => {
     let lists = await db.programs.findAll();
     let data = {
@@ -98,9 +107,14 @@ let create = async (req, res) => {
     }
     res.render("../views/customer/create.handlebars", { data })
 }
-
+/**
+ * 
+ * @param {name,phone,sex,dob,nameRelation,email,sex2} req 
+ * @param {store} res 
+ */
 let store = async (req, res) => {
     try {
+        // define array and variable
         let dataCreateCustomer = {
             name: req.body.name,
             phone: req.body.phone,
@@ -112,7 +126,6 @@ let store = async (req, res) => {
             email: req.body.email,
             dob2: new Date(req.body.dob2).toLocaleDateString("vi-VI").replace(/\//g, "-")
         }
-
         let dataChildren = [
             {
                 name: req.body.childrenName,
@@ -120,16 +133,6 @@ let store = async (req, res) => {
                 sex: req.body.childrenSex
             }
         ]
-        let dataCreateChildren = []
-        // console.log(dataCreateChildren)
-        let listCustomer = await db.customers.create(
-            dataCreateCustomer
-        );
-        for (let i = 0; i < dataChildren.length; i++) {
-            for (let j = 0; j < dataChildren[i].name.length; j++) {
-                dataCreateChildren.push({ sex: dataChildren[i].sex[j], customerId: listCustomer.id, name: dataChildren[i].name[j], dob: new Date(dataChildren[i].dob[j]).toLocaleDateString("vi-VI") })
-            }
-        }
         let dataNotes = {
             customerId: listCustomer.id,
             content: req.body.notes
@@ -138,20 +141,55 @@ let store = async (req, res) => {
             customerId: listCustomer.id,
             programId: req.body.programs
         }
+        let dataCreateChildren = []
+        /**
+         * insert customers 
+         */
+        let listCustomer = await db.customers.create(
+            dataCreateCustomer
+        );
+
+        /**
+         * push array into dataChildren 
+         */
+          for (let i = 0; i < dataChildren.length; i++) {
+            for (let j = 0; j < dataChildren[i].name.length; j++) {
+                dataCreateChildren.push({ sex: dataChildren[i].sex[j], customerId: listCustomer.id, name: dataChildren[i].name[j], dob: new Date(dataChildren[i].dob[j]).toLocaleDateString("vi-VI") })
+            }
+        }
+         //end define array and variable
+       
+      /**
+       * insert medias into db.medias
+       */
         if (req.files.length != 0) {
             for (let i = 0; i < req.files.length; i++) {
                 await db.medias.create({ modelId: listCustomer.id, model: 'customers', mediaFiles: "/image/fileCustomer/" + req.files[i].filename });
             }
-        } else {
-            await db.medias.create({ modelId: listCustomer.id, model: 'customers', mediaFiles: "NULL" });
         }
 
-        for (let i = 0; i < req.body.links.length; i++) {
-            await db.links.create({ modelId: listCustomer.id, model: 'customers', linkFiles: req.body.links[i] });
+        /**
+       * insert links into db.links
+       */
+        if(req.body.links != ""){
+            for (let i = 0; i < req.body.links.length; i++) {
+                await db.links.create({ modelId: listCustomer.id, model: 'customers', linkFiles: req.body.links[i] });
+            }
         }
-        // await db.childrens.create(dataCreateChildren)
+       
+       /**
+        * insert childrens into db.children
+        */
         await db.childrens.bulkCreate(dataCreateChildren)
+
+        /**
+        * insert notes into notesCustomers
+        */
         await db.notesCustomers.create(dataNotes)
+
+          /**
+        * insert customer_programs into dataCustomerPrograms
+        */
         await db.customer_programs.create(dataCustomerPrograms)
         req.flash('message', 'saved successfully');
         res.redirect("/customer/create")
@@ -160,7 +198,12 @@ let store = async (req, res) => {
         res.send(err);
     }
 }
-
+/**
+ * 
+ * @param {id} req 
+ * @param {view} res 
+ * @returns 
+ */
 let edit = async (req, res) => {
     let id = req.params.id
     let programs = await db.programs.findAll()
@@ -176,33 +219,28 @@ let edit = async (req, res) => {
 
                     },
                     {
-                        model: db.medias,
-                        where: {
-                            model: "customers",
-                            modelId: id
-                        }
-                    },
-                    {
                         model: db.notesCustomers,
                     },
-                    {
-                        model: db.links,
-                        where: {
-                            model: "customers",
-                            modelId: id
-                        }
-                    },
+
                 ],
             where: { id: id }
         });
-    // return res.json(listsCustomers)
-    //    return false
-    // const listsMedias =  await db.medias.findOne({where:{model:"customers", modelId:id}}) 
+    const listsMedias = await db.medias.findAll(
+        {
+            where: { modelId: id, model: 'customers' }
+        });
+    const listsLinks = await db.links.findAll(
+        {
+            where: { modelId: id, model: 'customers' }
+        });
+        
 
     if (listsCustomers) {
         let data = {
             id: id,
             listsCustomers: listsCustomers,
+            listsMedias:listsMedias,
+            listsLinks:listsLinks,
             programs: programs,
             message: req.flash('message')
         }
@@ -211,11 +249,15 @@ let edit = async (req, res) => {
         return res.render("../views/error/error.handlebars", { layout: null })
     }
 }
+/**
+ * 
+ * @param {id,idMedias} req 
+ * @param {*} res 
+ */
 let update = async (req, res) => {
     try {
         let id = req.params.id
         let idMedias = req.body.idMedias
-
         const listsCustomers = await db.customers.findOne(
             {
                 include:
@@ -226,34 +268,17 @@ let update = async (req, res) => {
                         {
                             model: db.programs
                         },
-                        {
-                            model: db.medias,
-                            where: {
-                                model: "customers",
-                                modelId: id
-                            }
-                        },
+                      
                         {
                             model: db.notesCustomers,
                         },
-                        {
-                            model: db.links,
-                            where: {
-                                model: "customers",
-                                modelId: id
-                            }
-                        },
+                      
                     ],
                 where: { id: id }
             });
-      
-        if(req.body.mediaFiles.length != 0){
-            for (let i = 0; i < req.files.length; i++) {
-                await db.medias.create({ modelId: id, model: 'customers', mediaFiles: "/image/fileCustomer/" + req.files[i].filename });
-            }
-        }
-    
+
         if (listsCustomers) {
+            // define variable 
             let dataCreateCustomer = {
                 name: req.body.name,
                 phone: req.body.phone,
@@ -264,23 +289,42 @@ let update = async (req, res) => {
                 sex2: req.body.sex2,
                 email: req.body.email,
                 dob2: new Date(req.body.dob2).toLocaleDateString("vi-VI").replace(/\//g, "-")
+            } 
+            let dataChildren = [
+                {
+                    name: req.body.childrenName,
+                    dob: req.body.date,
+                    sex: req.body.childrenSex
+                }
+            ]
+            let dataCreateChildren = []
+            let dataNotes = {
+                customerId: id,
+                content: req.body.notes
             }
+            let dataCustomerPrograms = {
+                customerId:id,
+                programId: req.body.programs
+            }
+
+            // end define variable 
+
+            /**
+             * update customers into customers
+             */
             await db.customers.update(
                 dataCreateCustomer,
                 { where: { id: id } },
             );
+
+             /**
+             * update and create childrens into db.childrens
+             */
             if (listsCustomers.childrens.length == 0 || listsCustomers.childrens.length < req.body.childrenName.length) {
                 await db.childrens.destroy(
                     { where: { customerId: id } }
                 )
-                let dataChildren = [
-                    {
-                        name: req.body.childrenName,
-                        dob: req.body.date,
-                        sex: req.body.childrenSex
-                    }
-                ]
-                let dataCreateChildren = []
+              
                 for (let i = 0; i < dataChildren.length; i++) {
                     for (let j = 0; j < dataChildren[i].name.length; j++) {
                         dataCreateChildren.push({ sex: dataChildren[i].sex[j], customerId: id, name: dataChildren[i].name[j], dob: new Date(dataChildren[i].dob[j]).toLocaleDateString("vi-VI").replace(/\//g, "-") })
@@ -300,34 +344,37 @@ let update = async (req, res) => {
                     )
                 }
             }
-            // for (let i = 0; i < req.body.links.length; i++) {
-            //     await db.links.create({ modelId:id, model: 'customers', linkFiles: req.body.links[i] });
-            // }
-            let dataNotes = {
-                customerId: id,
-                content: req.body.notes
-            }
-            await db.notesCustomers.update(dataNotes, { where: { customerId: id } })
-            for (let i = 0; i < req.files.length; i++) {
-                await db.medias.update(
-                    { modelId: id, model: 'customers', mediaFiles: req.files[i].filename },
-                    {
-                        where: {
 
-                        }
-                    }
-                );
+         
+             /**
+             * update notes into db.notesCustomers
+             */
+            if(req.body.notes != "") {
+             await db.notesCustomers.update(dataNotes, { where: { customerId: id } })
+            }else{
+                await db.notesCustomers.update({customerId:id,content:"NULL"}, { where: { customerId: id } })
             }
-          
-            // await db.medias.bulkCreate(dataLinkMedia, { returning: true, ignoreDuplicates: true })
-            // await db.links.bulkCreate(dataLinks, { returning: true })
-            for (let i = 0; i < req.body.links.length; i++) {
-                await db.links.create({ modelId: id, model: 'customers', linkFiles: req.body.links[i] });
+           
+             /**
+             * update links into db.links
+             */
+            if (req.body.links.length != "") {
+                await db.links.destroy(
+                    { where: { modelId: id, model: "customers" } }
+                )
+                for (let i = 0; i < req.body.links.length; i++) {
+                    await db.links.create({ modelId: id, model: 'customers', linkFiles: req.body.links[i] });
+                }
             }
-            let dataCustomerPrograms = {
-                customerId: id,
-                programId: req.body.programs
+           /**
+             * update files into db.medias
+             */
+            for (let i = 0; i < req.files.length; i++) {
+                await db.medias.create({ modelId: id, model: 'customers', mediaFiles: "/image/fileCustomer/" + req.files[i].filename });
             }
+            /**
+             * update customer_programs into db.customer_programs
+             */
             await db.customer_programs.update(dataCustomerPrograms, { where: { customerId: id } })
             req.flash('message', 'saved successfully');
             res.redirect("/customer/edit/" + id)
@@ -338,6 +385,12 @@ let update = async (req, res) => {
         res.send(err);
     }
 }
+
+/**
+ * 
+ * @param {id} req 
+ * @param {*} res 
+ */
 let destroy = async (req, res) => {
     let id = req.params.id
     try {
@@ -353,6 +406,11 @@ let destroy = async (req, res) => {
     }
 }
 
+/**
+ * detroy medias
+ * @param {id} req 
+ * @param {*} res 
+ */
 let deleteMedias = async (req, res) => {
     let id = req.params.idDelete
     let modelId = req.body.modelId
@@ -376,15 +434,18 @@ let deleteMedias = async (req, res) => {
                 model: "customers"
             }
         });
-        if (count == 0) {
-            await db.medias.create({ modelId: modelId, model: 'customers', mediaFiles: "NULL" });
-        }
+
         req.flash('message', 'delete successfully');
         res.redirect('back')
     } catch (err) {
         res.send(err);
     }
 }
+/**
+ * detroy links
+ * @param {id} req 
+ * @param {*} res 
+ */
 let deleteLinks = async (req, res) => {
     let id = req.params.idDelete
     let modelId = req.body.modelId
@@ -398,9 +459,6 @@ let deleteLinks = async (req, res) => {
                 model: "customers"
             }
         });
-        if (count == 0) {
-            await db.links.create({ modelId: modelId, model: 'customers', mediaFiles: "NULL" });
-        }
         req.flash('message', 'delete successfully');
         res.redirect('back')
     } catch (error) {

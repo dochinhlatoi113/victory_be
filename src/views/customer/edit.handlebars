@@ -17,7 +17,7 @@
     </div>
     {{/each}}
     --}}
-   
+
     <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -36,15 +36,17 @@
             </div>
         </div>
     </div>
-    <div> 
+    <div>
         <form method="POST" action="/customer/update/{{data.id}}" class="formUpdate" enctype="multipart/form-data">
             <div class="form-group">
                 <label for="exampleInputEmail1">Tạo khách hàng</label><br>
                 <label for="exampleInputEmail1">Chương trình</label> <br>
                 <select class="form-select" name="programs" aria-label="Default select example">
-                    {{#each data.programs}} 
-                        <option value="{{this.id}}"{{#each ../data.listsCustomers.programs }}{{#xIf ../this.id this.customer_programs.programId}}selected{{/xIf}}{{/each}}
-                        >{{this.name}}</option>
+                    {{#each data.programs}}
+                    {{#xIf 1 this.status}}
+                    <option value="{{this.id}}" {{#each ../data.listsCustomers.programs }}{{#xIf ../this.id
+                        this.customer_programs.programId}}selected{{/xIf}}{{/each}}>{{this.name}}</option>
+                    {{/xIf}}
                     {{/each}}
                 </select><br>
                 <div class="sub-title">
@@ -133,9 +135,7 @@
                             <label>Upload your files</label>
                             <input type="file" id="files" name="files" multiple />
                             <div class="row">
-                                {{#each data.listsCustomers.medias}}
-                                {{#xIf this.mediaFiles "NULL"}}
-                                {{else}}
+                                {{#each data.listsMedias}}
                                 <div class="col-2">
                                     <img src="{{this.mediaFiles}}" style="width: 200px;height:150px">
                                     <div>
@@ -146,7 +146,6 @@
                                     <input type="hidden" name="idMedias" value="{{this.id}}">
                                     <input type="hidden" name="modelId" value="{{this.modelId}}">
                                 </div>
-                                {{/xIf}}
                                 {{/each}}
                             </div>
                         </div>
@@ -154,21 +153,20 @@
                 </div>
                 <div class="form-group">
                     <label for="exampleInputEmail1">Link</label>
-                    {{#each data.listsCustomers.links }}
-                    <div class="row" style="margin-top: 10px;">        
-                            <div class="col-11">
-                                <input type="text" class="form-control" name="links[]" value="{{this.linkFiles}}">
+                    {{#each data.listsLinks }}
+                    <div class="row" style="margin-top: 10px;">
+                        <div class="col-11">
+                            <input type="text" class="form-control" name="links[]" value="{{this.linkFiles}}">
+                        </div>
+                        {{#xIf this.linkFiles.length "NULL"}}
+                        {{else}}
+                        <div class="col-1">
+                            <div>
+                                <button class="btn-delete-links btn btn-danger" value="{{this.id}}">Xóa</button>
                             </div>
-                             {{#xIf this.linkFiles.length "NULL"}}
-                            {{else}}
-                              <div class="col-1">
-                                <div>
-                                    <button class="btn-delete-links btn btn-danger" value="{{this.id}}"
-                                        >Xóa</button>
-                                </div>
-                                <input type="hidden" name="modelId" value="{{this.modelId}}">
-                            </div>
-                            {{/xIf}}
+                            <input type="hidden" name="modelId" value="{{this.modelId}}">
+                        </div>
+                        {{/xIf}}
                     </div>
                     {{/each}}
                     <div class="container1"></div>
