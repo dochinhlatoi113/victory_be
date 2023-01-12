@@ -59,10 +59,23 @@ let checkUserPermission = async(req,res, next) => {
    }
    next()
 }
+
+let checkCustomerContract = (req,res, next) => {
+   const errors = validationResult(req);
+   
+   if (!errors.isEmpty()){
+      const extractedErrors = []
+      errors.array({ onlyFirstError: true }).map(err => extractedErrors.push({ [err.param]: err.msg }));
+      return res.json(111)
+   //   return  res.render("../views/contract/create.handlebars", { extractedErrors})
+   }
+   next()
+}
 let checkvalidate = {
   validateDepartment: validateDepartment,
   checkRegisterUser:checkRegisterUser,
-  checkUserPermission:checkUserPermission
+  checkUserPermission:checkUserPermission,
+  checkCustomerContract:checkCustomerContract
 };
 
 module.exports = {checkvalidate};

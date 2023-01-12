@@ -13,7 +13,12 @@ const checkUserPermission = [
   check('department').notEmpty().withMessage('required '),
   check('permissions').notEmpty().withMessage('permission is required'),
 ];
+
+const checkCustomerContract = [
+  check('customer').notEmpty().withMessage('account is required '),
+
+];
 module.exports = {
-    schema,checkRegisterUser,checkUserPermission
+    schema,checkRegisterUser,checkUserPermission,checkCustomerContract
 }
       

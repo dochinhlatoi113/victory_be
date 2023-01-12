@@ -10,10 +10,12 @@ module.exports = {
         type: Sequelize.INTEGER
       },
       no: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
+        allowNull: true,
       },
       representative: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
+        allowNull: true,
       },
       customerId: {
         type: Sequelize.INTEGER,
@@ -25,19 +27,20 @@ module.exports = {
         }
       },
       serviceFee: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
+        allowNull: true,
       },
       paymentTimeLine: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
+        allowNull: true,
       },
-      competiton: {
-        type: Sequelize.STRING
+      note: {
+        type: Sequelize.TEXT('long'),
+        allowNull: true,
       },
-      imageContract: {
-        type: Sequelize.TEXT('long')
-      },
-      receipts: {
-        type: Sequelize.STRING
+      link: {
+        type: Sequelize.TEXT('long'),
+        allowNull: true,
       },
       createdAt: {
         allowNull: false,

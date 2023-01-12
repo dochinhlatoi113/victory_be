@@ -148,7 +148,7 @@ app.group("/contract", (router) => {
   router.get('/', contractController.show)
   router.get('/create',  contractController.create)
   router.get('/edit/:id',uploadFile.upload.array("files"), contractController.edit)
-  router.post('/store' ,uploadFile.upload.array("files"),contractController.store)
+  router.all('/store' ,uploadFile.upload.array("files"),contractController.store)
   router.post('/update/:id/', uploadFile.upload.array("files"), contractController.update)
   router.post('/delete/:id',contractController.destroy)
 })

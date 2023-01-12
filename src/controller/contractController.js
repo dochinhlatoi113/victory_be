@@ -1,8 +1,5 @@
-const db = require("../models/index")
-const { Op } = require("sequelize");
-let oldInput = require('old-input');
-const moment = require("moment");
-const regexPhoneNumber = require("../helper/phone");
+const db = require("../models/index");
+const { Op, transaction } = require("sequelize");
 const e = require("connect-flash");
 const { readFile } = require("@babel/core/lib/gensync-utils/fs");
 let show = async (req, res) => {
@@ -97,13 +94,48 @@ let create = async (req, res) => {
     }
     res.render("../views/contract/create.handlebars", { data })
 }
-
+/**
+ * 
+ * @param {cutomerId,name,image,} req 
+ * @param {insert into db.contract} res 
+ */
 let store = async (req, res) => {
-  try {
-    console.log(req.files)
-  } catch (error) {
-    
-  }
+    try {
+        // define variable and object
+        let data = {
+            no : req.body.no,
+            representative: req.body.representative,
+            customerId : req.body.customer,
+            name:req.body.name,
+            serviceFee:req.body.serviceFee ,
+            paymentTimeLine:req.body.paymentTimeLine ,
+            link:req.body.link,
+            note:req.body.note
+        }
+       
+        //end define variable and object
+        /**
+         * insert data into db.contract
+         */
+        
+            
+          let contracts =   await db.contracts.create(data)
+            if(req.files.length != ""){
+                for(let i =0 ; i < req.files.length ; i++){ 
+                    await db.medias.create({
+                        model:'contracts',
+                        modelId:contracts.id,
+                        mediaFiles:req.files[i].filename
+                    })
+                }
+            }
+           
+            return res.render("../views/contract/show.handlebars")
+          
+     
+    } catch (error) {
+
+    }
 }
 
 let edit = async (req, res) => {
@@ -208,15 +240,15 @@ let update = async (req, res) => {
                         attributes: { programId: id, customerId: req.body.programs }
                     },
                     {
-                        model:db.childrens,
-                        where : {
-                            customerId:id
+                        model: db.childrens,
+                        where: {
+                            customerId: id
                         }
                     }
-                ]
+                    ]
                 }
             );
-        
+
             return res.json("oke")
             // let dataNotes = {
             //     customerId: listCustomer.id,

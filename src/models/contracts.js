@@ -1,5 +1,5 @@
 'use strict';
-const db = require("../models/index")
+const db = require("./index")
 const {
   Model
 } = require('sequelize');
@@ -22,12 +22,12 @@ module.exports = (sequelize, DataTypes) => {
     client: DataTypes.STRING,
     serviceFee: DataTypes.STRING,
     paymentTimeLine: DataTypes.STRING,
-    competiton: DataTypes.STRING,
-    imageContract: DataTypes.TEXT('long'),
-    receipts: DataTypes.STRING
+    note: DataTypes.TEXT('long'),
+    link: DataTypes.TEXT('long'),
+    
   }, {
     sequelize,
-    modelName: 'contract',
+    modelName: 'contracts',
   });
   return contract;
 };

@@ -137,14 +137,12 @@ let destroy = async (req, res) => {
 let changeStatus = async (req, res) => {
     let idStatus = req.params.idStatus
     let idPrograms = req.params.idPrograms
-    console.log(idPrograms)
-
-    // if(idStatus == 0){
-    //     await db.programs.update({status:1},{where:{id:idPrograms}})
-    // }
-    // if(idStatus == 1){
-    //     await db.programs.update({status:0},{where:{id:idPrograms}})
-    // }
+    if(idStatus == 0){
+        await db.programs.update({status:1},{where:{id:idPrograms}})
+    }
+    if(idStatus == 1){
+        await db.programs.update({status:0},{where:{id:idPrograms}})
+    }
 
 }
 
