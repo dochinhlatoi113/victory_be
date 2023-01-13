@@ -1,10 +1,9 @@
 'use strict';
-const db = require("./index")
 const {
   Model
 } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
-  class contract extends Model {
+  class contracts extends Model {
     /**
      * Helper method for defining associations.
      * This method is not a part of Sequelize lifecycle.
@@ -12,22 +11,26 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      const customer = sequelize.define("customers");
-      contract.belongsTo(customer,{  foreignKey: "customerId",})
+      const customers = sequelize.define("customers");
+      contracts.belongsTo(customers,{  foreignKey: "customerId",})
+
+      const sales = sequelize.define("Admin");
+      contracts.belongsTo(sales,{  foreignKey: "salesId"})
     }
   }
-  contract.init({
+  contracts.init({
     no: DataTypes.STRING,
     representative: DataTypes.STRING,
-    client: DataTypes.STRING,
+    customerId: DataTypes.INTEGER,
+    salesId: DataTypes.INTEGER,
     serviceFee: DataTypes.STRING,
     paymentTimeLine: DataTypes.STRING,
-    note: DataTypes.TEXT('long'),
-    link: DataTypes.TEXT('long'),
-    
+    note: DataTypes.STRING,
+    link: DataTypes.STRING,
+    customerName: DataTypes.STRING
   }, {
     sequelize,
     modelName: 'contracts',
   });
-  return contract;
+  return contracts;
 };

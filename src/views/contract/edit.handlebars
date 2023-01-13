@@ -9,7 +9,9 @@
         {{data.messageErr}}
     </div>
     {{/if}}
-
+    {{#if messDateErr}}
+    {{messDateErr}}
+    {{/if}}
     {{!-- {{#each extractedErrors}}
     <div class="alert alert-warning" role="alert">
         {{this.email}}
@@ -17,264 +19,105 @@
     </div>
     {{/each}}
     --}}
-    <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    Bạn có muốn xóa không ?
-                </div>
-                <div class="modal-footer">
-                    <button type="button" id="btn-delete" class="btn btn-primary">Xóa</button>
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Hủy</button>
-                </div>
-            </div>
-        </div>
-    </div>
+
     <div>
-        <form method="POST" action="/customer/update/{{data.id}}" class="formUpdate">
+        <form action="/contract/store" method="POST" enctype="multipart/form-data">
             <div class="form-group">
-                <label for="exampleInputEmail1">Tạo khách hàng</label><br>
-                <label for="exampleInputEmail1">Chương trình</label> <br>
-                <select class="form-select" name="programs" aria-label="Default select example">
-                    <option selected>Open this select programs</option>
-                    {{#each data.lists}}
-                    <option value="{{this.id}}">{{this.name}}</option>
+                <label for="exampleInputEmail1">Tạo Hợp Đồng
+                </label><br>
+                <label for="exampleInputEmail1">Khách hàng</label> <br>
+                <select id="select-state" placeholder="Pick a customer..." name="customer">
+                    {{#each listsCustomers}}
+                        <option value="{{this.id}}">{{this.name}}-{{this.phone}}</option>
                     {{/each}}
-                </select><br>
-                <div class="sub-title">
-                    <h4 class="sub-text-title">Thông tin khách hàng</h4>
-                </div>
-
+                </select>
+                <label for="exampleInputEmail1">Sales phụ trách</label> <br>
+                  <select id="select-state" placeholder="Pick a sales..." name="salesId">
+                    {{#each listsSales}}
+                        <option value="{{this.id}}">{{this.firstName}}-{{this.lastName}}</option>
+                    {{/each}}
+                </select>
                 <div class="form-group">
-                    <label for="exampleInputEmail1">Tên khách hàng</label>
-                    <input type="text" class="form-control name" aria-describedby="email" name="name"
-                        value="{{data.listsCustomers.name}}">
-                </div>
-                <div class="form-group">
-                    <label for="exampleInputEmail1">Giới tính</label>
-                    <select class="custom-select " id="inlineFormCustomSelect" name="sex">
-                        <option selected>Choose...</option>
-                        <option value="1" {{setSelected 1 data.listsCustomers.sex}}>Nam
-                        </option>
-                        <option value="2" {{setSelected 2 data.listsCustomers.sex}}>Nữ</option>
-                    </select>
+                    <label for="exampleInputEmail1">Mã hợp đồng</label>
+                    <input type="text" class="form-control" aria-describedby="email" name="no" value="{{listsContracts.no}}">
                 </div>
                 <div class="form-group">
-                    <label for="exampleInputEmail1">Phone</label>
-                    <input type="text" class="form-control" aria-describedby="email" name="phone"
-                        value="{{data.listsCustomers.phone}}">
+                    <label for="exampleInputEmail1">Tên khách hàng đại diện</label>
+                    <input type="text" class="form-control" aria-describedby="email" name="name" value="{{listsContracts.customerName}}">
                 </div>
                 <div class="form-group">
-                    <label for="exampleInputEmail1">Ngày/tháng/năm/sinh</label>
-                    <input type="text" id="datepicker" class="form-control" placeholder="vd:14-02-1996" name="dob"
-                        value="{{data.listsCustomers.dob}}">
-                </div>
-
-                <div class="sub-title">
-                    <h4 class="sub-text-title">Relation</h4>
+                    <label for="exampleInputEmail1">Tên đại diện VICTORY</label>
+                    <input type="text" class="form-control" aria-describedby="email" name="representative" value="{{listsContracts.representative}}">
                 </div>
                 <div class="form-group">
-                    <label for="exampleInputEmail1">Vợ/Chồng</label>
-                    <input type="text" class="form-control" aria-describedby="email" name="nameRelation"
-                        value="{{data.listsCustomers.nameRelation}}">
+                    <label for="exampleInputEmail1">Phí dịch vụ</label>
+                    <input type="text" class="form-control" aria-describedby="email" name="serviceFee" value="{{listsContracts.serviceFee}}">
                 </div>
                 <div class="form-group">
-                    <label for="exampleInputEmail1">Giới tính</label>
-                    <select class="custom-select " id="inlineFormCustomSelect" name="sex2">
-                        <option selected>Choose...</option>
-                        <option value="1" {{setSelected 1 data.listsCustomers.sex2}}>Nam</option>
-                        <option value="2" {{setSelected 2 data.listsCustomers.sex2}}>Nữ</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label for="exampleInputEmail1">Ngày/tháng/năm/sinh</label>
-                    <input type="text" class="form-control" aria-describedby="email" name="dob2"
-                        value="{{data.listsCustomers.dob2}}">
-                </div>
-                <div class="form-group">
-                    <label for="exampleInputEmail1">Con</label> <br>
-                    {{#each data.listsCustomers.childrens }}
-                    <div class="row">
-                        <div class="form-group col-sm">
-                            <label for="exampleInputEmail1">Họ và Tên</label>
-                            <input type="text" class="form-control" aria-describedby="email" name="childrenName[]"
-                                value="{{this.name}}">
-                          
-                        </div>
-                        <div class="form-group col-sm">
-                            <label for="exampleInputEmail1">Ngày/tháng/năm/sinh</label>
-                            <input type="text" class="form-control" aria-describedby="email" name="date[]"
-                                value="{{this.dob}}">
-                        </div>
-                        <div class="form-group col-sm">
-                            <label for="exampleInputEmail1">Giới tính</label>
-                            <select class="custom-select " id="inlineFormCustomSelect" name="childrenSex[]">
-                                <option selected>Choose...</option>
-                                <option value="1" {{setSelected 1 this.sex}}>Nam</option>
-                                <option value="2" {{setSelected 2 this.sex}}>Nữ</option>
-                            </select>
-                        </div>
+                    <label for="exampleInputEmail1">Payment Time Line</label>
+                    <div class="form-group">
+                        <textarea class="form-control" id="exampleFormControlTextarea1" rows="10" name="paymentTimeLine">{{listsContracts.paymentTimeLine}}</textarea>
                     </div>
-                    {{/each}}
-                    <div class="container2"></div>
-                    <button type="button" class="btn btn-primary add_form_field">Thêm</button>
-                </div>
-                <div class="sub-title">
-                    <h4 class="sub-text-title">Upload files</h4>
                 </div>
                 <div class="form-group">
                     <div class="card">
                         <div class="field" align="left">
                             <label>Upload your files</label>
-                            <input type="file" id="files" name="files" multiple />
-                            <div class="row">
-                                {{#each data.listsCustomers.medias}}
-                                {{#xIf this.mediaFiles "NULL"}}
-                                {{else}}
-                                <div class="col-2">
-                                    <img src="{{this.mediaFiles}}" style="width: 200px;height:150px">
-                                    <div>
-                                        <button class="btn-delete-img btn btn-danger" value="{{this.id}}"
-                                            style="margin-top: 10px;">Xóa</button>
-                                    </div>
-                                    <input type="hidden" name="modelId" value="{{this.modelId}}">
-                                </div>
-                                {{/xIf}}
-                                {{/each}}
-                            </div>
+                            {{!-- <input id="input-24" name="input24" type="file" multiple> --}}
+                            <input id="filesImg" type="file" name="files" multiple />
                         </div>
                     </div>
                 </div>
                 <div class="form-group">
                     <label for="exampleInputEmail1">Link</label>
-                    {{#each data.listsCustomers.links }}
-                    <div class="row" style="margin-top: 10px;">
-                        <div class="col-11">
-                            <input type="text" class="form-control" name="links[]" value="{{this.linkFiles}}">
-                        </div>
-                        {{#xIf this.linkFiles.length "NULL"}}
-                        {{else}}
-                        <div class="col-1">
-                            <div>
-                                <button class="btn-delete-links btn btn-danger" value="{{this.id}}">Xóa</button>
-                            </div>
-                            <input type="hidden" name="modelId" value="{{this.modelId}}">
-                        </div>
-                        {{/xIf}}
-                    </div>
-                    {{/each}}
+                    <input type="text" class="form-control" name="link" value="{{listsLinks.linkFiles}}">
                     <div class="container1"></div>
-                    <button type="button" class="btn btn-primary add_form_field_link"
-                        style="margin-top: 10px;">Thêm</button>
+                    {{!-- <button type="button" class="btn btn-primary add_form_field_link"
+                        style="margin-top: 10px;">Thêm</button> --}}
                 </div>
             </div>
-
             <div class="form-group">
                 <label for="">Ghi chú</label><br>
-                <textarea id="my-expressjs-tinymce-app"
-                    name="notes">{{ data.listsCustomers.notesCustomer.content }}</textarea>
+                <textarea id="my-expressjs-tinymce-app" name="note">{{listsContracts.note}}</textarea>
             </div>
-            <div class="account">
-                <div class="row">
-                    <div class="col-sm form-group">
-                        <label for="exampleInputEmail1">Email</label>
-                        <input type="text" class="form-control" aria-describedby="email" name="email"
-                            value="{{data.listsCustomers.email}}">
-                    </div>
-                </div>
-                {{!-- <small id="emailHelp" class="form-text text-muted"><span style="color: red;">(*)email và password
-                        sẽ
-                        dùng làm thông tin đăng nhập cho khách hàng</span></small> --}}
-            </div>
-            <button type="submit" class="btn btn-primary btn-submit-customer">Submit</button>
-            <div class="form-delete-medias"></div>
+            {{#each listsMedias}}
+                <input type="text" class="getFiles" name="getFiles" data="{{this.id}}" value="{{this.mediaFiles}}">
+            {{/each}}
     </div>
+    <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
 </div>
 <script>
     $(document).ready(function () {
-
-        /* date picker*/
-        $("#datepicker").datepicker({ dateFormat: 'dd-mm-yy' });
-        var max_fields = 10;
-        var x = 1;
-        /*add field link*/
-        $(".add_form_field_link").click(function (e) {
-            e.preventDefault();
-            let template = ` <div class="form-group">
-                               <label for="exampleInputEmail1">Link</label>
-                                <input type="text" class="form-control delete-children-button" name="links[]">
-                                <button type="button" class="btn btn-danger delete">Delete</button>
-                            </div>`;
-            if (x < max_fields) {
-                x++;
-                $(".container1").append(template); //add input box
-            } else {
-                alert('You Reached the limits')
-            }
+        $('select').selectize({
+            sortField: 'text'
         });
+        
+       
+        let getFilesConfig = []
+        let getFiles = []
+        $("input[name='getFiles']").each(function() {
+            getFiles.push($(this).val());
+            getFilesConfig.push({url:"/contract/delete/medias/"+$(".getFiles").attr("data")})
+        });
+        
+        $("#filesImg").fileinput({
+           initialPreview:getFiles, 
+            initialPreviewConfig:getFilesConfig, 
+           allowedFileExtensions: "",
+            uploadAsync: true,
+            showRemove: false, 
+            showUpload: false, // hide upload button
+            overwriteInitial: false, // append files to initial preview
+            browseOnZoneClick: true,
+            initialPreviewAsData: true,
+        }).on('fileloaded', function (event, file, previewId, index, reader) {
+            console.log(file.name);
+        }) .on('fileuploaded', function(event, data, previewId, index) {
+             console.log("previewId",previewId)
+            });
 
-        $(".container1").on("click", ".delete", function (e) {
-            e.preventDefault();
-            $(this).parent('div').remove();
-            x--;
-        })
 
-
-        /*add filed chidren*/
-        $(".add_form_field").click(function (e) {
-            e.preventDefault();
-            let template = ` 
-                            <div>
-                                <div class="row add-children-field">
-                                        <div class="form-group col-sm">
-                                            <label for="exampleInputEmail1">Họ và Tên</label>
-                                            <input type="text" class="form-control" aria-describedby="email" name="childrenName[]">
-                                        </div>
-                                        <div class="form-group col-sm">
-                                            <label for="exampleInputEmail1">Ngày/tháng/năm/sinh</label>
-                                            <input type="text" class="form-control" aria-describedby="email" name="date[]">
-                                            </div>
-                                        <div class="form-group col-sm">
-                                            <label for="exampleInputEmail1">Giới tính</label>
-                                            <select class="custom-select " id="inlineFormCustomSelect" name="childrenSex[]">
-                                                <option selected>Choose...</option>
-                                                <option value="1">Nam</option>
-                                                <option value="2">Nữ</option>
-                                            </select>
-                                        </div>  
-                                    </div>
-                                <button type="button" class="btn btn-danger delete-children-button deletes">Delete</button>
-                                </div>  
-                             `
-            if (x < max_fields) {
-                $(".container2").append(template); //add input box
-            } else {
-                alert('You Reached the limits')
-            }
-
-        })
-        $(".container2").on("click", ".deletes", function (e) {
-            e.preventDefault();
-            $(this).parent("div").remove();
-            x--;
-        })
-
-        // delete-file
-        $(".btn-delete-img").click(function () {
-            let idDelete = $(this).val()
-            let host = location.protocol + "//" + location.host
-            let form = $('.formUpdate').attr('action', host + '/customer/delete/medias/' + idDelete);
-        })
-        // delete-links
-        $(".btn-delete-links").click(function () {
-            let idDelete = $(this).val()
-            let host = location.protocol + "//" + location.host
-            let form = $('.formUpdate').attr('action', host + '/customer/delete/links/' + idDelete);
-        })
     })
+
 </script>

@@ -151,11 +151,12 @@ app.group("/contract", (router) => {
   router.all('/store' ,uploadFile.upload.array("files"),contractController.store)
   router.post('/update/:id/', uploadFile.upload.array("files"), contractController.update)
   router.post('/delete/:id',contractController.destroy)
+  router.post('/delete/medias/:idDelete',uploadFileController.deleteMedias)
 })
 
 //files image
 
-  router.post('/upload-file/delete',uploadFileController.store)
+  router.post('/upload-file/',uploadFileController.store)
  
   return app.use('/', router)
 }

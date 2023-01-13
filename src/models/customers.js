@@ -20,8 +20,8 @@ module.exports = (sequelize, DataTypes) => {
       const medias = sequelize.define("medias");
       const links = sequelize.define("links");
       customers.hasMany(medias,{  foreignKey: "modelId",})
-      const contract = sequelize.define("contract");
-      customers.hasMany(contract,{  foreignKey: "customerId",})
+      const contracts = sequelize.define("contracts");
+      customers.hasMany(contracts,{  foreignKey: "customerId",})
       customers.hasMany(links,{  foreignKey: "modelId",})
       const notescustomer = sequelize.define("notesCustomers");      
       customers.hasOne(notescustomer,{  foreignKey: "customerId"})

@@ -10,37 +10,44 @@ module.exports = {
         type: Sequelize.INTEGER
       },
       no: {
-        type: Sequelize.STRING,
-        allowNull: true,
+        type: Sequelize.STRING
       },
       representative: {
         type: Sequelize.STRING,
-        allowNull: true,
+        allowNull:true
       },
       customerId: {
         type: Sequelize.INTEGER,
         onDelete: 'CASCADE',
-        onUpdate:'CASCADE',
+        onUpdate: 'CASCADE',
         references: {
           model: 'customers',
           key: 'id'
         }
       },
+      salesId: {
+        type: Sequelize.INTEGER,
+        onDelete: 'CASCADE',
+        onUpdate: 'CASCADE',
+        references: {
+          model: 'admins',
+          key: 'id'
+        }
+      },
       serviceFee: {
-        type: Sequelize.STRING,
-        allowNull: true,
+        type: Sequelize.STRING
+      },
+      customerName: {
+        type: Sequelize.STRING
       },
       paymentTimeLine: {
-        type: Sequelize.STRING,
-        allowNull: true,
+        type: Sequelize.STRING
       },
       note: {
-        type: Sequelize.TEXT('long'),
-        allowNull: true,
+        type: Sequelize.STRING
       },
       link: {
-        type: Sequelize.TEXT('long'),
-        allowNull: true,
+        type: Sequelize.STRING
       },
       createdAt: {
         allowNull: false,

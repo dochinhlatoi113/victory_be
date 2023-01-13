@@ -30,16 +30,17 @@
     <div class="row" style="margin: auto;">
         <div class="col-sm-2">
             <button type="button" class="btn btn-primary" id="btnCreate">
-                <a href="/customer/create">Create</a>
+                <a href="/contract/create">Create</a>
             </button>
         </div>
         <div class="col-sm-10">
-            <form action="/customer/" method="GET">
+            <form action="/contract/" method="GET">
                 <div class="input-group mb-3" style="padding-top: 10px;">
                     <input type="text" class="form-control" placeholder="Search ......"
                         aria-label="Recipient's username" name="keyWord">
                     <div class="input-group-append">
-                        <button type="submit"><span class="input-group-text"><i class="fa fa-search"></i></span></button>
+                        <button type="submit"><span class="input-group-text"><i
+                                    class="fa fa-search"></i></span></button>
                     </div>
                 </div>
             </form>
@@ -50,9 +51,11 @@
             <tr>
                 <th scope="col">#</th>
                 <th scope="col">Tên khách hàng</th>
-                <th scope="col">Ngày tháng năm sinh</th>
-                <th scope="col">Phone</th>
-                <th scope="col">Email</th>
+                <th scope="col">Mã chương trình</th>
+                <th scope="col">Mã hợp đồng</th>
+                <th scope="col">Ngày tạo hợp đồng</th>
+                <th scope="col">Sale phụ trách</th>
+                <th scope="col">Tình Trạng</th>
                 <th scope="col">Action</th>
                 {{!-- <th scope="col">action</th> --}}
             </tr>
@@ -61,30 +64,52 @@
             <tr>
                 {{#each lists}}
                 <th scope="row">{{inc @index}}</th>
-                <td>{{this.name}}</td>
-                <td>{{this.dob}}</td>
-                <td>{{this.phone}}</td>
+                <td>{{this.customer.name}}</td>
+                {{#each this.customer.programs}}
+                <td>{{this.code}}</td>
+                {{/each}}
+                <td>{{this.no}}</td>
+                <td>{{formatDate this.createdAt "short"}}</td>
+                <td>{{this.Admin.lastName}}{{this.Admin.firstName}}</td>
                 <td>{{this.email}}</td>
 
                 <td style="display: flex;">
-                    <a class="icon-edit" href="/customer/edit/{{this.id}}">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-                            class="bi bi-pencil" viewBox="0 0 16 16">
-                            <path
-                                d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168l10-10zM11.207 2.5 13.5 4.793 14.793 3.5 12.5 1.207 11.207 2.5zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293l6.5-6.5zm-9.761 5.175-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325z" />
-                        </svg>
+                    <input type="hidden" name="customerId" value="{{this.customerId}}">
+                    <a class="icon-edit" href="/contract/edit/{{this.id}}">
+                       <i class="bi bi-eye"></i>
                     </a>
-                    <button type="submit" class="btn-destroy" id="btn-delete" data-toggle="modal"
+                    {{!-- <button type="submit" class="btn-destroy" id="btn-delete" data-toggle="modal"
                         data-target="#deleteModal" data-id="{{this.id}}">
                         <i class="bi bi-trash2" data-id="{{this.id}}"></i>
-                    </button>
+                    </button> --}}
 
                 </td>
             </tr>
             {{/each}}
+            
             </tr>
         </tbody>
     </table>
+     <div class="container mt-4">
+        <nav aria-label="Page navigation example">
+            <ul class="pagination justify-content-center">
+                {{#if hasPreviousPage}}
+                <li class="page-item">
+                    <a class="page-link" href="?page=1">1</a>
+                </li>
+                {{/if}}
+                <li class="page-item active">
+                    <a class="page-link" href="?page={{currentPage}}">{{currentPage}}</a>
+                </li>
+                {{#if hasNextPage}}
+                <li class="page-item">
+                    <a class="page-link"
+                        href="?page={{nextPage}}{{#if keyWord}}&keyWord={{keyWord}} {{/if}}">{{nextPage}}</a>
+                </li>
+                {{/if}}
+            </ul>
+        </nav>
+    </div>
 </div>
 <script>
     $(document).ready(function () {

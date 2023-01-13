@@ -11,13 +11,38 @@ let show = async (req, res) => {
     let itemPerPage = 3;
     let page = +req.query.page || 1
     let offset = (page - 1) * itemPerPage
+    
     try {
         if (keyWord != undefined) {
             let totalItems = await db.programs.count({
-                where: { name: { [Op.like]: `%${keyWord}%` } },
+                where: {
+                    [Op.or]: [{
+                        name: {
+                            [Op.like]: `%${keyWord}%`
+                        }
+                    },
+                    {
+                        code: {
+                            [Op.like]: `%${keyWord}%`
+                        }
+                    }
+                    ]
+                }
             })
             let lists = await db.programs.findAll({
-                where: { name: { [Op.like]: `%${keyWord}%` } },
+                where: {
+                    [Op.or]: [{
+                        name: {
+                            [Op.like]: `%${keyWord}%`
+                        }
+                    },
+                    {
+                        code: {
+                            [Op.like]: `%${keyWord}%`
+                        }
+                    }
+                    ]
+                },
                 limit: itemPerPage,
                 offset: offset
             });

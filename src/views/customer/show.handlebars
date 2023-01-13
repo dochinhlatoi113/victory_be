@@ -84,6 +84,26 @@
             </tr>
         </tbody>
     </table>
+     <div class="container mt-4">
+        <nav aria-label="Page navigation example">
+            <ul class="pagination justify-content-center">
+                {{#if hasPreviousPage}}
+                <li class="page-item">
+                    <a class="page-link" href="?page=1">1</a>
+                </li>  
+                {{/if}}
+                <li class="page-item active">
+                    <a class="page-link" href="?page={{currentPage}}">{{currentPage}}</a>
+                </li>
+                {{#if hasNextPage}}
+                <li class="page-item">
+                    <a class="page-link"
+                        href="?page={{nextPage}}{{#if keyWord}}&keyWord={{keyWord}} {{/if}}">{{nextPage}}</a>
+                </li>
+                {{/if}}
+            </ul>
+        </nav>
+    </div>
 </div>
 <script>
     $(document).ready(function () {

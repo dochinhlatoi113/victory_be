@@ -1,7 +1,9 @@
 const db = require("../models/index");
+const contracts = require("../models/contracts")
 const { Op, transaction } = require("sequelize");
 const e = require("connect-flash");
 const { readFile } = require("@babel/core/lib/gensync-utils/fs");
+const { text } = require("body-parser");
 let show = async (req, res) => {
     let keyWord = req.query.keyWord;
     let itemPerPage = 3;
@@ -9,39 +11,93 @@ let show = async (req, res) => {
     let offset = (page - 1) * itemPerPage
     try {
         if (keyWord != undefined) {
-            let totalItems = await db.customers.count({
+            let totalItems = await db.contracts.count({
                 // where: { name: { [Op.like]: `%${keyWord}%` } },
+                include: [
+                    {
+                        model: db.customers,
+                        include:
+                            [
+                                {
+                                    model: db.childrens
+                                },
+                                {
+                                    model: db.programs, // customer_program
+
+                                },
+                                {
+                                    model: db.notesCustomers,
+                                },
+                            ],
+                    },
+                    {
+                        model: db.Admin
+                    }
+                ],
                 where: {
                     [Op.or]: [{
-                        name: {
+                        no: {
+                            [Op.like]: `%${keyWord}%`
+                        },
+
+                    },
+                    {
+                        '$Admin.firstName$': {
                             [Op.like]: `%${keyWord}%`
                         }
                     },
                     {
-                        phone: {
+                        '$customer.name$': {
                             [Op.like]: `%${keyWord}%`
                         }
                     }
                     ]
                 }
             })
-            let lists = await db.customers.findAll({
+            let lists = await db.contracts.findAll({
+                // where: { name: { [Op.like]: `%${keyWord}%` } },
+                include: [
+                    {
+                        model: db.customers,
+                        include:
+                            [
+                                {
+                                    model: db.childrens
+                                },
+                                {
+                                    model: db.programs, // customer_program
+
+                                },
+                                {
+                                    model: db.notesCustomers,
+                                },
+                            ],
+                    },
+                    {
+                        model: db.Admin
+                    }
+                ],
                 where: {
                     [Op.or]: [{
-                        name: {
+                        no: {
+                            [Op.like]: `%${keyWord}%`
+                        },
+
+                    },
+                    {
+                        '$Admin.firstName$': {
                             [Op.like]: `%${keyWord}%`
                         }
                     },
                     {
-                        phone: {
+                        '$customer.name$': {
                             [Op.like]: `%${keyWord}%`
                         }
                     }
                     ]
-                },
-                limit: itemPerPage,
-                offset: offset
-            });
+                }
+            })
+
             let data = {
                 lists: lists,
                 currentPage: page,
@@ -53,18 +109,39 @@ let show = async (req, res) => {
                 lastPage: Math.ceil(totalItems / itemPerPage),
                 message: req.flash('message')
             }
-            res.render("../views/contract/show.handlebars", data)
+
+            return res.render("../views/contract/show.handlebars", data)
         } else {
+            let totalItems = await db.contracts.count({
 
-
-            let totalItems = await db.customers.count({
-
-            })
-            let lists = await db.customers.findAll({
-                limit: itemPerPage,
-                offset: offset
             });
+            let lists = await db.contracts.findAll({
+                limit: itemPerPage,
+                offset: offset,
+                include:
+                    [
+                        {
+                            model: db.customers,
+                            include:
+                                [
+                                    {
+                                        model: db.childrens
+                                    },
+                                    {
+                                        model: db.programs, // customer_program
 
+                                    },
+                                    {
+                                        model: db.notesCustomers,
+                                    },
+                                ],
+                        },
+                        {
+                            model: db.Admin
+                        }
+                    ],
+            });
+            // return res.json(lists)
             let data = {
                 lists: lists,
                 currentPage: page,
@@ -77,7 +154,7 @@ let show = async (req, res) => {
 
             }
 
-            res.render("../views/contract/show.handlebars", data)
+            return res.render("../views/contract/show.handlebars", data)
         }
 
     } catch (error) {
@@ -86,11 +163,13 @@ let show = async (req, res) => {
 }
 let create = async (req, res) => {
     let lists = await db.customers.findAll();
+    let sales = await db.Admin.findAll()
     let data = {
         messageErr: req.flash('messageErr'),
         message: req.flash('message'),
         oldInput: req.oldInput,
-        lists: lists
+        lists: lists,
+        sales: sales
     }
     res.render("../views/contract/create.handlebars", { data })
 }
@@ -103,36 +182,37 @@ let store = async (req, res) => {
     try {
         // define variable and object
         let data = {
-            no : req.body.no,
+            no: req.body.no,
             representative: req.body.representative,
-            customerId : req.body.customer,
-            name:req.body.name,
-            serviceFee:req.body.serviceFee ,
-            paymentTimeLine:req.body.paymentTimeLine ,
-            link:req.body.link,
-            note:req.body.note
+            customerId: req.body.customer,
+            customerName: req.body.name,
+            serviceFee: req.body.serviceFee,
+            paymentTimeLine: req.body.paymentTimeLine,
+            note: req.body.note,
+            salesId: req.body.salesId
         }
-       
+
         //end define variable and object
         /**
          * insert data into db.contract
          */
-        
-            
-          let contracts =   await db.contracts.create(data)
-            if(req.files.length != ""){
-                for(let i =0 ; i < req.files.length ; i++){ 
-                    await db.medias.create({
-                        model:'contracts',
-                        modelId:contracts.id,
-                        mediaFiles:req.files[i].filename
-                    })
-                }
+
+
+        let contracts = await db.contracts.create(data)
+        let links = await db.links.create({ linkFiles: req.body.link, modelId: contracts.id, model: 'contracts' })
+        if (req.files.length != "") {
+            for (let i = 0; i < req.files.length; i++) {
+                await db.medias.create({
+                    model: 'contracts',
+                    modelId: contracts.id,
+                    mediaFiles:"/image/fileCustomer/" + req.files[i].filename
+                })
             }
-           
-            return res.render("../views/contract/show.handlebars")
-          
-     
+        }
+
+        return res.render("../views/contract/show.handlebars")
+
+
     } catch (error) {
 
     }
@@ -140,47 +220,62 @@ let store = async (req, res) => {
 
 let edit = async (req, res) => {
     let id = req.params.id
-    const listsCustomers = await db.customers.findOne(
+    let customerId = req.body.customerId
+    const listsMedias = await db.medias.findAll(
         {
-            include:
+            where: { modelId: id, model: 'contracts' }
+        });
+    const listsLinks = await db.links.findOne(
+        {
+            where: { modelId: id, model: 'contracts' }
+        });
+    const listsCustomers = await db.customers.findAll()
+    const listsSales = await db.Admin.findAll()
+    const listsContracts = await db.contracts.findOne(
+       
+        {
+           include:
                 [
                     {
-                        model: db.childrens
+                        model: db.customers,
+                        include:
+                            [
+                                {
+                                    model: db.childrens
+                                },
+                                {
+                                    model: db.programs, // customer_program
+
+                                },
+                                {
+                                    model: db.notesCustomers,
+                                },
+                            ],
                     },
                     {
-                        model: db.programs
-                    },
-                    {
-                        model: db.medias,
-                        where: {
-                            model: "customers",
-                            modelId: id
-                        }
-                    },
-                    {
-                        model: db.notesCustomers,
-                    },
-                    {
-                        model: db.links,
-                        where: {
-                            model: "customers",
-                            modelId: id
-                        }
-                    },
+                        model: db.Admin
+                    }
                 ],
-            where: { id: id }
-        });
-    //return res.json(listsCustomers)
-    //    return false
+            
+                 where: { id: id },
+        },
+      
+    );
+     //return res.json(listsContracts)
+    //     return false
     // const listsMedias =  await db.medias.findOne({where:{model:"customers", modelId:id}}) 
 
-    if (listsCustomers) {
+    if (listsContracts) {
         let data = {
             id: id,
-            listsCustomers: listsCustomers,
+            listsContracts: listsContracts,
+            listsMedias: listsMedias,
+            listsLinks: listsLinks,
+            listsCustomers:listsCustomers,
+            listsSales:listsSales,
             message: req.flash('message')
         }
-        return res.render("../views/contract/edit.handlebars", { data })
+        return res.render("../views/contract/edit.handlebars", data)
     } else {
         return res.render("../views/error/error.handlebars", { layout: null })
     }
@@ -293,53 +388,14 @@ let destroy = async (req, res) => {
     }
 }
 
-let deleteMedias = async (req, res) => {
-    let id = req.params.idDelete
-    let modelId = req.body.modelId
-    try {
-        await db.medias.destroy(
-            { where: { id: id, model: "customers" } }
-        )
-        const count = await db.medias.count({
-            where: {
-                modelId: modelId,
-                model: "customers"
-            }
-        });
-        if (count == 0) {
-            await db.medias.create({ modelId: modelId, model: 'customers', mediaFiles: "NULL" });
-        }
-        req.flash('message', 'delete successfully');
-        res.redirect("/contract/edit/" + modelId)
-    } catch (err) {
-        res.send(err);
-    }
-}
-let deleteLinks = async (req, res) => {
-    let id = req.params.idDelete
-    let modelId = req.body.modelId
-    try {
-        await db.links.destroy(
-            { where: { id: id, model: "customers" } }
-        )
-        const count = await db.links.count({
-            where: {
-                modelId: modelId,
-                model: "customers"
-            }
-        });
-        if (count == 0) {
-            await db.links.create({ modelId: modelId, model: 'customers', mediaFiles: "NULL" });
-        }
-        req.flash('message', 'delete successfully');
-        res.redirect("/contract/edit/" + modelId)
-    } catch (error) {
-        return res.json(error)
-    }
-}
+
+
 module.exports = {
     show, create, store, edit, update, destroy
 }
 
 
 // 
+
+
+

@@ -31,6 +31,12 @@
                         <option value="{{this.id}}">{{this.name}}-{{this.phone}}</option>
                     {{/each}}
                 </select>
+                <label for="exampleInputEmail1">Sales phụ trách</label> <br>
+                  <select id="select-state" placeholder="Pick a sales..." name="salesId">
+                    {{#each data.sales}}
+                        <option value="{{this.id}}">{{this.firstName}}-{{this.lastName}}</option>
+                    {{/each}}
+                </select>
                 <div class="form-group">
                     <label for="exampleInputEmail1">Mã hợp đồng</label>
                     <input type="text" class="form-control" aria-describedby="email" name="no" value="">

@@ -33,13 +33,16 @@
                 <a href="/category_program/create">Create</a>
             </button>
         </div>
-        <div class="col-sm-10">
-            <div class="input-group mb-3" style="padding-top: 10px;">
-                <input type="text" class="form-control" placeholder="Search ......" aria-label="Recipient's username">
-                <div class="input-group-append">
-                    <span class="input-group-text"><i class="fa fa-search"></i></span>
+         <div class="col-sm-10">
+            <form action="/category_program/" method="GET">
+                <div class="input-group mb-3" style="padding-top: 10px;">
+                    <input type="text" class="form-control" placeholder="Search ......"
+                        aria-label="Recipient's username" name="keyWord">
+                    <div class="input-group-append">
+                        <button type="submit"><span class="input-group-text"><i class="fa fa-search"></i></span></button>
+                    </div>
                 </div>
-            </div>
+            </form>
         </div>
     </div>
     <table class="table">
@@ -89,6 +92,26 @@
             </tr>
         </tbody>
     </table>
+     <div class="container mt-4">
+        <nav aria-label="Page navigation example">
+            <ul class="pagination justify-content-center">
+                {{#if hasPreviousPage}}
+                <li class="page-item">
+                    <a class="page-link" href="?page=1">1</a>
+                </li>
+                {{/if}}
+                <li class="page-item active">
+                    <a class="page-link" href="?page={{currentPage}}">{{currentPage}}</a>
+                </li>
+                {{#if hasNextPage}}
+                <li class="page-item">
+                    <a class="page-link"
+                        href="?page={{nextPage}}{{#if keyWord}}&keyWord={{keyWord}} {{/if}}">{{nextPage}}</a>
+                </li>
+                {{/if}}
+            </ul>
+        </nav>
+    </div>
 </div>
 <script>
     $(document).ready(function () {
