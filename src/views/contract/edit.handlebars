@@ -1,7 +1,7 @@
 <div class="container-fluid">
-    {{#if data.message}}
+    {{#if message}}
     <div class="alert alert-success" role="alert">
-        {{data.message}}
+        {{message}}
     </div>
     {{/if}}
     {{#if data.messageErr}}
@@ -21,20 +21,20 @@
     --}}
 
     <div>
-        <form action="/contract/store" method="POST" enctype="multipart/form-data">
+        <form action="/contract/update/{{listsContracts.id}}" method="POST" enctype="multipart/form-data">
             <div class="form-group">
                 <label for="exampleInputEmail1">Tạo Hợp Đồng
                 </label><br>
                 <label for="exampleInputEmail1">Khách hàng</label> <br>
                 <select id="select-state" placeholder="Pick a customer..." name="customer">
                     {{#each listsCustomers}}
-                        <option value="{{this.id}}">{{this.name}}-{{this.phone}}</option>
+                        <option value="{{this.id}}"  {{#xIf this.id ../listsContracts.customerId}} selected {{/xIf}}>{{this.name}}-{{this.phone}}</option>
                     {{/each}}
                 </select>
                 <label for="exampleInputEmail1">Sales phụ trách</label> <br>
                   <select id="select-state" placeholder="Pick a sales..." name="salesId">
                     {{#each listsSales}}
-                        <option value="{{this.id}}">{{this.firstName}}-{{this.lastName}}</option>
+                        <option value="{{this.id}}"   {{#xIf this.id ../listsContracts.salesId}}selected {{/xIf}}>{{this.firstName}}-{{this.lastName}}</option>
                     {{/each}}
                 </select>
                 <div class="form-group">
@@ -81,7 +81,7 @@
                 <textarea id="my-expressjs-tinymce-app" name="note">{{listsContracts.note}}</textarea>
             </div>
             {{#each listsMedias}}
-                <input type="text" class="getFiles" name="getFiles" data="{{this.id}}" value="{{this.mediaFiles}}">
+                <input type="hidden" class="getFiles" name="getFiles" data="{{this.id}}" value="{{this.mediaFiles}}">
             {{/each}}
     </div>
     <button type="submit" class="btn btn-primary">Submit</button>
@@ -98,13 +98,14 @@
         let getFiles = []
         $("input[name='getFiles']").each(function() {
             getFiles.push($(this).val());
-            getFilesConfig.push({url:"/contract/delete/medias/"+$(".getFiles").attr("data")})
+            getFilesConfig.push({url:"/contract/delete/medias/"+$(this).attr("data"), key:$(this).attr("data")})
         });
         
         $("#filesImg").fileinput({
            initialPreview:getFiles, 
             initialPreviewConfig:getFilesConfig, 
            allowedFileExtensions: "",
+           uploadUrl:"/contract/update",
             uploadAsync: true,
             showRemove: false, 
             showUpload: false, // hide upload button
