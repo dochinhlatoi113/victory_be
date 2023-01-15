@@ -87,13 +87,13 @@ const routerInit = (app) => {
     })
     router.get('/', userPermissionController.show)
     router.get('/create', userPermissionController.create)
-    router.get('/edit/:id&:userid', userPermissionController.edit)
+    router.get('/edit/:id', userPermissionController.edit)
     router.get('/store',function(req,res){
       return res.redirect("/group/user-permission/create")
     })
     router.post('/delete/:id', userPermissionController.destroy)
     router.post('/store',checkValidate.checkUserPermission, basevalidator.checkvalidate.checkUserPermission, userPermissionController.store)
-    router.post('/update/',checkValidate.checkUserPermission, basevalidator.checkvalidate.checkUserPermission, userPermissionController.update)
+    router.post('/update/:id', userPermissionController.update)
   })
   // sales
   app.group("/sales", (router) => {

@@ -50,8 +50,6 @@ let show = async (req, res) => {
             res.render("../views/group/user-permission/show.handlebars", data)
         } else {
             let totalItems = await db.user_permission.count({
-
-
             })
             let lists = await db.user_permission.findAll({
                 include: [{
@@ -117,15 +115,21 @@ let create = async (req, res) => {
 let store = async (req, res) => {
     if (req.method == "POST") {
         try {
-            for (let i = 0; i < req.body.permissions.length; i++) {
-                await db.user_permission.findOrCreate({
-                    where: {
-                        userId: req.body.user,
-                        departmentId: req.body.department,
-                        permissionId: req.body.permissions[i]
+                for (let i = 0; i < req.body.permissions.length; i++) {
+                let list= await db.user_permission.findOrCreate({
+                        where: {
+                            userId: req.body.user,
+                            departmentId: req.body.department,
+                            permissionId: req.body.permissions[i]
+                        }
+                    })
+                    if(list != true){
+                        console.log('true')
                     }
-                })
-            }
+                    // .then(() => done(null, code))
+                    //   .catch((err) => done('Internal Server Error'))
+                }
+                
             req.flash('message', 'saved successfully');
             res.redirect("/group/user-permission/create")
 
@@ -138,8 +142,8 @@ let store = async (req, res) => {
 let edit = async (req, res) => {
 
     let id = req.params.id
-    let userId = req.params.userid
-
+    // let userId = req.params.userid
+    
 
     let listsUser = await db.Admin.findAll({
 
@@ -152,7 +156,7 @@ let edit = async (req, res) => {
 
     })
     let listUserPermissions = await db.user_permission.findOne({
-        where: { id: id },
+        where: { userId: id },
         include: [
             {
                 model: db.departments
@@ -167,7 +171,7 @@ let edit = async (req, res) => {
     })
 
     let listUserPermission = await db.user_permission.findAll({
-        where: { userId: userId },
+         where: { userId: id },
         include: [
             {
                 model: db.departments
@@ -197,36 +201,39 @@ let edit = async (req, res) => {
     }
 }
 let update = async (req, res) => {
+
     let id = req.params.id
     try {
         if (req.body.permissions == undefined) {
             await db.user_permission.destroy(
 
-                { where: { userId: req.body.userIds } }
+                { where: { userId: req.body.id } }
             )
             req.flash('message', 'delete successfully');
             return res.redirect("/group/user-permission/")
         }
 
-        let user = await db.user_permission.findAll({ where: { userId: req.body.userIds } })
-
+        let user = await db.user_permission.findAll({ where: { userId: id } })
+      
         if (user) {
 
             await db.user_permission.destroy(
 
-                { where: { userId: req.body.userIds } }
+                { where: { userId: id } }
             )
 
             for (let i = 0; i < req.body.permissions.length; i++) {
 
-                const permission = await db.user_permission.create({ permissionId: req.body.permissions[i], departmentId: req.body.department, userId: req.body.userIds });
+                const permission = await db.user_permission.create({ permissionId: req.body.permissions[i], departmentId: req.body.department, userId: id });
             }
 
+            
+                
         }
 
         //   return false
         req.flash('message', 'updated successfully');
-        return res.redirect("/group/user-permission/")
+        return res.redirect("/group/user-permission/edit/" +id)
 
 
     } catch (err) {

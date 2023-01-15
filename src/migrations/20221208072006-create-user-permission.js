@@ -12,11 +12,23 @@ module.exports = {
       userId: {
         type: Sequelize.BIGINT
       },
-      permissionId: {
-        type: Sequelize.TEXT
+      permissionId:{
+        type: Sequelize.INTEGER,
+        onDelete: 'CASCADE',
+        onUpdate:'CASCADE',
+        references: {
+          model: 'permissions',
+          key: 'id'
+        }
       },
       departmentId: {
-        type: Sequelize.BIGINT
+        type: Sequelize.INTEGER,
+        onDelete: 'CASCADE',
+        onUpdate:'CASCADE',
+        references: {
+          model: 'departments',
+          key: 'id'
+        }
       },
       createdAt: {
         allowNull: false,
