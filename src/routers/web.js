@@ -5,7 +5,9 @@ const passport = require('passport');
 const groupController = require('../controller/groupController')
 const permissionController = require('../controller/permissionController')
 const departmentController = require('../controller/departmentController')
-const LocalStrategy = require('passport-local').Strategy;
+const passportJWT = require("../controller/auth/customer/passport")
+
+const jwts = require('jsonwebtoken')
 const basevalidator = require("../validate/basevalidator")
 const checkPermission = require('../controller/auth/checkPermissionController');
 const checkValidate = require("../validate/checkvalidator")
@@ -18,8 +20,14 @@ const salesController = require("../controller/salesController")
 const customerProgramController = require("../controller/customerProgramController")
 const userPermissionController = require("../controller/userPermissionController")
 const uploadFile = require("../controller/uploadFile/file")
+const customerAccount = require("../controller/customerAccount")
 const uploadFileController = require("../../src/controller/uploadFile/uploadFileController")
 const { check, body, validationResult } = require('express-validator')
+// front end 
+const customerController = require("../controller/frontend/customerController")
+//cofig
+const jwt = require('jsonwebtoken');
+const db= require("../models/index")
 const e = require("express");
 let router = express.Router();
 
@@ -140,6 +148,11 @@ const routerInit = (app) => {
   router.post('/delete/links/:idDelete', uploadFile.upload.array("files") ,customerProgramController.deleteLinks)
   router.post('/update/:id/', uploadFile.upload.array("files"), customerProgramController.update)
   router.post('/delete/:id', customerProgramController.destroy)
+   // customer-account
+  router.get('/create-account', customerAccount.show)
+  router.get('/create-account/create', customerAccount.create)
+  router.all('/create-account/store',customerController.register)
+
 })
 
 //contract
@@ -155,9 +168,13 @@ app.group("/contract", (router) => {
 })
 
 //files image
-
   router.post('/upload-file/',uploadFileController.store)
  
+  // front end
+  //customer
+  app.group("/user-customer", (router) => { 
+    router.post('/login', passport.authenticate('jwt',{ session: false }),customerController.show)
+  })
   return app.use('/', router)
 }
 module.exports = routerInit

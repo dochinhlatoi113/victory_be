@@ -39,7 +39,7 @@
       </marquee>
       <li class="nav-item">
         <a href="#" class="nav-link active ">
-        <i class="bi bi-file-earmark-ruled-fill"></i>
+          <i class="bi bi-file-earmark-ruled-fill"></i>
           <p>
             Phòng thụ lý
             <i class="fas fa-angle-left right"></i>
@@ -50,6 +50,12 @@
             <a href="/customer/" class="nav-link active">
               <i class="far fa-circle nav-icon"></i>
               <p> Khách hàng</p>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="/customer/create-account" class="nav-link active">
+              <i class="far fa-circle nav-icon"></i>
+              <p>Tạo account cho khách hàng</p>
             </a>
           </li>
           <li class="nav-item">
@@ -81,7 +87,7 @@
       <!--contract-->
       <li class="nav-item">
         <a href="" class="nav-link active ">
-         <i class="bi bi-book-half"></i>
+          <i class="bi bi-book-half"></i>
           <p>
             Contract
             <i class="fas fa-angle-left right"></i>
@@ -195,14 +201,14 @@
       </li>
       {{/xIf}}
       <!--end permission-->
-       <!--start sales--->
+      <!--start sales--->
       {{#xIf user.departmentsId 0 }}
       <marquee direction="left" height="30%">
         <p class="title-left-sidebar">Sales</p>
       </marquee>
       <li class="nav-item">
         <a href="" class="nav-link active ">
-         <i class="bi bi-book-half"></i>
+          <i class="bi bi-book-half"></i>
           <p>
             Contract
             <i class="fas fa-angle-left right"></i>
@@ -232,14 +238,14 @@
       <!--câu hỏi-->
       <li class="nav-item">
         <a href="#" class="nav-link active ">
-         <i class="bi bi-patch-question"></i>
+          <i class="bi bi-patch-question"></i>
           <p>
-              Câu hỏi
+            Câu hỏi
             <i class="fas fa-angle-left right"></i>
           </p>
         </a>
         <ul class="nav nav-treeview">
-           <li class="nav-item">
+          <li class="nav-item">
             <a href="/qs" class="nav-link active">
               <i class="far fa-circle nav-icon"></i>
               <p>Danh sách câu hỏi</p>
@@ -262,38 +268,47 @@
       {{/xIf}}
       <!--end qs-->
 
-     <!--câu hỏi-->
-   <li class="nav-item">
-          <a href="#" class="nav-link active ">
-         <i class="bi bi-file-earmark-code-fill"></i>
-            <p>
-                Chương trình
-              <i class="fas fa-angle-left right"></i>
-            </p>
-          </a>
-          <ul class="nav nav-treeview">
-            <li class="nav-item">
-              <a href="/category_program" class="nav-link active">
-                <i class="far fa-circle nav-icon"></i>
-                <p>Danh sách chương trình</p>
-              </a>
-            </li>
-            <li class="nav-item">
-              <a href="/category_program/create" class="nav-link active">
-                <i class="far fa-circle nav-icon"></i>
-                <p>Thêm câu chương trình</p>
-              </a>
-            </li>
-            <li class="nav-item">
-              <a href="" class="nav-link active">
-                <i class="far fa-circle nav-icon"></i>
-                <p>Thùng rác</p>
-              </a>
-            </li>
-          </ul>
-        </li>
-      <!--end qs-->
-      
+      <!--program-->
+      <li class="nav-item">
+        <a href="#" class="nav-link active ">
+          <i class="bi bi-file-earmark-code-fill"></i>
+          <p>
+            Chương trình
+            <i class="fas fa-angle-left right"></i>
+          </p>
+        </a>
+        <ul class="nav nav-treeview">
+          <li class="nav-item">
+            <a href="/category_program" class="nav-link active">
+              <i class="far fa-circle nav-icon"></i>
+              <p>Danh sách chương trình</p>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="/category_program/create" class="nav-link active">
+              <i class="far fa-circle nav-icon"></i>
+              <p>Thêm câu chương trình</p>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="" class="nav-link active">
+              <i class="far fa-circle nav-icon"></i>
+              <p>Thùng rác</p>
+            </a>
+          </li>
+        </ul>
+      </li>
+      <!--end program-->
+
+      <marquee direction="left" height="30%">
+        <p class="title-left-sidebar">Tool</p>
+      </marquee>
+      <li class="nav-item">
+        <a href="/contract/" class="nav-link active">
+          <i class="bi bi-journal-arrow-up"></i>
+          <p>Ghi chú</p>
+        </a>
+      </li>
     </ul>
   </div>
   </nav>
@@ -307,4 +322,3 @@
     console.log($.cookie())
   })
 </script>
-

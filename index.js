@@ -6,37 +6,40 @@ const routerInit =  require("./src/routers/web")
 const apiRouterInit = require("./src/routers/api")
 const path = require("path")
 const port = 1225
+const applyPassportStrategy = require("./src/controller/auth/customer/passport")
 var oldInput = require('old-input');
 const session =  require("express-session")
 const flash = require('connect-flash');
 const db = require("./src/config/db/connect")
 const multer  =   require('multer');
 require('express-group-routes');
-
+const model = require("./src/models/index")
 const passport = require('passport');
 var LocalStrategy   = require('passport-local').Strategy;
-const app = express()
 
+const app = express()
+app.use(passport.initialize());
 app.use(cookieParser());
 require('dotenv').config();
  // parse application/x-www-form-urlencoded
 
 // flash message
 app.use(session({ 
-  secret: 'passport-tutorial', 
+  secret: process.env.SESSION_SECRET, 
   cookie: { maxAge: 6000000000 },
    resave: false, 
    saveUninitialized: false }));
 
 app.use(flash())
 //validate
-//passport
-app.use(passport.initialize());
-app.use(passport.authenticate('session'));
+
 // parse application/json
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))
+//passport
+app.use(passport.initialize());
 
+app.use(passport.authenticate('session'));
 //init web route
 routerInit(app)
 //init api route

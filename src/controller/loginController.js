@@ -25,7 +25,7 @@ function checkAuthenticated(req, res, next) {
         return next();
       }
 
-      console.log("aaaa Not Authenticated");     
+      console.log(" Not Authenticated login fail");     
       // IF A USER ISN'T LOGGED IN, THEN REDIRECT THEM SOMEWHERE
       return res.render("../views/recivingLogin.handlebars",{layout: null})
 

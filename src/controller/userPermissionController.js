@@ -2,7 +2,7 @@ const db = require("../models/index")
 const { QueryTypes, Op } = require("sequelize");
 let show = async (req, res) => {
     let keyWord = req.query.keyWord;
-    let itemPerPage = 3;
+    let itemPerPage = 10;
     let page = +req.query.page || 1
     let offset = (page - 1) * itemPerPage
     try {

@@ -1,0 +1,49 @@
+<div class="container-fluid">
+    {{#if data.message}}
+    <div class="alert alert-success" role="alert">
+        {{data.message}}
+    </div>
+    {{/if}}
+    {{#if data.messageErr}}
+    <div class="alert alert-warning" role="alert">
+        {{data.messageErr}}
+    </div>
+    {{/if}}
+
+    {{#each extractedErrors}}
+    <div class="alert alert-warning" role="alert">
+        {{this.email}}
+        {{this.password}}
+    </div>
+    {{/each}}
+    <div>
+        <form action="/customer/create-account/store" method="POST">
+            <div class="form-group">
+                <label>Tạo account cho khách hàng</label>
+                <label for="exampleInputEmail1">username</label>
+                <select id="select-state" placeholder="Pick a customer..." name="customerId">
+                    {{#each data.lists}}
+                        <option value="{{this.id}}">{{this.name}}-{{this.phone}}</option>
+                    {{/each}}
+                </select>
+                 <label for="exampleInputEmail1">username</label>
+                <div class="form-group">
+                    <input type="text" class="form-control" aria-describedby="email" name="name">
+                </div>
+                <label for="exampleInputEmail1">password</label>
+                <div class="form-group">
+                    <input type="text" class="form-control" aria-describedby="email" name="password">
+                </div>
+            </div>
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+    </div>
+    <script>
+        $(document).ready(function () {
+            $('select').selectize({
+                sortField: 'text'
+            });
+
+        })
+
+    </script>
