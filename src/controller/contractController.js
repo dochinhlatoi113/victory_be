@@ -10,6 +10,7 @@ let show = async (req, res) => {
     let page = +req.query.page || 1
     let offset = (page - 1) * itemPerPage
     try {
+     
         if (keyWord != undefined) {
             let totalItems = await db.contracts.count({
                 // where: { name: { [Op.like]: `%${keyWord}%` } },
@@ -141,6 +142,8 @@ let show = async (req, res) => {
                         }
                     ],
             });
+            
+
             // return res.json(lists)
             let data = {
                 lists: lists,
@@ -189,7 +192,8 @@ let store = async (req, res) => {
             serviceFee: req.body.serviceFee,
             paymentTimeLine: req.body.paymentTimeLine,
             note: req.body.note,
-            salesId: req.body.salesId
+            salesId: req.body.salesId,
+            status:1
         }
 
         //end define variable and object
@@ -199,6 +203,7 @@ let store = async (req, res) => {
 
 
         let contracts = await db.contracts.create(data)
+     
         let links = await db.links.create({ linkFiles: req.body.link, modelId: contracts.id, model: 'contracts' })
         if (req.files.length != "") {
             for (let i = 0; i < req.files.length; i++) {
@@ -209,13 +214,19 @@ let store = async (req, res) => {
                 })
             }
         }
-
+        /**
+         * update status customer
+         */
+        let customerContract = await db.customers.findOne({id:contracts.customerId})
+        if(customerContract){
+            await db.customers.update({status:0},{where:{id:contracts.customerId}})
+        }
         req.flash('message', 'saved successfully');
         res.redirect("/contract/")
 
 
     } catch (error) {
-
+        return res.json(error)
     }
 }
 
@@ -292,8 +303,10 @@ let update = async (req, res) => {
             serviceFee: req.body.serviceFee,
             paymentTimeLine: req.body.paymentTimeLine,
             note: req.body.note,
-            salesId: req.body.salesId
+            salesId: req.body.salesId,
+            status : req.body.status
         }
+     
         if(req.files.length > 0 && !req.body.key){
             for (let i = 0; i < req.files.length; i++) {
                 await db.medias.create({

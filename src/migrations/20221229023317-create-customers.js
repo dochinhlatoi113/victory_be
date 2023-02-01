@@ -13,6 +13,12 @@ module.exports = {
       email: {
         type: Sequelize.STRING
       },
+      status: {
+        type: Sequelize.STRING
+      },
+      contact: {
+        type: Sequelize.STRING
+      },
       name: {
         type: Sequelize.STRING
       },

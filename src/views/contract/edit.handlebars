@@ -28,35 +28,47 @@
                 <label for="exampleInputEmail1">Khách hàng</label> <br>
                 <select id="select-state" placeholder="Pick a customer..." name="customer">
                     {{#each listsCustomers}}
-                        <option value="{{this.id}}"  {{#xIf this.id ../listsContracts.customerId}} selected {{/xIf}}>{{this.name}}-{{this.phone}}</option>
+                    <option value="{{this.id}}" {{#xIf this.id ../listsContracts.customerId}} selected {{/xIf}}>
+                        {{this.name}}-{{this.phone}}</option>
                     {{/each}}
                 </select>
+                 <label for="exampleInputEmail1">Trạng thái</label> <br>
+                <select class="form-select" aria-label="Default select example" name="status">
+                    <option value="1">Đang tiến hành</option>
+                    <option value="0">Thanh lý</option>
+                </select>
                 <label for="exampleInputEmail1">Sales phụ trách</label> <br>
-                  <select id="select-state" placeholder="Pick a sales..." name="salesId">
+                <select id="select-state" placeholder="Pick a sales..." name="salesId">
                     {{#each listsSales}}
-                        <option value="{{this.id}}"   {{#xIf this.id ../listsContracts.salesId}}selected {{/xIf}}>{{this.firstName}}-{{this.lastName}}</option>
+                    <option value="{{this.id}}" {{#xIf this.id ../listsContracts.salesId}}selected {{/xIf}}>
+                        {{this.firstName}}-{{this.lastName}}</option>
                     {{/each}}
                 </select>
                 <div class="form-group">
                     <label for="exampleInputEmail1">Mã hợp đồng</label>
-                    <input type="text" class="form-control" aria-describedby="email" name="no" value="{{listsContracts.no}}">
+                    <input type="text" class="form-control" aria-describedby="email" name="no"
+                        value="{{listsContracts.no}}">
                 </div>
                 <div class="form-group">
                     <label for="exampleInputEmail1">Tên khách hàng đại diện</label>
-                    <input type="text" class="form-control" aria-describedby="email" name="name" value="{{listsContracts.customerName}}">
+                    <input type="text" class="form-control" aria-describedby="email" name="name"
+                        value="{{listsContracts.customerName}}">
                 </div>
                 <div class="form-group">
                     <label for="exampleInputEmail1">Tên đại diện VICTORY</label>
-                    <input type="text" class="form-control" aria-describedby="email" name="representative" value="{{listsContracts.representative}}">
+                    <input type="text" class="form-control" aria-describedby="email" name="representative"
+                        value="{{listsContracts.representative}}">
                 </div>
                 <div class="form-group">
                     <label for="exampleInputEmail1">Phí dịch vụ</label>
-                    <input type="text" class="form-control" aria-describedby="email" name="serviceFee" value="{{listsContracts.serviceFee}}">
+                    <input type="text" class="form-control" aria-describedby="email" name="serviceFee"
+                        value="{{listsContracts.serviceFee}}">
                 </div>
                 <div class="form-group">
                     <label for="exampleInputEmail1">Payment Time Line</label>
                     <div class="form-group">
-                        <textarea class="form-control" id="exampleFormControlTextarea1" rows="10" name="paymentTimeLine">{{listsContracts.paymentTimeLine}}</textarea>
+                        <textarea class="form-control" id="exampleFormControlTextarea1" rows="10"
+                            name="paymentTimeLine">{{listsContracts.paymentTimeLine}}</textarea>
                     </div>
                 </div>
                 <div class="form-group">
@@ -81,10 +93,13 @@
                 <textarea id="my-expressjs-tinymce-app" name="note">{{listsContracts.note}}</textarea>
             </div>
             {{#each listsMedias}}
-                <input type="hidden" class="getFiles" name="getFiles" data="{{this.id}}" value="{{this.mediaFiles}}">
+            <input type="hidden" class="getFiles" name="getFiles" data="{{this.id}}" value="{{this.mediaFiles}}">
             {{/each}}
     </div>
+    <input type="hidden" value="{{listsContracts.status}}" id="disable-btn-delete-file">
+    {{#xIf listsContracts.status 1}}
     <button type="submit" class="btn btn-primary">Submit</button>
+    {{/xIf}}
     </form>
 </div>
 <script>
@@ -92,31 +107,33 @@
         $('select').selectize({
             sortField: 'text'
         });
-        
-       
+
+        let deleteFiles = $('#disable-btn-delete-file').val()
         let getFilesConfig = []
         let getFiles = []
-        $("input[name='getFiles']").each(function() {
+        $("input[name='getFiles']").each(function () {
             getFiles.push($(this).val());
-            getFilesConfig.push({url:"/contract/delete/medias/"+$(this).attr("data"), key:$(this).attr("data")})
+            if(deleteFiles == 1) {
+                getFilesConfig.push({ url: "/contract/delete/medias/" + $(this).attr("data"), key: $(this).attr("data") })
+            }
         });
-        
+
         $("#filesImg").fileinput({
-           initialPreview:getFiles, 
-            initialPreviewConfig:getFilesConfig, 
-           allowedFileExtensions: "",
-           uploadUrl:"/contract/update",
+            initialPreview: getFiles,
+            initialPreviewConfig: getFilesConfig,
+            allowedFileExtensions: "",
+            uploadUrl: "/contract/update",
             uploadAsync: true,
-            showRemove: false, 
+            showRemove: false,
             showUpload: false, // hide upload button
             overwriteInitial: false, // append files to initial preview
             browseOnZoneClick: true,
             initialPreviewAsData: true,
         }).on('fileloaded', function (event, file, previewId, index, reader) {
             console.log(file.name);
-        }) .on('fileuploaded', function(event, data, previewId, index) {
-             console.log("previewId",previewId)
-            });
+        }).on('fileuploaded', function (event, data, previewId, index) {
+            console.log("previewId", previewId)
+        });
 
 
     })

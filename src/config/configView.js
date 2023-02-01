@@ -57,13 +57,29 @@ const configView = (app) => {
                 deleteItem: function(arg1,arg2){
                     let arr = [];
                     let arrUser = [];
-            
                     arr.push(arg1)
                     arrUser.push(arg2)
-                    
                     return arr.concat(arrUser)
-                    
-                }
+                
+                },
+                switch:function(value, options) {
+                    this.switch_value = value;
+                    this.switch_break = false;
+                    return options.fn(this);
+                  
+                },
+                case:function(value, options) {
+                    if (value == this.switch_value) {
+                        this.switch_break = true;
+                        return options.fn(this);
+                      }
+                },
+                default:function(value, options) {
+                    if (this.switch_break == false) {
+                      return value;
+                    }
+                 }   
+                
             },
         }));
     app.set('view engine', 'handlebars');

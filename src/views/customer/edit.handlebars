@@ -49,6 +49,31 @@
                     {{/xIf}}
                     {{/each}}
                 </select><br>
+                     <div class="form-group">
+                    <label for="exampleInputEmail1">Status</label>
+                    <select class="custom-select " id="inlineFormCustomSelect" name="status">
+                        {{#xIf data.listsCustomers.status 0}}
+                            <option value="0">Đã ký hợp đồng</option>
+                        {{else}}
+                            <option value="1" {{#xIf data.listsCustomers.status 1}} selected {{/xIf}}>rất tiềm năng</option>
+                            <option value="2"  {{#xIf data.listsCustomers.status 2}} selected {{/xIf}}>quan tâm</option>
+                            <option value="3" {{#xIf data.listsCustomers.status 3}} selected {{/xIf}}>không quan tâm</option>
+                            <option value="4" {{#xIf data.listsCustomers.status 4}} selected {{/xIf}}>không nghe máy</option>
+                            <option value="5" {{#xIf data.listsCustomers.status 5}} selected {{/xIf}}>không tiếp cận được</option>
+                        {{/xIf}}
+                    </select>
+                </div>
+                  <div class="form-group">
+                    <label for="exampleInputEmail1">Nguồn liên hệ</label>
+                    <select class="custom-select " id="" name="contact">
+                        <option value="1"  {{#xIf data.listsCustomers.contact 1}} selected {{/xIf}}>hotline</option>
+                        <option value="2"  {{#xIf data.listsCustomers.contact 2}} selected {{/xIf}}>fanpage</option>
+                        <option value="3" {{#xIf data.listsCustomers.contact 3}} selected {{/xIf}}>ladinpage</option>
+                        <option value="4" {{#xIf data.listsCustomers.contact 4}} selected {{/xIf}}>khách cũ</option>
+                        <option value="5" {{#xIf data.listsCustomers.contact 5}} selected {{/xIf}}>youtube</option>
+                        <option value="6" {{#xIf data.listsCustomers.contact 6}} selected {{/xIf}}>webiste</option>
+                    </select>
+                </div>
                 <div class="sub-title">
                     <h4 class="sub-text-title">Thông tin khách hàng</h4>
                 </div>
@@ -88,8 +113,7 @@
                 <div class="form-group">
                     <label for="exampleInputEmail1">Giới tính</label>
                     <select class="custom-select " id="inlineFormCustomSelect" name="sex2">
-                        <option selected>Choose...</option>
-                        <option value="1" {{setSelected 1 data.listsCustomers.sex2}}>Nam</option>
+                        <option value="1" selected {{setSelected 1 data.listsCustomers.sex2}}>Nam</option>
                         <option value="2" {{setSelected 2 data.listsCustomers.sex2}}>Nữ</option>
                     </select>
                 </div>

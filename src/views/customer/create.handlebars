@@ -10,7 +10,7 @@
     </div>
     {{/if}}
     {{#if messDateErr}}
-        {{messDateErr}}
+    {{messDateErr}}
     {{/if}}
     {{!-- {{#each extractedErrors}}
     <div class="alert alert-warning" role="alert">
@@ -18,7 +18,7 @@
         {{this.password}}
     </div>
     {{/each}}
-   --}}
+    --}}
     <div>
         <form action="/customer/store" method="POST" enctype="multipart/form-data">
             <div class="form-group">
@@ -31,6 +31,27 @@
                     {{/xIf}}
                     {{/each}}
                 </select><br>
+                <div class="form-group">
+                    <label for="exampleInputEmail1">Status</label>
+                    <select class="custom-select " id="inlineFormCustomSelect" name="status">
+                        <option selected value="1">rất tiềm năng</option>
+                        <option value="2">quan tâm</option>
+                        <option value="3">không quan tâm</option>
+                        <option value="4">không nghe máy</option>
+                        <option value="5">không tiếp cận được</option>
+                    </select>
+                </div>
+                  <div class="form-group">
+                    <label for="exampleInputEmail1">Nguồn liên hệ</label>
+                    <select class="custom-select " id="inlineFormCustomSelect" name="contact">
+                        <option selected value="1">hotline</option>
+                        <option value="2">fanpage</option>
+                        <option value="3">ladinpage</option>
+                        <option value="4">khách cũ</option>
+                        <option value="5">youtube</option>
+                        <option value="6">webiste</option>
+                    </select>
+                </div>
                 <div class="sub-title">
                     <h4 class="sub-text-title">Thông tin khách hàng</h4>
                 </div>
@@ -69,7 +90,7 @@
                 </div>
                 <div class="form-group">
                     <label for="exampleInputEmail1">Ngày/tháng/năm/sinh</label>
-                    <input type="text"  class="form-control datepicker" aria-describedby="email" name="dob2">
+                    <input type="text" class="form-control datepicker" aria-describedby="email" name="dob2">
                 </div>
                 <div class="form-group">
                     <label for="exampleInputEmail1">Con</label> <br>
@@ -123,7 +144,8 @@
                         <input type="text" class="form-control" aria-describedby="email" name="email" value="">
                     </div>
                 </div>
-                {{!-- <small id="emailHelp" class="form-text text-muted"><span style="color: red;">(*)email và password sẽ
+                {{!-- <small id="emailHelp" class="form-text text-muted"><span style="color: red;">(*)email và password
+                        sẽ
                         dùng làm thông tin đăng nhập cho khách hàng</span></small> --}}
             </div>
     </div>
@@ -179,7 +201,7 @@
                                 </div>
                                 <button type="button" class="btn btn-danger delete-children-button deletes">Delete</button>
                                 </div>  
-                             `                
+                             `
             if (x < max_fields) {
                 $(".container2").append(template); //add input box
             } else {
@@ -192,7 +214,7 @@
             $(this).parent("div").remove();
             x--;
         })
-   /* date picker*/
+        /* date picker*/
         $(".datepicker").datepicker();
         var max_fields = 10;
         var x = 1;

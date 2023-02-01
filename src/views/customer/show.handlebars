@@ -39,7 +39,8 @@
                     <input type="text" class="form-control" placeholder="Search ......"
                         aria-label="Recipient's username" name="keyWord">
                     <div class="input-group-append">
-                        <button type="submit"><span class="input-group-text"><i class="fa fa-search"></i></span></button>
+                        <button type="submit"><span class="input-group-text"><i
+                                    class="fa fa-search"></i></span></button>
                     </div>
                 </div>
             </form>
@@ -51,8 +52,11 @@
                 <th scope="col">#</th>
                 <th scope="col">Tên khách hàng</th>
                 <th scope="col">Ngày tháng năm sinh</th>
-                <th scope="col">Phone</th>
+                <th scope="col">Chương trình</th>
                 <th scope="col">Email</th>
+                <th scope="col">Trạng thái</th>
+                <th scope="col">Liên hệ</th>
+                <th scope="col">Ghi chú</th>
                 <th scope="col">Action</th>
                 {{!-- <th scope="col">action</th> --}}
             </tr>
@@ -63,9 +67,64 @@
                 <th scope="row">{{inc @index}}</th>
                 <td>{{this.name}}</td>
                 <td>{{this.dob}}</td>
-                <td>{{this.phone}}</td>
-                <td>{{this.email}}</td>
+                <td>
+                    {{#each this.programs}}
+                    <div style="white-space: wrap;width: 100px"> {{this.name}} </div>
+                    {{/each}}
 
+                </td>
+                <td>{{this.email}}</td>
+                <td>
+                    {{#switch this.status}}
+                    {{#case 0}}<p  class="bg-danger  text-white text-center"> đã ký hợp đồng </p> {{/case}}
+                    {{#case 1}}
+                    <p class="bg-primary text-white text-center">Rất tiềm năng</p>
+                    {{/case}}
+                    {{#case 2}}
+                    <p  class="bg-warning text-white text-center"> quan tâm</p>
+                    {{/case}}
+                    {{#case 3}}
+                    <p  class="bg-light text-white text-center">Không quan tâm</p>
+                    {{/case}}
+                    {{#case 4}}
+                    <p  class="bg-info text-white text-center">Không nghe máy</p>
+                    {{/case}}
+                     {{#case 5}} <p class="bg-dark text-white text-center">không tiếp cận được</p>{{/case}}
+                    {{/switch}}
+                </td>
+                <td>
+                      {{#switch this.contact}}
+                    {{#case 1}}
+                    <p>hotline</p>
+                    {{/case}}
+                    {{#case 2}}
+                    <div>
+                        
+                        <i style="color: #149EF8; font-size:20px;" class="bi bi-messenger"></i>
+                        <span style="color: #149EF8;">fanpage</span>
+                    </div>
+                    {{/case}}
+                    {{#case 3}}
+                      <i style="color: green; font-size:20px;" class="bi bi-layers"></i>
+                     <span style="color: green;">ladinpage</span>
+                    {{/case}}
+                    {{#case 4}}
+                     <i style="color: grey; font-size:20px;" class="bi bi-person-add"></i>
+                     <span style="color: grey;">khách cũ</span>
+                    {{/case}}
+                     {{#case 5}} 
+                     <i style="color: red; font-size:20px;" class="bi bi-youtube"></i>
+                     <span style="color: red;">fanpage</span>
+                     {{/case}}
+                      {{#case 6}} 
+                     <i style="color: #7E1416; font-size:20px;" class="bi bi-globe-asia-australia"></i>
+                     <span style="color: #7E1416ed;">webiste</span>
+                     {{/case}}
+                    {{/switch}}
+                </td>
+                <td>
+                    <div class="text-nowrap text-truncate" style="width: 8rem;">{{{ this.notesCustomer.content }}} </div>
+                </td>
                 <td style="display: flex;">
                     <a class="icon-edit" href="/customer/edit/{{this.id}}">
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
@@ -74,23 +133,25 @@
                                 d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168l10-10zM11.207 2.5 13.5 4.793 14.793 3.5 12.5 1.207 11.207 2.5zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293l6.5-6.5zm-9.761 5.175-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325z" />
                         </svg>
                     </a>
+                    {{#xIf2 this.status 0}}
                     <button type="submit" class="btn-destroy" id="btn-delete" data-toggle="modal"
                         data-target="#deleteModal" data-id="{{this.id}}">
                         <i class="bi bi-trash2" data-id="{{this.id}}"></i>
                     </button>
+                    {{/xIf2}}
                 </td>
             </tr>
             {{/each}}
             </tr>
         </tbody>
     </table>
-     <div class="container mt-4">
+    <div class="container mt-4">
         <nav aria-label="Page navigation example">
             <ul class="pagination justify-content-center">
                 {{#if hasPreviousPage}}
                 <li class="page-item">
                     <a class="page-link" href="?page=1">1</a>
-                </li>  
+                </li>
                 {{/if}}
                 <li class="page-item active">
                     <a class="page-link" href="?page={{currentPage}}">{{currentPage}}</a>

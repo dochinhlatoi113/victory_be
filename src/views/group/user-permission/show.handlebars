@@ -122,9 +122,7 @@
         </nav>
     </div>
 </div>
-
 <script>
-
     $(document).ready(function () {
         $(".sortBy").change(function(){
             let sortBy = $(".sortBy").val()
@@ -140,13 +138,11 @@
                     }
                 })      
         })
-
         $('#expander').on('click', function () {
             $(this).siblings().slideToggle('fast');
             // jQuery(this).find('i').toggleClass('fa-plus fa-minus');
             $(this).find('i').toggleClass('fa-chevron-down fa-chevron-up');
         });
-
         let id = "";
         let submitDelete = document.forms['submit-delete']
 

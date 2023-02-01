@@ -27,7 +27,8 @@ module.exports = (sequelize, DataTypes) => {
     paymentTimeLine: DataTypes.STRING,
     note: DataTypes.STRING,
     link: DataTypes.STRING,
-    customerName: DataTypes.STRING
+    customerName: DataTypes.STRING,
+    status: DataTypes.STRING
   }, {
     sequelize,
     modelName: 'contracts',

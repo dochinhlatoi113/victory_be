@@ -37,6 +37,9 @@ module.exports = {
       serviceFee: {
         type: Sequelize.STRING
       },
+      status: {
+        type: Sequelize.STRING
+      },
       customerName: {
         type: Sequelize.STRING
       },
