@@ -184,6 +184,8 @@ let create = async (req, res) => {
 let store = async (req, res) => {
     try {
         // define variable and object
+       
+       let salesId =  req.user.departmentsId == 2 ? req.user.userId :  req.body.salesId
         let data = {
             no: req.body.no,
             representative: req.body.representative,
@@ -192,7 +194,7 @@ let store = async (req, res) => {
             serviceFee: req.body.serviceFee,
             paymentTimeLine: req.body.paymentTimeLine,
             note: req.body.note,
-            salesId: req.body.salesId,
+            salesId: salesId,
             status:1
         }
 

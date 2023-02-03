@@ -33,6 +33,7 @@ let LocalStrategy = passportLocal.Strategy;
               departmentsId : user.department.id,
               departments:user.department.name,
               permission:user.permission.name,
+              userId:user.userId,
               active: true
           })          
           } else {

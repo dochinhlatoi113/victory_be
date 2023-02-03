@@ -10,6 +10,17 @@ let checkPermssion = async (req, res) => {
          return res.redirect("/group/user-permission/" )
  
     }
+    if(req.user.departmentsId == 2){
+        // res.render("../views/group/user-permission/show.handlebars", data)
+        return res.redirect("/customer/" )
+ 
+    }
+
+    if(req.user.departmentsId == 4){
+        // res.render("../views/group/user-permission/show.handlebars", data)
+        return res.redirect("/marketing/" )
+ 
+    }
 }
 
 module.exports = {

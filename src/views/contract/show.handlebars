@@ -62,9 +62,10 @@
             </tr>
         </thead>
         <tbody>
-            <tr>
+           
                 {{#each lists}}
                 {{#xIf this.status 1}}
+                <tr>
                 <td scope="row">{{inc @index}}</td>
                 <td>{{this.customer.name}}</td>
                 {{#each this.customer.programs}}
@@ -92,9 +93,10 @@
                         </svg>
                     </a>
                 </td> 
+                </tr>
                 {{/xIf}}
                   {{/each}}
-            </tr>
+            
             
           
         </tbody>

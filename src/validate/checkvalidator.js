@@ -1,4 +1,5 @@
 const {check } = require('express-validator');
+const db = require('../models');
 const schema = [ 
     check('name').notEmpty().withMessage('field is required '),
   ];
@@ -18,7 +19,23 @@ const checkCustomerContract = [
   check('customer').notEmpty().withMessage('account is required '),
 
 ];
+
+const checkExistCustomerPhone = [
+  check('phone').notEmpty().withMessage('phone must be not null')
+.custom((value, {req, loc, path}) => {
+    return db.customers.findOne({
+        where: {
+            phone: req.body.phone,
+        }
+    }).then(user => {
+        if (user) {
+            return Promise.reject('customer already in use');
+        }
+    });
+})
+
+]
 module.exports = {
-    schema,checkRegisterUser,checkUserPermission,checkCustomerContract
+    schema,checkRegisterUser,checkUserPermission,checkCustomerContract,checkExistCustomerPhone
 }
       

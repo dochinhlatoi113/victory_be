@@ -68,7 +68,16 @@
             <tr>
                 {{#each lists}}
                 <th scope="row">{{inc @index}}</th>
-                <td>{{this.department.name}}</td>
+                <td>
+                    {{#switch this.department.name}}
+                    {{#case 'phòng giám đốc'}}<button type="button" class="btn btn-danger">{{ this.department.name}}</button>{{/case}}
+                   {{#case 'phòng sales'}}<button type="button" class="btn btn-warning text-light">{{ this.department.name}}</button> {{/case}}
+                   {{#case 'phòng thụ lý'}}<button type="button" class="btn  btn-success text-light">{{ this.department.name}}</button> {{/case}}
+                   {{#case 'phòng it'}}<button type="button" class="btn btn-info text-light">{{ this.department.name}}</button> </p> {{/case}}
+                   {{#case 'phòng marketing'}}<button type="button" class="btn  btn-dark text-light">{{ this.department.name}}</button> </p> {{/case}}
+
+                    {{/switch}}
+                </td>
                 <td>{{this.Admin.email}}</td>
                 <td>{{this.permission.name}}</td>
                 <td>{{formatDate this.createdAt "short"}}

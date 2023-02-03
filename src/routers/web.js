@@ -6,7 +6,7 @@ const groupController = require('../controller/groupController')
 const permissionController = require('../controller/permissionController')
 const departmentController = require('../controller/departmentController')
 const passportJWT = require("../controller/auth/customer/passport")
-
+const validate = require("../validate/checkvalidator")
 const jwts = require('jsonwebtoken')
 const basevalidator = require("../validate/basevalidator")
 const checkPermission = require('../controller/auth/checkPermissionController');
@@ -40,7 +40,7 @@ const routerInit = (app) => {
   //     failureRedirect: "/login",
   //     successRedirect: "/",      
   //   }));
-  router.post('/login', loginController.checkNotAuthenticated, passport.authenticate('local', { failureRedirect: '/login', failureMessage: true }), 
+  router.post('/login', passport.authenticate('local', { failureRedirect: '/login', failureMessage: true }), 
     checkPermission.checkPermssion
   );
 
@@ -143,7 +143,7 @@ const routerInit = (app) => {
   router.get('/', customerProgramController.show)
   router.get('/create',  customerProgramController.create)
   router.get('/edit/:id',uploadFile.upload.array("files"), customerProgramController.edit)
-  router.post('/store', uploadFile.upload.array("files") ,customerProgramController.store)
+  router.all('/store' ,uploadFile.upload.array("files"),validate.checkExistCustomerPhone,basevalidator.checkvalidate.checkExistCustomerPhone,customerProgramController.store)
   router.post('/delete/medias/:idDelete', uploadFile.upload.array("files") ,customerProgramController.deleteMedias)
   router.post('/delete/links/:idDelete', uploadFile.upload.array("files") ,customerProgramController.deleteLinks)
   router.post('/update/:id/', uploadFile.upload.array("files"), customerProgramController.update)

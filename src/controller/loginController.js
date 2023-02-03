@@ -42,7 +42,10 @@ function checkAuthenticated(req, res, next) {
           
             return res.redirect("/group/user-permission/")
         }
-       
+        if(req.user.departments =='phòng sales'){
+          
+            return res.redirect("/customer/")
+        }
     }
     next()
    

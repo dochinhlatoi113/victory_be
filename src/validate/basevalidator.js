@@ -71,11 +71,27 @@ let checkCustomerContract = (req,res, next) => {
    }
    next()
 }
+
+let checkExistCustomerPhone = (req,res,next) => {
+   const errors = validationResult(req);
+
+   if (!errors.isEmpty()){
+      const extractedErrors = []
+      errors.array({ onlyFirstError: true }).map(err => extractedErrors.push({ [err.param]: err.msg }));
+      req.flash('message',extractedErrors[0].phone);
+      res.locals.errMessage = req.flash()
+      return res.redirect('/customer/create/')
+   //   return  res.render("../views/contract/create.handlebars", { extractedErrors})
+   }
+ 
+  next()
+}
 let checkvalidate = {
   validateDepartment: validateDepartment,
   checkRegisterUser:checkRegisterUser,
   checkUserPermission:checkUserPermission,
-  checkCustomerContract:checkCustomerContract
+  checkCustomerContract:checkCustomerContract,
+  checkExistCustomerPhone:checkExistCustomerPhone
 };
 
 module.exports = {checkvalidate};

@@ -136,7 +136,8 @@ let store = async (req, res) => {
             status:req.body.status,
             contact:req.body.contact
         }
-        
+       
+       
         /**
           * insert customers 
           */
