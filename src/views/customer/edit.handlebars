@@ -93,8 +93,20 @@
                 </div>
                 <div class="form-group">
                     <label for="exampleInputEmail1">Phone</label>
-                    <input type="text" class="form-control" aria-describedby="email" name="phone"
-                        value="{{data.listsCustomers.phone}}">
+                     <input type="hidden" name="idCustomerPhone" class="idCustomer"value="{{data.listsCustomers.id}}">
+                   {{#each data.listsCustomers.phones}}
+                   <div class="row " style="margin-bottom:10px ;">
+                            <div class="col-11">
+                                <input type="text" class="form-control" aria-describedby="email" name="phone[]"
+                                value="{{this.phone}}">   
+                            </div>
+                                <div>    
+                                    <button type="submit" class="btn btn-danger btn-delete-phone"  data-id="{{this.id}}">xóa</button>
+                            </div> 
+                        </div>
+                      {{/each}}
+                       <div class="phones"></div>
+                    <button type="button" class="btn btn-primary add_phone_form_field">Thêm</button>
                 </div>
                 <div class="form-group">
                     <label for="exampleInputEmail1">Ngày/tháng/năm/sinh</label>
@@ -300,6 +312,34 @@
             let idDelete = $(this).val()
             let host = location.protocol + "//" + location.host
             let form = $('.formUpdate').attr('action', host + '/customer/delete/links/' + idDelete);
+        })
+
+            /*add filed phones*/
+             $(".add_phone_form_field").click(function (e) {
+            e.preventDefault();
+            let template = ` <div class="form-group">
+                               <label for="exampleInputEmail1">Phone #</label>
+                                <input type="text" class="form-control delete-children-button" name="phone[]">
+                                <button type="button" class="btn btn-danger delete">Delete</button>
+                            </div>`;
+            if (x < max_fields) {
+                x++;
+                $(".phones").append(template); //add input box
+            } else {
+                alert('You Reached the limits')
+            }
+        });
+
+        $(".phones").on("click", ".delete", function (e) {
+            e.preventDefault();
+            $(this).parent('div').remove();
+            x--;
+        })
+
+        $(".btn-delete-phone").click(function(){
+        
+            let host = location.protocol + "//" + location.host
+            let form = $('.formUpdate').attr('action', host + '/customer/phone/delete/' + $(this).attr('data-id')+"/" +$(".idCustomer").val());
         })
     })
 </script>

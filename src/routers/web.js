@@ -143,11 +143,12 @@ const routerInit = (app) => {
   router.get('/', customerProgramController.show)
   router.get('/create',  customerProgramController.create)
   router.get('/edit/:id',uploadFile.upload.array("files"), customerProgramController.edit)
-  router.all('/store' ,uploadFile.upload.array("files"),validate.checkExistCustomerPhone,basevalidator.checkvalidate.checkExistCustomerPhone,customerProgramController.store)
+  router.all('/store' ,uploadFile.upload.array("files"),customerProgramController.store)
   router.post('/delete/medias/:idDelete', uploadFile.upload.array("files") ,customerProgramController.deleteMedias)
   router.post('/delete/links/:idDelete', uploadFile.upload.array("files") ,customerProgramController.deleteLinks)
   router.post('/update/:id/', uploadFile.upload.array("files"), customerProgramController.update)
   router.post('/delete/:id', customerProgramController.destroy)
+  router.post('/phone/delete/:idPhone/:idCustomer', customerProgramController.deletePhone)
    // customer-account
   router.get('/create-account', customerAccount.show)
   router.get('/create-account/create', customerAccount.create)

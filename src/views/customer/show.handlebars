@@ -46,6 +46,17 @@
             </form>
         </div>
     </div>
+  <p>
+
+  <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+    Button with data-target
+  </button>
+</p>
+<div class="collapse" id="collapseExample">
+  <div class="card card-body">
+    Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident.
+  </div>
+</div>
     <table class="table">
         <thead>
             <tr>
@@ -76,54 +87,55 @@
                 <td>{{this.email}}</td>
                 <td>
                     {{#switch this.status}}
-                    {{#case 0}}<p  class="bg-danger  text-white text-center"> đã ký hợp đồng </p> {{/case}}
+                    {{#case 0}}<p class="bg-danger  text-white text-center"> đã ký hợp đồng </p> {{/case}}
                     {{#case 1}}
                     <p class="bg-primary text-white text-center">Rất tiềm năng</p>
                     {{/case}}
                     {{#case 2}}
-                    <p  class="bg-warning text-white text-center"> quan tâm</p>
+                    <p class="bg-warning text-white text-center"> quan tâm</p>
                     {{/case}}
                     {{#case 3}}
-                    <p  class="bg-light text-white text-center">Không quan tâm</p>
+                    <p class="bg-light text-white text-center">Không quan tâm</p>
                     {{/case}}
                     {{#case 4}}
-                    <p  class="bg-info text-white text-center">Không nghe máy</p>
+                    <p class="bg-info text-white text-center">Không nghe máy</p>
                     {{/case}}
-                     {{#case 5}} <p class="bg-dark text-white text-center">không tiếp cận được</p>{{/case}}
+                    {{#case 5}} <p class="bg-dark text-white text-center">không tiếp cận được</p>{{/case}}
                     {{/switch}}
                 </td>
                 <td>
-                      {{#switch this.contact}}
+                    {{#switch this.contact}}
                     {{#case 1}}
                     <p>hotline</p>
                     {{/case}}
                     {{#case 2}}
                     <div>
-                        
+
                         <i style="color: #149EF8; font-size:20px;" class="bi bi-messenger"></i>
                         <span style="color: #149EF8;">fanpage</span>
                     </div>
                     {{/case}}
                     {{#case 3}}
-                      <i style="color: green; font-size:20px;" class="bi bi-layers"></i>
-                     <span style="color: green;">ladinpage</span>
+                    <i style="color: green; font-size:20px;" class="bi bi-layers"></i>
+                    <span style="color: green;">ladinpage</span>
                     {{/case}}
                     {{#case 4}}
-                     <i style="color: grey; font-size:20px;" class="bi bi-person-add"></i>
-                     <span style="color: grey;">khách cũ</span>
+                    <i style="color: grey; font-size:20px;" class="bi bi-person-add"></i>
+                    <span style="color: grey;">khách cũ</span>
                     {{/case}}
-                     {{#case 5}} 
-                     <i style="color: red; font-size:20px;" class="bi bi-youtube"></i>
-                     <span style="color: red;">fanpage</span>
-                     {{/case}}
-                      {{#case 6}} 
-                     <i style="color: #7E1416; font-size:20px;" class="bi bi-globe-asia-australia"></i>
-                     <span style="color: #7E1416ed;">webiste</span>
-                     {{/case}}
+                    {{#case 5}}
+                    <i style="color: red; font-size:20px;" class="bi bi-youtube"></i>
+                    <span style="color: red;">fanpage</span>
+                    {{/case}}
+                    {{#case 6}}
+                    <i style="color: #7E1416; font-size:20px;" class="bi bi-globe-asia-australia"></i>
+                    <span style="color: #7E1416ed;">webiste</span>
+                    {{/case}}
                     {{/switch}}
                 </td>
                 <td>
-                    <div class="text-nowrap text-truncate" style="width: 8rem;">{{{ this.notesCustomer.content }}} </div>
+                    <div class="text-nowrap text-truncate" style="width: 8rem;">{{{ this.notesCustomer.content }}}
+                    </div>
                 </td>
                 <td style="display: flex;">
                     <a class="icon-edit" href="/customer/edit/{{this.id}}">

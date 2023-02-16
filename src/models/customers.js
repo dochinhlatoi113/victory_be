@@ -25,7 +25,9 @@ module.exports = (sequelize, DataTypes) => {
       customers.hasMany(links,{  foreignKey: "modelId",})
       const notescustomer = sequelize.define("notesCustomers");      
       customers.hasOne(notescustomer,{  foreignKey: "customerId"})
-     
+
+      const phones = sequelize.define("phones");
+      customers.hasMany(phones,{  foreignKey: "customerId",})
     }
   }
   customers.init({
@@ -33,7 +35,6 @@ module.exports = (sequelize, DataTypes) => {
     name: DataTypes.STRING,
     sex: DataTypes.INTEGER,
     sex2: DataTypes.INTEGER,
-    phone: DataTypes.STRING,
     dob: DataTypes.STRING,
     dob2: DataTypes.STRING,
     contact: DataTypes.STRING,

@@ -28,9 +28,6 @@ module.exports = {
       sex2:{
         type: Sequelize.INTEGER
       },
-      phone: {
-        type: Sequelize.STRING
-      },
       dob: {
         type: Sequelize.STRING
       },
