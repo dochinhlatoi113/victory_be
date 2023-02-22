@@ -39,6 +39,7 @@ module.exports = (sequelize, DataTypes) => {
     dob2: DataTypes.STRING,
     contact: DataTypes.STRING,
     status: DataTypes.STRING,
+    phone: DataTypes.STRING,
     nameRelation: DataTypes.STRING
   }, {
     sequelize,

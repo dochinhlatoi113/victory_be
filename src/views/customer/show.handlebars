@@ -46,22 +46,29 @@
             </form>
         </div>
     </div>
-  <p>
+    <p>
 
-  <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
-    Button with data-target
-  </button>
-</p>
-<div class="collapse" id="collapseExample">
-  <div class="card card-body">
-    Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident.
-  </div>
-</div>
+        <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapseExample"
+            aria-expanded="false" aria-controls="collapseExample">
+            Tìm kiếm nâng cao
+        </button>
+    </p>
+    <div class="collapse" id="collapseExample">
+        <div class="card card-body">
+            <div class="row">
+               <div class="col-1">
+                    <label>Ngày bắt đầu</label>   <input type="text" id="fromDate"> <br>
+                    <label>Ngày kết thúc</label>   <input type="text" id="toDate">
+              </div>
+            </div>
+        </div>
+    </div>
     <table class="table">
         <thead>
             <tr>
                 <th scope="col">#</th>
                 <th scope="col">Tên khách hàng</th>
+                <th scope="col">Phone</th>
                 <th scope="col">Ngày tháng năm sinh</th>
                 <th scope="col">Chương trình</th>
                 <th scope="col">Email</th>
@@ -77,6 +84,7 @@
                 {{#each lists}}
                 <th scope="row">{{inc @index}}</th>
                 <td>{{this.name}}</td>
+                <td>{{this.phone}}</td>
                 <td>{{this.dob}}</td>
                 <td>
                     {{#each this.programs}}
@@ -191,5 +199,36 @@
                 submitDelete.submit()
             })
         })
+        // filter date
+        var dateFormat = "mm-dd-yy",
+            from = $("#fromDate")
+                .datepicker({
+                    defaultDate: "+1w",
+                    changeMonth: true,
+                    
+                })
+                .on("change", function () {
+                    to.datepicker("option", "minDate", getDate(this));
+                }),
+            to = $("#toDate").datepicker({
+                defaultDate: "+1w",
+                changeMonth: true,
+           
+            })
+                .on("change", function () {
+                    from.datepicker("option", "maxDate", getDate(this));
+                });
+
+        function getDate(element) {
+            var date;
+            try {
+                date = $.datepicker.parseDate(dateFormat, element.value);
+            } catch (error) {
+                date = null;
+            }
+
+            return date;
+        }
+
     });
 </script>

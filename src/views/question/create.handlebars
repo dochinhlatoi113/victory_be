@@ -4,24 +4,27 @@
         {{message}}
     </div>
     {{/if}}
-      {{#each extractedErrors}}
-           <h5 style="color:red">{{this.name}}</h5>  
-        {{/each}}
-    <form action="/qr/store" method="POST">
+    {{#each extractedErrors}}
+    <h5 style="color:red">{{this.name}}</h5>
+    {{/each}}
+    <form action="/qs/store" method="POST">
         <div class="form-group">
             <label for="">Title</label>
-            <input type="text" class="form-control" aria-describedby="emailHelp" placeholder="vd đi canada giá nhiêu ?" name="name">
+            <input type="text" class="form-control" aria-describedby="emailHelp" placeholder="vd đi canada giá nhiêu ?"
+                name="title">
         </div>
-         <div class="form-group">
-            <label for="">Title</label>
-            <input type="text" class="form-control" aria-describedby="emailHelp" placeholder="vd đi canada giá nhiêu ?" name="name">
+        <div class="form-group">
+            <label for="">Danh mục câu hỏi</label>
+            <select class="form-select" aria-label="Default select example" name="cateQs">
+                {{#each list}}
+                <option value="{{this.id}}">{{this.category_name}}</option>
+                {{/each}}
+            </select>
         </div>
-         <div class="form-group">
+        <div class="form-group">
             <label for="">Nội dung câu hỏi</label><br>
-            <textarea id="my-expressjs-tinymce-app"></textarea>
+            <textarea id="my-expressjs-tinymce-app" name="content"></textarea>
         </div>
         <button type="submit" class="btn btn-primary">Submit</button>
     </form>
 </div>
-
-

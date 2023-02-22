@@ -1,44 +1,32 @@
 'use strict';
-const db = require("../models/index")
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('customers', {
+    await queryInterface.createTable('questions', {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      email: {
+      title: {
         type: Sequelize.STRING
       },
-      status: {
+      created_by: {
         type: Sequelize.STRING
       },
-      contact: {
+      content: {
         type: Sequelize.STRING
       },
-      name: {
-        type: Sequelize.STRING
-      },
-      phone: {
-        type: Sequelize.STRING
-      },
-      sex:{
-        type: Sequelize.INTEGER
-      },
-      sex2:{
-        type: Sequelize.INTEGER
-      },
-      dob: {
-        type: Sequelize.STRING
-      },
-      dob2: {
-        type: Sequelize.STRING
-      },
-      nameRelation: {
-        type: Sequelize.STRING
+      category_question_id: {
+        type: Sequelize.INTEGER,
+        onDelete: 'CASCADE',
+        onUpdate:'CASCADE',
+        references: {
+          model: "category_questions",
+          key: 'id',
+          as:'category_questions_id'
+        }
       },
       createdAt: {
         allowNull: false,
@@ -51,6 +39,6 @@ module.exports = {
     });
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable('customers');
+    await queryInterface.dropTable('questions');
   }
 };

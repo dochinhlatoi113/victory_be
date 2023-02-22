@@ -8,10 +8,10 @@ let show = async (req, res) => {
     let offset = (page-1) * itemPerPage
    try {
     if(keyWord != undefined) {
-        let totalItems = await db.departments.count({
+        let totalItems = await db.questions.count({
             where: { name: { [Op.like]: `%${keyWord}%`} },
         })
-        let lists =  await db.departments.findAll({
+        let lists =  await db.questions.findAll({
             where: { name: { [Op.like]: `%${keyWord}%`} },
             limit: itemPerPage,
             offset:offset
@@ -30,10 +30,10 @@ let show = async (req, res) => {
         }
         res.render("../views/question/show.handlebars", data)
     }else{
-        let totalItems = await db.departments.count({
+        let totalItems = await db.questions.count({
           
         })
-        let lists =  await db.departments.findAll({
+        let lists =  await db.questions.findAll({
             limit: itemPerPage,
             offset:offset
         });

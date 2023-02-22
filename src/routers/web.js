@@ -5,6 +5,7 @@ const passport = require('passport');
 const groupController = require('../controller/groupController')
 const permissionController = require('../controller/permissionController')
 const departmentController = require('../controller/departmentController')
+const categoryQsController = require('../controller/categoryQsController')
 const passportJWT = require("../controller/auth/customer/passport")
 const validate = require("../validate/checkvalidator")
 const jwts = require('jsonwebtoken')
@@ -118,11 +119,22 @@ const routerInit = (app) => {
  app.group("/qs", (router) => {
   router.use(loginController.checkAuthenticated)
   router.get('', loginController.checkAuthenticated, qsController.show)
-  router.get('/create', loginController.checkAuthenticated, qsController.create)
+  router.get('/create/', loginController.checkAuthenticated, qsController.create)
   router.get('/edit/:id', loginController.checkAuthenticated, qsController.edit)
   router.post('/store', basevalidator.checkvalidate.validateDepartment, loginController.checkAuthenticated, qsController.store)
   router.post('/update/:id', loginController.checkAuthenticated, basevalidator.checkvalidate.validateDepartment, qsController.update)
-  
+})
+
+ //category qs
+ app.group("/category-qs", (router) => {
+  router.use(loginController.checkAuthenticated)
+  router.get('', loginController.checkAuthenticated, categoryQsController.show)
+  router.get('/create', loginController.checkAuthenticated, categoryQsController.create)
+  router.get('/edit/:id', loginController.checkAuthenticated, categoryQsController.edit)
+  router.post('/store', basevalidator.checkvalidate.validateDepartment, loginController.checkAuthenticated, categoryQsController.store)
+  router.post('/update/:id', loginController.checkAuthenticated, basevalidator.checkvalidate.validateDepartment, categoryQsController.update)
+  router.post('/delete/:id', loginController.checkAuthenticated, categoryQsController.destroy)
+
 })
 
  // category_program

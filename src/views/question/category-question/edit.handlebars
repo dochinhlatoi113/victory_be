@@ -1,0 +1,14 @@
+<div class="container-fluid">
+    {{#if message}}
+    <div class="alert alert-success" role="alert">
+        {{message}}
+    </div>
+    {{/if}}
+    <form action="/category-qs/update/{{id}}" method="POST">
+        <div class="form-group">
+            <label for="exampleInputEmail1">Phòng ban</label>
+            <input type="text" class="form-control" aria-describedby="emailHelp" placeholder="vd phòng thụ lý" name="name" value="{{lists.category_name}}">
+        </div>
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+</div>

@@ -122,7 +122,7 @@ let create = async (req, res) => {
  * @param {store} 
  */
 let store = async (req, res) => {
-   
+  
     try {
         // define array and variable
         let dataCreateCustomer = {
@@ -135,7 +135,8 @@ let store = async (req, res) => {
             email: req.body.email,
             dob2: new Date(req.body.dob2).toLocaleDateString("vi-VI").replace(/\//g, "-"),
             status:req.body.status,
-            contact:req.body.contact
+            contact:req.body.contact,
+            phone:req.body.phoneMain
         }
        
        
@@ -306,7 +307,7 @@ let update = async (req, res) => {
             // define variable 
             let dataCreateCustomer = {
                 name: req.body.name,
-               
+                phone:req.body.phoneMain,
                 sex: req.body.sex,
                 // dob: new Date(req.body.dob).toLocaleDateString("vi"),
                 dob: new Date(req.body.dob).toLocaleDateString("vi-VI").replace(/\//g, "-"),
