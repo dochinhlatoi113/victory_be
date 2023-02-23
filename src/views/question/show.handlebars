@@ -34,14 +34,48 @@
             </button>
         </div>
         <div class="col-sm-10">
-            <div class="input-group mb-3" style="padding-top: 10px;">
-                <input type="text" class="form-control" placeholder="Search ......" aria-label="Recipient's username">
-                <div class="input-group-append">
-                    <span class="input-group-text"><i class="fa fa-search"></i></span>
+            <form action="/qs" method="GET">
+                <div class="input-group mb-3" style="padding-top: 10px;">
+                    <input type="text" class="form-control" placeholder="Search ......"
+                        aria-label="Recipient's username" name="keyWord">
+                    <div class="input-group-append">
+                        <button type="submit"><span class="input-group-text"><i
+                                    class="fa fa-search"></i></span></button>
+                    </div>
                 </div>
-            </div>
+            </form>
         </div>
     </div>
+    <p>
+
+        <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapseExample"
+            aria-expanded="false" aria-controls="collapseExample">
+            Tìm kiếm nâng cao
+        </button>
+    </p>
+    <div class="collapse" id="collapseExample">
+        <div class="card card-body">
+        <form action="/qs"  method="GET">
+            <div class="row">
+                    <div class="col-2">
+                    <label>Lọc theo danh mục</label><br>
+                            <select class="custom-select " id="inlineFormCustomSelect" name="categoryFilter">
+                            {{#each listCategoryQs}}
+                                <option value="{{this.id}}">{{this.category_name}}</option>
+                            {{/each}}
+                        </select>
+                    </div>
+                    <div class="col-2">
+                         <label>Lọc theo từ khóa</label><br>
+                         <input type="text" class="form-control" placeholder="Search ......"
+                        aria-label="Recipient's username" name="keyWordFilter">
+                    </div>
+                </div>
+                <button style="margin-top: 10px;width:10%;" type="submit" class="btn btn-danger">Search</button>
+            </form>
+        </div>
+    </div>
+
     <table class="table">
         <thead>
             <tr>
@@ -49,11 +83,11 @@
                 <th scope="col">danh mục câu hỏi</th>
                 <th scope="col">tiêu đề câu hỏi</th>
                 <th scope="col">nội dung</th>
-                <th scope="col">ngày tạo  
+                <th scope="col">ngày tạo
                     <a style="color:black;" href="/qs?sortBy=asc">
-                        <i class="bi bi-arrow-up"></i> 
+                        <i class="bi bi-arrow-up"></i>
                     </a>
-                    <a  style="color:black;" href="/qs?sortBy=desc">
+                    <a style="color:black;" href="/qs?sortBy=desc">
                         <i class="bi bi-arrow-down"></i>
                     </a>
                 </th>

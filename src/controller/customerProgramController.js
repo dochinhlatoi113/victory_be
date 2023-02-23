@@ -13,9 +13,13 @@ const { readFile } = require("@babel/core/lib/gensync-utils/fs");
  */
 let show = async (req, res) => {
     let keyWord = req.query.keyWord;
-    let itemPerPage = 10;
+    let itemPerPage = 2;
     let page = +req.query.page || 1
     let offset = (page - 1) * itemPerPage
+    let startDate = req.query.start
+    let endDate = req.query.end
+    let status = req.query.status
+    let program = req.query.program
     try {
         if (keyWord != undefined) {
             let totalItems = await db.customers.count({
@@ -63,21 +67,73 @@ let show = async (req, res) => {
             }
             res.render("../views/customer/show.handlebars", data)
         } else {
-
+            let programs = await db.programs.findAll();
             let totalItems = await db.customers.count({
 
             })
+            if (startDate != undefined) {
+               
+                let lists = await db.customers.findAll({
+                    where: {
+                        [Op.or]: [{
+                            createdAt: {
+                                [Op.between]: [startDate, endDate]
+                            }
+                        }, {
+                            createdAt: {
+                                [Op.between]: [startDate, endDate]
+                            }
+                        },
+                        {
+                            status : {
+                                [Op.like]: `%${status}%`
+                            }
+                        },
+                    
+                    ]
+                    },
+                    include: [
+                        {
+                            model: db.notesCustomers,
+                        },
+                        {
+                            model: db.programs
+                        }
+                    ],
+
+
+                    limit: itemPerPage,
+                    offset: offset
+                });
+            
+                let data = {
+                    lists: lists,
+                    currentPage: page,
+                    hasNextPage: (itemPerPage * page) < totalItems,
+                    hasPreviousPage: page > 1,
+                    nextPage: page + 1,
+                    previousPage: page - 1,
+                    startDate:startDate,
+                    endDate:startDate,
+                    status:status,
+                    lastPage: Math.ceil(totalItems / itemPerPage),
+                    message: req.flash('message'),
+                    programs:programs
+
+                }
+                // return res.json(lists)
+                return res.render("../views/customer/show.handlebars", data)
+            }
+
             let lists = await db.customers.findAll({
                 include: [
                     {
                         model: db.notesCustomers,
                     },
                     {
-                        model:db.programs
+                        model: db.programs
                     }
                 ],
-
-
                 limit: itemPerPage,
                 offset: offset
             });
@@ -90,12 +146,12 @@ let show = async (req, res) => {
                 previousPage: page - 1,
                 lastPage: Math.ceil(totalItems / itemPerPage),
                 message: req.flash('message'),
-
+                programs:programs
             }
             // return res.json(lists)
-            res.render("../views/customer/show.handlebars", data)
+            return res.render("../views/customer/show.handlebars", data)
         }
-       
+
     } catch (error) {
         return res.json(error)
     }
@@ -122,7 +178,7 @@ let create = async (req, res) => {
  * @param {store} 
  */
 let store = async (req, res) => {
-  
+
     try {
         // define array and variable
         let dataCreateCustomer = {
@@ -134,12 +190,12 @@ let store = async (req, res) => {
             sex2: req.body.sex2,
             email: req.body.email,
             dob2: new Date(req.body.dob2).toLocaleDateString("vi-VI").replace(/\//g, "-"),
-            status:req.body.status,
-            contact:req.body.contact,
-            phone:req.body.phoneMain
+            status: req.body.status,
+            contact: req.body.contact,
+            phone: req.body.phoneMain
         }
-       
-       
+
+
         /**
           * insert customers 
           */
@@ -162,15 +218,15 @@ let store = async (req, res) => {
             programId: req.body.programs
         }
         let dataCreateChildren = []
-         /**
-              * insert phones into db.phones
-         */
-            let phone = req.body.phone != "" ?  req.body.phone : ""
-         
-          for(let i = 0 ; i < req.body.phone.length ; i++){
-            await db.phones.create({customerId:listCustomer.id,phone:phone[i] });
-          }
-       
+        /**
+             * insert phones into db.phones
+        */
+        let phone = req.body.phone != "" ? req.body.phone : ""
+
+        for (let i = 0; i < req.body.phone.length; i++) {
+            await db.phones.create({ customerId: listCustomer.id, phone: phone[i] });
+        }
+
         /**
          * push array into dataChildren 
          */
@@ -193,11 +249,11 @@ let store = async (req, res) => {
         /**
        * insert links into db.links
        */
-        let links = req.body.links != "" ?  req.body.links : ""
-            for (let i = 0; i < req.body.links.length; i++) {
-                await db.links.create({ modelId: listCustomer.id, model: 'customers', linkFiles: req.body.links[i] });
-            }
-        
+        let links = req.body.links != "" ? req.body.links : ""
+        for (let i = 0; i < req.body.links.length; i++) {
+            await db.links.create({ modelId: listCustomer.id, model: 'customers', linkFiles: req.body.links[i] });
+        }
+
 
         /**
          * insert childrens into db.children
@@ -280,7 +336,7 @@ let edit = async (req, res) => {
  * @param {*} res 
  */
 let update = async (req, res) => {
-  
+
     try {
         let id = req.params.id
         let idMedias = req.body.idMedias
@@ -307,7 +363,7 @@ let update = async (req, res) => {
             // define variable 
             let dataCreateCustomer = {
                 name: req.body.name,
-                phone:req.body.phoneMain,
+                phone: req.body.phoneMain,
                 sex: req.body.sex,
                 // dob: new Date(req.body.dob).toLocaleDateString("vi"),
                 dob: new Date(req.body.dob).toLocaleDateString("vi-VI").replace(/\//g, "-"),
@@ -315,11 +371,11 @@ let update = async (req, res) => {
                 sex2: req.body.sex2,
                 email: req.body.email,
                 dob2: new Date(req.body.dob2).toLocaleDateString("vi-VI").replace(/\//g, "-"),
-                status:req.body.status,
-                contact:req.body.contact
+                status: req.body.status,
+                contact: req.body.contact
             }
-            
-            
+
+
             let dataChildren = [
                 {
                     name: req.body.childrenName,
@@ -346,25 +402,25 @@ let update = async (req, res) => {
                 dataCreateCustomer,
                 { where: { id: id } },
             );
-            if(req.body.phone != ""){
+            if (req.body.phone != "") {
                 await db.phones.destroy(
-                    { where: { customerId:id } }
+                    { where: { customerId: id } }
                 )
-                for(let i = 0 ; i < req.body.phone.length ; i++){
+                for (let i = 0; i < req.body.phone.length; i++) {
                     await db.phones.create(
                         {
-                            phone:req.body.phone[i],
-                            customerId:id
+                            phone: req.body.phone[i],
+                            customerId: id
                         },
                     )
                 }
             }
-        
-           
+
+
             /**
             * update and create childrens into db.childrens
             */
-           
+
             if (req.body.childrenName != "") {
                 await db.childrens.destroy(
                     { where: { customerId: id } }
@@ -375,9 +431,9 @@ let update = async (req, res) => {
                     }
                 }
                 await db.childrens.bulkCreate(dataCreateChildren)
-            } 
-           
-            
+            }
+
+
             /**
             * update notes into db.notesCustomers
             */
@@ -386,7 +442,7 @@ let update = async (req, res) => {
             } else {
                 await db.notesCustomers.update({ customerId: id, content: "NULL" }, { where: { customerId: id } })
             }
-         
+
             /**
             * update links into db.links
             */
@@ -398,7 +454,7 @@ let update = async (req, res) => {
                     await db.links.create({ modelId: id, model: 'customers', linkFiles: req.body.links[i] });
                 }
             }
-         
+
             /**
               * update files into db.medias
               */
@@ -410,8 +466,8 @@ let update = async (req, res) => {
              */
             await db.customer_programs.update(dataCustomerPrograms, { where: { customerId: id } })
             req.flash('message', 'saved successfully');
-          
-             return res.redirect('back');
+
+            return res.redirect('back');
         }
 
 
@@ -483,7 +539,7 @@ let deleteMedias = async (req, res) => {
 let deleteLinks = async (req, res) => {
     let id = req.params.idDelete
     let modelId = req.body.modelId
-  
+
     try {
         await db.links.destroy(
             { where: { id: id, model: "customers" } }
@@ -494,15 +550,15 @@ let deleteLinks = async (req, res) => {
                 model: "customers"
             }
         });
-        
-        if(count == 0){
+
+        if (count == 0) {
             await db.links.create({
-                modelId:modelId,
+                modelId: modelId,
                 model: "customers",
-                linkFiles:""
+                linkFiles: ""
             })
         }
-       
+
         req.flash('message', 'delete successfully');
         res.redirect('back')
     } catch (error) {
@@ -516,26 +572,26 @@ let deleteLinks = async (req, res) => {
  * @param {*} res 
  */
 let deletePhone = async (req, res) => {
-     let idPhone = req.params.idPhone
-     let id = req.params.idCustomer
+    let idPhone = req.params.idPhone
+    let id = req.params.idCustomer
 
     try {
         await db.phones.destroy(
-            { where: { id: idPhone }}
+            { where: { id: idPhone } }
         )
         const count = await db.phones.count({
             where: {
-                customerId:id,
+                customerId: id,
             }
-        });  
-        if(count == 0){
+        });
+        if (count == 0) {
             await db.phones.create(
                 {
-                    customerId:id,
-                    phone:""
+                    customerId: id,
+                    phone: ""
                 }
             )
-        }    
+        }
         req.flash('message', 'delete successfully');
         res.redirect('back')
     } catch (error) {
@@ -544,7 +600,7 @@ let deletePhone = async (req, res) => {
 }
 
 module.exports = {
-    show, create, store, edit, update, destroy, deleteMedias, deleteLinks,deletePhone
+    show, create, store, edit, update, destroy, deleteMedias, deleteLinks, deletePhone
 }
 
 

@@ -123,6 +123,8 @@ const routerInit = (app) => {
   router.get('/edit/:id', loginController.checkAuthenticated, qsController.edit)
   router.post('/store', basevalidator.checkvalidate.validateDepartment, loginController.checkAuthenticated, qsController.store)
   router.post('/update/:id', loginController.checkAuthenticated, basevalidator.checkvalidate.validateDepartment, qsController.update)
+  router.post('/delete/:id', loginController.checkAuthenticated, qsController.destroy)
+
 })
 
  //category qs
