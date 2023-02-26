@@ -21,52 +21,7 @@ let show = async (req, res) => {
     let status = req.query.status
     let program = req.query.program
     try {
-        if (keyWord != undefined) {
-            let totalItems = await db.customers.count({
-                where: {
-                    [Op.or]: [{
-                        name: {
-                            [Op.like]: `%${keyWord}%`
-                        }
-                    },
-                    {
-                        phone: {
-                            [Op.like]: `%${keyWord}%`
-                        }
-                    }
-                    ]
-                }
-            })
-            let lists = await db.customers.findAll({
-                where: {
-                    [Op.or]: [{
-                        name: {
-                            [Op.like]: `%${keyWord}%`
-                        }
-                    },
-                    {
-                        phone: {
-                            [Op.like]: `%${keyWord}%`
-                        }
-                    }
-                    ]
-                },
-                limit: itemPerPage,
-                offset: offset
-            });
-            let data = {
-                lists: lists,
-                currentPage: page,
-                hasNextPage: (itemPerPage * page) < totalItems,
-                hasPreviousPage: page > 1,
-                nextPage: page + 1,
-                keyWord: keyWord,
-                previousPage: page - 1,
-                lastPage: Math.ceil(totalItems / itemPerPage),
-                message: req.flash('message')
-            }
-            res.render("../views/customer/show.handlebars", data)
-        } else {
+      
             let programs = await db.programs.findAll();
             let totalItems = await db.customers.count({
 
@@ -150,7 +105,7 @@ let show = async (req, res) => {
             }
             // return res.json(lists)
             return res.render("../views/customer/show.handlebars", data)
-        }
+        
 
     } catch (error) {
         return res.json(error)
