@@ -62,6 +62,15 @@
                            <label>Ngày bắt đầu</label>  <input type="text" id="from" name="start" class="form-control"> 
                              <label>Ngày kết thúc </label>    <input type="text" id="to" name="end" class="form-control">
                     </div>
+                     <div class="col-3">
+                           <label>Lọc theo chương trình</label> 
+                            <select class="custom-select " id="inlineFormCustomSelect" name="program">
+                                   <option>Tất cả </option>
+                                    {{#each programs}}
+                                         <option value="{{this.id}}">{{this.name}}</option>
+                                    {{/each}}
+                            </select>
+                    </div> 
                       <div class="col-3">
                         <label>Lọc theo trạng thái</label><br>
                            <select class="custom-select " id="inlineFormCustomSelect" name="status">
@@ -74,7 +83,7 @@
                                 <option value="5">không tiếp cận được</option>
                             </select>
                     </div>
-                    <div class="col-4">
+                    <div class="col-3">
                          <label>Lọc theo tên </label><br>
                          <input type="text" class="form-control" placeholder="Search ......"
                         aria-label="Recipient's username" name="keyWord">

@@ -23,11 +23,11 @@ let show = async (req, res) => {
     try {
       
             let programs = await db.programs.findAll();
-            let totalItems = await db.customers.count({
+            let totalItems = await db.customers.count({    
 
             })
-            if (startDate != undefined) {
-               
+            if (startDate != undefined || program != undefined || status != undefined) {
+                                 
                 let lists = await db.customers.findAll({
                     where: {
                         [Op.or]: [{
@@ -44,6 +44,7 @@ let show = async (req, res) => {
                                 [Op.like]: `%${status}%`
                             }
                         },
+                        
                     
                     ]
                     },
@@ -52,7 +53,11 @@ let show = async (req, res) => {
                             model: db.notesCustomers,
                         },
                         {
-                            model: db.programs
+                            model: db.programs,
+                            
+                            where: {
+                                id: { [Op.like]: `%${program}%` }
+                            },
                         }
                     ],
 

@@ -15,10 +15,10 @@ module.exports = (sequelize, DataTypes) => {
       const customers = sequelize.define('customers');
       const programs = sequelize.define('programs');
       customers.belongsToMany(programs, {
-        through: customer_programs, as: 'customerId', onDelete: 'cascade', onUpdate: 'CASCADE',
+        through: customer_programs, onDelete: 'cascade', onUpdate: 'CASCADE',
       });
       programs.belongsToMany(customers, {
-        through: customer_programs, as: 'programId', onDelete: 'cascade', onUpdate: 'CASCADE',
+        through: customer_programs, onDelete: 'cascade', onUpdate: 'CASCADE',
       });
     }
   }
