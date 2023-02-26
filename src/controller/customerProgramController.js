@@ -221,10 +221,12 @@ let store = async (req, res) => {
         /**
              * insert phones into db.phones
         */
-        let phone = req.body.phone != "" ? req.body.phone : ""
-
-        for (let i = 0; i < req.body.phone.length; i++) {
-            await db.phones.create({ customerId: listCustomer.id, phone: phone[i] });
+        if(req.body.phone  != undefined) {
+            let phone = req.body.phone == "" ? "" : req.body.phone
+        
+            for (let i = 0; i < req.body.phone.length; i++) {
+                await db.phones.create({ customerId: listCustomer.id, phone: phone[i] });
+            }
         }
 
         /**
