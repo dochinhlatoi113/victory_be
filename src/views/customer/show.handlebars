@@ -65,7 +65,7 @@
                      <div class="col-3">
                            <label>Lọc theo chương trình</label> 
                             <select class="custom-select " id="inlineFormCustomSelect" name="program">
-                                   <option>Tất cả </option>
+                                   <option  value="">All</option>
                                     {{#each programs}}
                                          <option value="{{this.id}}">{{this.name}}</option>
                                     {{/each}}
@@ -74,7 +74,7 @@
                       <div class="col-3">
                         <label>Lọc theo trạng thái</label><br>
                            <select class="custom-select " id="inlineFormCustomSelect" name="status">
-                                <option>Tất cả </option>
+                                <option  value="">All</option>
                                 <option value="0">đã ký hợp đồng</option>
                                 <option value="1">rất tiềm năng</option>
                                 <option value="2">quan tâm</option>

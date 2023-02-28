@@ -1,24 +1,21 @@
 'use strict';
-const customers = require("../models/index")
-const {
-  Model
-} = require('sequelize');
-const db = require(".");
+const { Model } = require('sequelize');
+
 module.exports = (sequelize, DataTypes) => {
   class customer_programs extends Model {
-    /**
-     * Helper method for defining associations.
-     * This method is not a part of Sequelize lifecycle.
-     * The `models/index` file will call this method automatically.
-     */
     static associate(models) {
-      const customers = sequelize.define('customers');
-      const programs = sequelize.define('programs');
+      const { customers, programs } = models;
       customers.belongsToMany(programs, {
-        through: customer_programs, onDelete: 'cascade', onUpdate: 'CASCADE',
+        through: customer_programs,
+        onDelete: 'cascade',
+        onUpdate: 'CASCADE',
+        foreignKey: 'customerId'
       });
       programs.belongsToMany(customers, {
-        through: customer_programs, onDelete: 'cascade', onUpdate: 'CASCADE',
+        through: customer_programs,
+        onDelete: 'cascade',
+        onUpdate: 'CASCADE',
+        foreignKey: 'programId'
       });
     }
   }

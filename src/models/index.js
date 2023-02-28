@@ -37,7 +37,7 @@ db.sequelize = sequelize;
 db.Sequelize = Sequelize;
 
 
-db.customers.belongsToMany(db.programs, { through: 'customer_programs' });
-db.programs.belongsToMany(db.customers, { through: 'customer_programs' });
+// db.customers.belongsToMany(db.programs, { through: 'customer_programs' });
+// db.programs.belongsToMany(db.customers, { through: 'customer_programs' });
 
 module.exports = db;

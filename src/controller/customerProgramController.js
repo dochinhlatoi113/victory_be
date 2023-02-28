@@ -5,7 +5,7 @@ const moment = require("moment");
 const uploadFileController = require("../controller/uploadFile/uploadFileController")
 const regexPhoneNumber = require("../helper/phone");
 const e = require("connect-flash");
-const { readFile } = require("@babel/core/lib/gensync-utils/fs");
+const { readFile, stat } = require("@babel/core/lib/gensync-utils/fs");
 /**
  * 
  * @param {keyword,itemPerPage,page,offset} req 
@@ -14,108 +14,76 @@ const { readFile } = require("@babel/core/lib/gensync-utils/fs");
 let show = async (req, res) => {
     let keyWord = req.query.keyWord;
     let itemPerPage = 2;
-    let page = +req.query.page || 1
-    let offset = (page - 1) * itemPerPage
-    let startDate = req.query.start
-    let endDate = req.query.end
-    let status = req.query.status
-    let program = req.query.program
+    let page = +req.query.page || 1;
+    let offset = (page - 1) * itemPerPage;
+    let startDate = req.query.start;
+    let endDate = req.query.end;
+    let status = req.query.status;
+    let program = req.query.program;
+    let regexStatusNumber = new RegExp('^[0-9]+$').test(status);
+    let regexProgramNumber = new RegExp('^[0-9]+$').test(program);
+
     try {
-      
-            let programs = await db.programs.findAll();
-            let totalItems = await db.customers.count({    
+        let programs = await db.programs.findAll();
+        let whereClause = {};
 
-            })
-            if (startDate != undefined || program != undefined || status != undefined) {
-                                 
-                let lists = await db.customers.findAll({
-                    where: {
-                        [Op.or]: [{
-                            createdAt: {
-                                [Op.between]: [startDate, endDate]
-                            }
-                        }, {
-                            createdAt: {
-                                [Op.between]: [startDate, endDate]
-                            }
-                        },
-                        {
-                            status : {
-                                [Op.like]: `%${status}%`
-                            }
-                        },
-                        
-                    
-                    ]
-                    },
-                    include: [
-                        {
-                            model: db.notesCustomers,
-                        },
-                        {
-                            model: db.programs,
-                            
-                            where: {
-                                id: { [Op.like]: `%${program}%` }
-                            },
-                        }
-                    ],
+        if (startDate || endDate) {
+            whereClause.createdAt = {};
+            if (startDate) {
+                whereClause.createdAt[Op.gte] = startDate;
+            }
+            if (endDate) {
+                whereClause.createdAt[Op.lte] = endDate;
+            }
+        }
 
+        if (status && regexStatusNumber) {
+            whereClause.status = status;
+        }
 
-                    limit: itemPerPage,
-                    offset: offset
-                });
-            
-                let data = {
-                    lists: lists,
-                    currentPage: page,
-                    hasNextPage: (itemPerPage * page) < totalItems,
-                    hasPreviousPage: page > 1,
-                    nextPage: page + 1,
-                    previousPage: page - 1,
-                    startDate:startDate,
-                    endDate:startDate,
-                    status:status,
-                    lastPage: Math.ceil(totalItems / itemPerPage),
-                    message: req.flash('message'),
-                    programs:programs
+        if (program && regexProgramNumber) {
+            whereClause.id = program;
+        }
 
+        let totalItems = await db.customers.count({
+            where: whereClause
+        });
+
+        let lists = await db.customers.findAll({
+            include: [
+                {
+                    model: db.notesCustomers,
+                },
+                {
+                    model: db.programs,
                 }
-                // return res.json(lists)
-                return res.render("../views/customer/show.handlebars", data)
-            }
+            ],
+            where: whereClause,
+            limit: itemPerPage,
+            offset: offset
+        });
 
-            let lists = await db.customers.findAll({
-                include: [
-                    {
-                        model: db.notesCustomers,
-                    },
-                    {
-                        model: db.programs
-                    }
-                ],
-                limit: itemPerPage,
-                offset: offset
-            });
-            let data = {
-                lists: lists,
-                currentPage: page,
-                hasNextPage: (itemPerPage * page) < totalItems,
-                hasPreviousPage: page > 1,
-                nextPage: page + 1,
-                previousPage: page - 1,
-                lastPage: Math.ceil(totalItems / itemPerPage),
-                message: req.flash('message'),
-                programs:programs
-            }
-            // return res.json(lists)
-            return res.render("../views/customer/show.handlebars", data)
-        
+        let data = {
+            lists: lists,
+            currentPage: page,
+            hasNextPage: (itemPerPage * page) < totalItems,
+            hasPreviousPage: page > 1,
+            nextPage: page + 1,
+            previousPage: page - 1,
+            startDate: startDate,
+            endDate: endDate,
+            status: status,
+            lastPage: Math.ceil(totalItems / itemPerPage),
+            message: req.flash('message'),
+            programs: programs,
+            keyWord: keyWord
+        };
 
+        return res.render("../views/customer/show.handlebars", data);
     } catch (error) {
-        return res.json(error)
+        return res.json(error);
     }
-}
+};
 /**
  * 
  * @param {*} req 
@@ -181,9 +149,9 @@ let store = async (req, res) => {
         /**
              * insert phones into db.phones
         */
-        if(req.body.phone  != undefined) {
+        if (req.body.phone != undefined) {
             let phone = req.body.phone == "" ? "" : req.body.phone
-        
+
             for (let i = 0; i < req.body.phone.length; i++) {
                 await db.phones.create({ customerId: listCustomer.id, phone: phone[i] });
             }
