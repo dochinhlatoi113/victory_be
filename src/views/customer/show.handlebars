@@ -50,43 +50,43 @@
         <div class="card card-body">
             <form action="/customer/" method="GET">
                 <div class="row">
-                      {{!-- <div class="col-2">
-                           <label>Lọc theo chương trình</label> 
-                            <select class="custom-select " id="inlineFormCustomSelect" name="program">
-                                    {{#each programs}}
-                                         <option value="{{this.id}}">{{this.name}}</option>
-                                    {{/each}}
-                            </select>
+                    {{!-- <div class="col-2">
+                        <label>Lọc theo chương trình</label>
+                        <select class="custom-select " id="inlineFormCustomSelect" name="program">
+                            {{#each programs}}
+                            <option value="{{this.id}}">{{this.name}}</option>
+                            {{/each}}
+                        </select>
                     </div> --}}
                     <div class="col-3">
-                           <label>Ngày bắt đầu</label>  <input type="text" id="from" name="start" class="form-control"> 
-                             <label>Ngày kết thúc </label>    <input type="text" id="to" name="end" class="form-control">
-                    </div>
-                     <div class="col-3">
-                           <label>Lọc theo chương trình</label> 
-                            <select class="custom-select " id="inlineFormCustomSelect" name="program">
-                                   <option  value="">All</option>
-                                    {{#each programs}}
-                                         <option value="{{this.id}}">{{this.name}}</option>
-                                    {{/each}}
-                            </select>
-                    </div> 
-                      <div class="col-3">
-                        <label>Lọc theo trạng thái</label><br>
-                           <select class="custom-select " id="inlineFormCustomSelect" name="status">
-                                <option  value="">All</option>
-                                <option value="0">đã ký hợp đồng</option>
-                                <option value="1">rất tiềm năng</option>
-                                <option value="2">quan tâm</option>
-                                <option value="3">không quan tâm</option>
-                                <option value="4">không nghe máy</option>
-                                <option value="5">không tiếp cận được</option>
-                            </select>
+                        <label>Ngày bắt đầu</label> <input type="text" id="from" name="start" class="form-control">
+                        <label>Ngày kết thúc </label> <input type="text" id="to" name="end" class="form-control">
                     </div>
                     <div class="col-3">
-                         <label>Lọc theo tên </label><br>
-                         <input type="text" class="form-control" placeholder="Search ......"
-                        aria-label="Recipient's username" name="keyWord">
+                        <label>Lọc theo chương trình</label>
+                        <select class="custom-select " id="inlineFormCustomSelect" name="program">
+                            <option value="">All</option>
+                            {{#each programs}}
+                            <option value="{{this.id}}">{{this.name}}</option>
+                            {{/each}}
+                        </select>
+                    </div>
+                    <div class="col-3">
+                        <label>Lọc theo trạng thái</label><br>
+                        <select class="custom-select " id="inlineFormCustomSelect" name="status">
+                            <option value="">All</option>
+                            <option value="0">đã ký hợp đồng</option>
+                            <option value="1">rất tiềm năng</option>
+                            <option value="2">quan tâm</option>
+                            <option value="3">không quan tâm</option>
+                            <option value="4">không nghe máy</option>
+                            <option value="5">không tiếp cận được</option>
+                        </select>
+                    </div>
+                    <div class="col-3">
+                        <label>Lọc theo tên </label><br>
+                        <input type="text" class="form-control" placeholder="Search ......"
+                            aria-label="Recipient's username" name="keyWord">
                     </div>
                 </div>
                 <button style="margin-top: 10px;width:10%;" type="submit" class="btn btn-danger">Search</button>
@@ -172,7 +172,7 @@
                     {{/case}}
                     {{/switch}}
                 </td>
-                 <td>{{formatDate this.createdAt "short"}}</td>
+                <td>{{formatDate this.createdAt "short"}}</td>
                 <td>
                     <div class="text-nowrap text-truncate" style="width: 8rem;">{{{ this.notesCustomer.content }}}
                     </div>
@@ -200,23 +200,33 @@
     <div class="container mt-4">
         <nav aria-label="Page navigation example">
             <ul class="pagination justify-content-center">
-                {{#if hasPreviousPage}}
-                <li class="page-item">
-                    <a class="page-link" href="?page=1&start={{startDate}}&end={{endDate}}&status={{status}}&keyWord={{keyWord}}&program={{programs}}">1</a>
-                </li>
-                {{/if}}
-                <li class="page-item active">
-                    <a class="page-link" href="?page={{currentPage}}&start={{startDate}}&end={{endDate}}&status={{status}}&keyWord={{keyWord}}&program={{programs}}">{{currentPage}}</a>
-                </li>
-                {{#if hasNextPage}}
-                <li class="page-item">
-                    <a class="page-link"
-                        href="?page={{nextPage}}&start={{startDate}}&end={{endDate}}&status={{status}}&keyWord={{keyWord}}&program={{programs}}">{{nextPage}}</a>
-                </li>
-                {{/if}}
+             
+                    {{#if hasPreviousPage}}
+                    <li class="page-item">
+                        <a class="page-link"
+                            href="?page={{previousPage}}&start={{startDate}}&end={{endDate}}&program={{program}}&status={{status}}&keyWord={{keyWord}}">Pre</a>
+                    </li>
+                    {{/if}}
+                    <li class="page-item active">
+                        <a class="page-link"
+                            href="?page={{currentPage}}&start={{startDate}}&end={{endDate}}&program={{program}}&status={{status}}&keyWord={{keyWord}}">{{currentPage}}</a>
+                    </li>
+                    {{#if hasNextPage}}
+                    <li class="page-item">
+                        <a class="page-link"
+                            href="?page={{nextPage}}&start={{startDate}}&end={{endDate}}&program={{program}}&status={{status}}&keyWord={{keyWord}}">Next</a>
+                    </li>
+                    {{/if}}
+                
             </ul>
-        </nav> 
+
+        </nav>
     </div>
+
+</div>
+
+
+
 </div>
 <script>
     $(document).ready(function () {
@@ -232,24 +242,24 @@
             })
         })
         // filter date
-       jQuery("#from").datepicker({
-        dateFormat: 'yy-mm-dd',
-        changeMonth: true,
-        changeYear: true,
-        maxDate: '0',
-        onClose: function( selectedDate ) {
-        jQuery( "#to" ).datepicker( "option", "minDate", selectedDate );
-        }
-    });
-    jQuery("#to").datepicker({
-        dateFormat: 'yy-mm-dd',
-        changeMonth: true,
-        changeYear: true,
-        maxDate: '0',
-        onClose: function( selectedDate ) {
-        jQuery( "#from" ).datepicker( "option", "maxDate", selectedDate );
-        }
-    });
+        jQuery("#from").datepicker({
+            dateFormat: 'yy-mm-dd',
+            changeMonth: true,
+            changeYear: true,
+            maxDate: '0',
+            onClose: function (selectedDate) {
+                jQuery("#to").datepicker("option", "minDate", selectedDate);
+            }
+        });
+        jQuery("#to").datepicker({
+            dateFormat: 'yy-mm-dd',
+            changeMonth: true,
+            changeYear: true,
+            maxDate: '0',
+            onClose: function (selectedDate) {
+                jQuery("#from").datepicker("option", "maxDate", selectedDate);
+            }
+        });
 
     });
 </script>

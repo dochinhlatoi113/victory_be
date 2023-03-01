@@ -9,7 +9,8 @@ module.exports = (sequelize, DataTypes) => {
         through: customer_programs,
         onDelete: 'cascade',
         onUpdate: 'CASCADE',
-        foreignKey: 'customerId'
+        foreignKey: 'customerId',
+        
       });
       programs.belongsToMany(customers, {
         through: customer_programs,

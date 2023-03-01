@@ -6,6 +6,7 @@ const uploadFileController = require("../controller/uploadFile/uploadFileControl
 const regexPhoneNumber = require("../helper/phone");
 const e = require("connect-flash");
 const { readFile, stat } = require("@babel/core/lib/gensync-utils/fs");
+const customer_programs = require("../models/customer_programs");
 /**
  * 
  * @param {keyword,itemPerPage,page,offset} req 
@@ -14,27 +15,40 @@ const { readFile, stat } = require("@babel/core/lib/gensync-utils/fs");
 let show = async (req, res) => {
     let keyWord = req.query.keyWord;
     let itemPerPage = 2;
-    let page = +req.query.page || 1;
+    let page = +req.query.page || 1
     let offset = (page - 1) * itemPerPage;
     let startDate = req.query.start;
     let endDate = req.query.end;
     let status = req.query.status;
-    let program = req.query.program;
+    let program = req.query.program || null;
     let regexStatusNumber = new RegExp('^[0-9]+$').test(status);
     let regexProgramNumber = new RegExp('^[0-9]+$').test(program);
 
     try {
         let programs = await db.programs.findAll();
         let whereClause = {};
+        let includeClause = [{ model: db.notesCustomers, }, {
+            model: db.programs, as: 'programs', through: {
+                attributes: []
+            }
+        }
+        ];
+
+        // Thêm filter search vào whereClause
+        if (keyWord) {
+            whereClause = {
+                [Op.or]: [
+                    { name: { [Op.substring]: keyWord } },
+                    { email: { [Op.substring]: keyWord } },
+                    { phone: { [Op.substring]: keyWord } },
+                ]
+            };
+        }
 
         if (startDate || endDate) {
             whereClause.createdAt = {};
-            if (startDate) {
-                whereClause.createdAt[Op.gte] = startDate;
-            }
-            if (endDate) {
-                whereClause.createdAt[Op.lte] = endDate;
-            }
+
+            whereClause.createdAt[Op.between] = [startDate, endDate];
         }
 
         if (status && regexStatusNumber) {
@@ -42,22 +56,19 @@ let show = async (req, res) => {
         }
 
         if (program && regexProgramNumber) {
-            whereClause.id = program;
+            if (!includeClause[1]) {
+                includeClause[1] = {};
+            }
+            includeClause[1].where = [{ id: program }];
         }
 
         let totalItems = await db.customers.count({
             where: whereClause
+
         });
 
         let lists = await db.customers.findAll({
-            include: [
-                {
-                    model: db.notesCustomers,
-                },
-                {
-                    model: db.programs,
-                }
-            ],
+            include: includeClause,
             where: whereClause,
             limit: itemPerPage,
             offset: offset
@@ -69,14 +80,17 @@ let show = async (req, res) => {
             hasNextPage: (itemPerPage * page) < totalItems,
             hasPreviousPage: page > 1,
             nextPage: page + 1,
+            keyWord: keyWord,
             previousPage: page - 1,
+            lastPage: Math.ceil(totalItems / itemPerPage),
             startDate: startDate,
             endDate: endDate,
             status: status,
-            lastPage: Math.ceil(totalItems / itemPerPage),
             message: req.flash('message'),
             programs: programs,
-            keyWord: keyWord
+            keyWord: keyWord,
+            program: program,
+            totalItems: totalItems
         };
 
         return res.render("../views/customer/show.handlebars", data);
@@ -84,6 +98,9 @@ let show = async (req, res) => {
         return res.json(error);
     }
 };
+
+
+
 /**
  * 
  * @param {*} req 

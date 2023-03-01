@@ -78,7 +78,7 @@ const configView = (app) => {
                     if (this.switch_break == false) {
                       return value;
                     }
-                 }   
+                 },   
                 
             },
         }));
