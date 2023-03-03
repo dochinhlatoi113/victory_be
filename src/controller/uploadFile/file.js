@@ -3,7 +3,8 @@ const { nextTick } = require("process");
 let path = require("path");
 const { Model } = require("sequelize");
 const { Module } = require("module");
-
+const Excel = require('exceljs');
+const db = require("../../models/index");
 // const upload = multer({ dest:'../public/image/fileCustomer' })
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {

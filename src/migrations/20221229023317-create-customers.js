@@ -40,6 +40,9 @@ module.exports = {
       nameRelation: {
         type: Sequelize.STRING
       },
+      emailSale: {
+        type: Sequelize.STRING
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE
