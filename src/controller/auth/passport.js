@@ -10,35 +10,35 @@ let LocalStrategy = passportLocal.Strategy;
     passReqToCallback: true
   }, async (req, email, password, done)=> {
     try {
-        $arrUserInfo = "";
-        const user = await db.user_permission.findOne({ 
-              include:[{
-                model:db.departments
-            },
-            {
-                model:db.permissions
-            },
-            {
-                model:db.Admin
-            }],
-              where: { 
-                '$Admin.email$': req.body.email 
-          
-                } 
-        });
-     
-          if (user.Admin.email === req.body.email && user.Admin.password === req.body.password) {
-            return done(null, {
-              email,
-              departmentsId : user.department.id,
-              departments:user.department.name,
-              permission:user.permission.name,
-              userId:user.userId,
-              active: true
-          })          
-          } else {
-            return done(null, false)
-          }       
+      const userPermissions = await db.user_permission.findAll({ 
+        include:[
+        {
+          model:db.Admin
+        } , 
+        {
+          model: db.departments
+        }, {
+          model: db.permissions
+        }],
+        where: { 
+          '$Admin.email$': req.body.email,
+          '$Admin.password$': req.body.password 
+        } 
+      });
+      
+      const permissions = userPermissions.map((userPermission) => {
+        return userPermission.permission.name.trim();
+      });
+      
+      return done(null, {
+        email,
+        departmentsId : userPermissions[0].department.id,
+        departments: userPermissions[0].department.name,
+        permission: permissions,
+        userId: userPermissions[0].userId,
+        active: true
+      });
+        
     } catch (error) {
       console.log(error);
       return done(null, false,{message:'data not '});

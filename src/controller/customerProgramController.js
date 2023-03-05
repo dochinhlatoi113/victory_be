@@ -120,7 +120,7 @@ let show = async (req, res) => {
  * @param {view} res 
  */
 let create = async (req, res) => {
-
+    return res.json(req.user)
     let lists = await db.programs.findAll();
     let sales = await db.Admin.findAll()
 
@@ -139,42 +139,42 @@ let create = async (req, res) => {
  * @param {store} 
  */
 let store = async (req, res) => {
-    try {
-        const workbook = new Excel.Workbook();
-        await workbook.xlsx.readFile(req.files[0].path);
+    // try {
+    // //     const workbook = new Excel.Workbook();
+    // //     await workbook.xlsx.readFile(req.files[0].path);
     
-        const worksheet = workbook.getWorksheet(1);
-        const rows = worksheet.getRows(2, worksheet.rowCount);
+    // //     const worksheet = workbook.getWorksheet(1);
+    // //     const rows = worksheet.getRows(2, worksheet.rowCount);
     
-        for (const row of rows) {
-          const customer = await db.customers.create({
-            name: row.getCell(1).value,
-            phone: row.getCell(2).value ?  row.getCell(2).value : 0 ,
-            email: row.getCell(3).value ? row.getCell(3).value : "không email",
-            contact: row.getCell(8).value ?  row.getCell(8).value : 2,
-            status: row.getCell(6).value,
-            emailSale: row.getCell(7).value,
-            createdAt: row.getCell(10).value,
-            updatedAt: row.getCell(11).value,
+    // //     for (const row of rows) {
+    // //       const customer = await db.customers.create({
+    // //         name: row.getCell(1).value,
+    // //         phone: row.getCell(2).value ?  row.getCell(2).value : 0 ,
+    // //         email: row.getCell(3).value ? row.getCell(3).value : "không email",
+    // //         contact: row.getCell(8).value ?  row.getCell(8).value : 2,
+    // //         status: row.getCell(6).value,
+    // //         emailSale: row.getCell(7).value,
+    // //         createdAt: row.getCell(10).value,
+    // //         updatedAt: row.getCell(11).value,
             
-        });
+    // //     });
     
-          await db.customer_programs.create({
-            programId: row.getCell(4).value,
-            customerId: customer.id
-          });
+    // //       await db.customer_programs.create({
+    // //         programId: row.getCell(4).value,
+    // //         customerId: customer.id
+    // //       });
 
-          await db.notesCustomers.create({
-            customerId:customer.id,
-            content: row.getCell(5).value
-          })
-        }
+    // //       await db.notesCustomers.create({
+    // //         customerId:customer.id,
+    // //         content: row.getCell(5).value
+    // //       })
+    // //     }
     
-        res.send('Data imported successfully');
-      } catch (error) {
-        console.error(error);
-        res.status(500).send('Error importing data');
-      }
+    // //     res.send('Data imported successfully');
+    // //   } catch (error) {
+    // //     console.error(error);
+    // //     res.status(500).send('Error importing data');
+    // //   }
 
   
     ///////////////////////////////    
