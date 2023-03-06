@@ -79,7 +79,15 @@ const configView = (app) => {
                       return value;
                     }
                  },   
-                
+                 arrayIncludes:function (array, element, options) {
+                    if (array.indexOf(element) !== -1) {
+                      return options.fn(this);
+                    }
+                    return options.inverse(this);
+                  },
+                  eq:function(a, b) {
+                    return a == b;
+                  }
             },
         }));
     app.set('view engine', 'handlebars');

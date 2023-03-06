@@ -10,7 +10,7 @@ let LocalStrategy = passportLocal.Strategy;
     passReqToCallback: true
   }, async (req, email, password, done)=> {
     try {
-      const userPermissions = await db.user_permission.findAll({ 
+      const user = await db.user_permission.findAll({ 
         include:[
         {
           model:db.Admin
@@ -26,16 +26,16 @@ let LocalStrategy = passportLocal.Strategy;
         } 
       });
       
-      const permissions = userPermissions.map((userPermission) => {
+      const permissions = user.map((userPermission) => {
         return userPermission.permission.name.trim();
       });
       
       return done(null, {
         email,
-        departmentsId : userPermissions[0].department.id,
-        departments: userPermissions[0].department.name,
+        departmentsId : user[0].department.id,
+        departments: user[0].department.name,
         permission: permissions,
-        userId: userPermissions[0].userId,
+        userId: user[0].userId,
         active: true
       });
         

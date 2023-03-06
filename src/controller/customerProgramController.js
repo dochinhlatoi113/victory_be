@@ -102,8 +102,8 @@ let show = async (req, res) => {
             keyWord: keyWord,
             program: program,
             totalItems: totalItems,
-            totalPages:totalPages,
-            firstPageUrl: firstPageUrl 
+            totalPages: totalPages,
+            firstPageUrl: firstPageUrl
         };
 
         return res.render("../views/customer/show.handlebars", data);
@@ -120,7 +120,6 @@ let show = async (req, res) => {
  * @param {view} res 
  */
 let create = async (req, res) => {
-    return res.json(req.user)
     let lists = await db.programs.findAll();
     let sales = await db.Admin.findAll()
 
@@ -129,7 +128,7 @@ let create = async (req, res) => {
         message: req.flash('message'),
         oldInput: req.oldInput,
         lists: lists,
-        sales:sales
+        sales: sales
     }
     res.render("../views/customer/create.handlebars", { data })
 }
@@ -139,146 +138,107 @@ let create = async (req, res) => {
  * @param {store} 
  */
 let store = async (req, res) => {
-    // try {
-    // //     const workbook = new Excel.Workbook();
-    // //     await workbook.xlsx.readFile(req.files[0].path);
-    
-    // //     const worksheet = workbook.getWorksheet(1);
-    // //     const rows = worksheet.getRows(2, worksheet.rowCount);
-    
-    // //     for (const row of rows) {
-    // //       const customer = await db.customers.create({
-    // //         name: row.getCell(1).value,
-    // //         phone: row.getCell(2).value ?  row.getCell(2).value : 0 ,
-    // //         email: row.getCell(3).value ? row.getCell(3).value : "không email",
-    // //         contact: row.getCell(8).value ?  row.getCell(8).value : 2,
-    // //         status: row.getCell(6).value,
-    // //         emailSale: row.getCell(7).value,
-    // //         createdAt: row.getCell(10).value,
-    // //         updatedAt: row.getCell(11).value,
-            
-    // //     });
-    
-    // //       await db.customer_programs.create({
-    // //         programId: row.getCell(4).value,
-    // //         customerId: customer.id
-    // //       });
-
-    // //       await db.notesCustomers.create({
-    // //         customerId:customer.id,
-    // //         content: row.getCell(5).value
-    // //       })
-    // //     }
-    
-    // //     res.send('Data imported successfully');
-    // //   } catch (error) {
-    // //     console.error(error);
-    // //     res.status(500).send('Error importing data');
-    // //   }
-
-  
-    ///////////////////////////////    
-    // try {
-      //     let salesId =  req.user.departmentsId == 2 ? req.user.userId :  req.body.salesId  
-    //     // define array and variable
-    //     let dataCreateCustomer = {
-    //         name: req.body.name,
-    //         sex: req.body.sex,
-    //         // dob: new Date(req.body.dob).toLocaleDateString("vi"),
-    //         dob: new Date(req.body.dob).toLocaleDateString("vi-VI").replace(/\//g, "-"),
-    //         nameRelation: req.body.nameRelation,
-    //         sex2: req.body.sex2,
-    //         email: req.body.email,
-    //         dob2: new Date(req.body.dob2).toLocaleDateString("vi-VI").replace(/\//g, "-"),
-    //         status: req.body.status,
-    //         contact: req.body.contact,
-    //         phone: req.body.phoneMain,
-            // emailSale:salesId
-    //     }
+    try {
+        let salesId = req.user.departmentsId == 2 ? req.user.userId : req.body.salesId
+        // define array and variable
+        let dataCreateCustomer = {
+            name: req.body.name,
+            sex: req.body.sex,
+            // dob: new Date(req.body.dob).toLocaleDateString("vi"),
+            dob: new Date(req.body.dob).toLocaleDateString("vi-VI").replace(/\//g, "-"),
+            nameRelation: req.body.nameRelation,
+            sex2: req.body.sex2,
+            email: req.body.email,
+            dob2: new Date(req.body.dob2).toLocaleDateString("vi-VI").replace(/\//g, "-"),
+            status: req.body.status,
+            contact: req.body.contact,
+            phone: req.body.phoneMain,
+            emailSale: salesId
+        }
 
 
-    //     /**
-    //       * insert customers 
-    //       */
-    //     let listCustomer = await db.customers.create(
-    //         dataCreateCustomer
-    //     );
-    //     let dataChildren = [
-    //         {
-    //             name: req.body.childrenName,
-    //             dob: req.body.date,
-    //             sex: req.body.childrenSex
-    //         }
-    //     ]
-    //     let dataNotes = {
-    //         customerId: listCustomer.id,
-    //         content: req.body.notes
-    //     }
-    //     let dataCustomerPrograms = {
-    //         customerId: listCustomer.id,
-    //         programId: req.body.programs
-    //     }
-    //     let dataCreateChildren = []
-    //     /**
-    //          * insert phones into db.phones
-    //     */
-    //     if (req.body.phone != undefined) {
-    //         let phone = req.body.phone == "" ? "" : req.body.phone
+        /**
+          * insert customers 
+          */
+        let listCustomer = await db.customers.create(
+            dataCreateCustomer
+        );
+        let dataChildren = [
+            {
+                name: req.body.childrenName,
+                dob: req.body.date,
+                sex: req.body.childrenSex
+            }
+        ]
+        let dataNotes = {
+            customerId: listCustomer.id,
+            content: req.body.notes
+        }
+        let dataCustomerPrograms = {
+            customerId: listCustomer.id,
+            programId: req.body.programs
+        }
+        let dataCreateChildren = []
+        /**
+             * insert phones into db.phones
+        */
+        if (req.body.phone != undefined) {
+            let phone = req.body.phone == "" ? "" : req.body.phone
 
-    //         for (let i = 0; i < req.body.phone.length; i++) {
-    //             await db.phones.create({ customerId: listCustomer.id, phone: phone[i] });
-    //         }
-    //     }
+            for (let i = 0; i < req.body.phone.length; i++) {
+                await db.phones.create({ customerId: listCustomer.id, phone: phone[i] });
+            }
+        }
 
-    //     /**
-    //      * push array into dataChildren 
-    //      */
-    //     for (let i = 0; i < dataChildren.length; i++) {
-    //         for (let j = 0; j < dataChildren[i].name.length; j++) {
-    //             dataCreateChildren.push({ sex: dataChildren[i].sex[j], customerId: listCustomer.id, name: dataChildren[i].name[j], dob: new Date(dataChildren[i].dob[j]).toLocaleDateString("vi-VI") })
-    //         }
-    //     }
-    //     //end define array and variable
+        /**
+         * push array into dataChildren 
+         */
+        for (let i = 0; i < dataChildren.length; i++) {
+            for (let j = 0; j < dataChildren[i].name.length; j++) {
+                dataCreateChildren.push({ sex: dataChildren[i].sex[j], customerId: listCustomer.id, name: dataChildren[i].name[j], dob: new Date(dataChildren[i].dob[j]).toLocaleDateString("vi-VI") })
+            }
+        }
+        //end define array and variable
 
-    //     /**
-    //      * insert medias into db.medias
-    //      */
-    //     if (req.files.length != 0) {
-    //         for (let i = 0; i < req.files.length; i++) {
-    //             await db.medias.create({ modelId: listCustomer.id, model: 'customers', mediaFiles: "/image/fileCustomer/" + req.files[i].filename });
-    //         }
-    //     }
+        /**
+         * insert medias into db.medias
+         */
+        if (req.files.length != 0) {
+            for (let i = 0; i < req.files.length; i++) {
+                await db.medias.create({ modelId: listCustomer.id, model: 'customers', mediaFiles: "/image/fileCustomer/" + req.files[i].filename });
+            }
+        }
 
-    //     /**
-    //    * insert links into db.links
-    //    */
-    //     let links = req.body.links != "" ? req.body.links : ""
-    //     for (let i = 0; i < req.body.links.length; i++) {
-    //         await db.links.create({ modelId: listCustomer.id, model: 'customers', linkFiles: req.body.links[i] });
-    //     }
+        /**
+       * insert links into db.links
+       */
+        let links = req.body.links != "" ? req.body.links : ""
+        for (let i = 0; i < req.body.links.length; i++) {
+            await db.links.create({ modelId: listCustomer.id, model: 'customers', linkFiles: req.body.links[i] });
+        }
 
 
-    //     /**
-    //      * insert childrens into db.children
-    //      */
-    //     await db.childrens.bulkCreate(dataCreateChildren)
+        /**
+         * insert childrens into db.children
+         */
+        await db.childrens.bulkCreate(dataCreateChildren)
 
-    //     /**
-    //     * insert notes into notesCustomers
-    //     */
-    //     await db.notesCustomers.create(dataNotes)
+        /**
+        * insert notes into notesCustomers
+        */
+        await db.notesCustomers.create(dataNotes)
 
-    //     /**
-    //   * insert customer_programs into dataCustomerPrograms
-    //   */
-    //     await db.customer_programs.create(dataCustomerPrograms)
-    //     req.flash('message', 'saved successfully');
-    //     res.redirect("/customer/create")
+        /**
+      * insert customer_programs into dataCustomerPrograms
+      */
+        await db.customer_programs.create(dataCustomerPrograms)
+        req.flash('message', 'saved successfully');
+        res.redirect("/customer/create")
 
-    // } catch (err) {
-    //     res.send(err);
-    // }
-    
+    } catch (err) {
+        res.send(err);
+    }
+
 }
 /**
  * 
@@ -406,6 +366,7 @@ let update = async (req, res) => {
                 dataCreateCustomer,
                 { where: { id: id } },
             );
+           
             if (req.body.phone != "") {
                 await db.phones.destroy(
                     { where: { customerId: id } }
@@ -413,7 +374,7 @@ let update = async (req, res) => {
                 for (let i = 0; i < req.body.phone.length; i++) {
                     await db.phones.create(
                         {
-                            phone: req.body.phone[i],
+                            phone: req.body.phone[i] ?  req.body.phone[i] : "",
                             customerId: id
                         },
                     )
@@ -465,13 +426,13 @@ let update = async (req, res) => {
             for (let i = 0; i < req.files.length; i++) {
                 await db.medias.create({ modelId: id, model: 'customers', mediaFiles: "/image/fileCustomer/" + req.files[i].filename });
             }
+
             /**
              * update customer_programs into db.customer_programs
              */
             await db.customer_programs.update(dataCustomerPrograms, { where: { customerId: id } })
             req.flash('message', 'saved successfully');
-
-            return res.redirect('back');
+            res.redirect("back")
         }
 
 
@@ -530,7 +491,7 @@ let deleteMedias = async (req, res) => {
         });
 
         req.flash('message', 'delete successfully');
-        res.redirect('back')
+        return res.redirect('back')
     } catch (err) {
         res.send(err);
     }
@@ -562,9 +523,8 @@ let deleteLinks = async (req, res) => {
                 linkFiles: ""
             })
         }
-
         req.flash('message', 'delete successfully');
-        res.redirect('back')
+        return res.redirect("/customer/edit/" + modelId)
     } catch (error) {
         return res.json(error)
     }
@@ -580,6 +540,7 @@ let deletePhone = async (req, res) => {
     let id = req.params.idCustomer
 
     try {
+       
         await db.phones.destroy(
             { where: { id: idPhone } }
         )
@@ -597,14 +558,43 @@ let deletePhone = async (req, res) => {
             )
         }
         req.flash('message', 'delete successfully');
-        res.redirect('back')
+       return res.redirect('back')
     } catch (error) {
         return res.json(error)
     }
 }
 
+let deleteChilds = async (req, res) => {
+
+    let idChildren = req.params.idDelete
+    let id = req.body.modelId
+    try {
+        await db.childrens.destroy(
+            { where: { id: idChildren } }
+        )
+        const count = await db.childrens.count({
+            where: {
+                customerId: id,
+            }
+        });
+        if (count == 0) {
+            await db.childrens.create(
+                {
+                    customerId: id,
+                    name: ""
+                }
+            )
+        }
+        req.flash('message', 'delete successfully');
+        res.redirect('back')
+    } catch (error) {
+        return res.json(error)
+    }
+
+}
+
 module.exports = {
-    show, create, store, edit, update, destroy, deleteMedias, deleteLinks, deletePhone
+    show, create, store, edit, update, destroy, deleteMedias, deleteLinks, deletePhone, deleteChilds
 }
 
 
