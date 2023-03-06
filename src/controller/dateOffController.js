@@ -2,7 +2,7 @@ const db = require("../models/index")
 const { Op, where } = require("sequelize");
 let oldInput = require('old-input');
 const moment = require("moment");
-const uploadFileController = require("../controller/uploadFile/uploadFileController")
+const uploadFileController = require("./uploadFile/uploadFileController")
 const regexPhoneNumber = require("../helper/phone");
 const e = require("connect-flash");
 const { readFile, stat } = require("@babel/core/lib/gensync-utils/fs");
@@ -28,16 +28,16 @@ let show = async (req, res) => {
 
 
     try {
-        let programs = await db.programs.findAll();
+        // let programs = await db.programs.findAll();
         let whereClause = {};
-        let includeClause = [
-            { model: db.notesCustomers },
-            {
-                model: db.programs,
-                as: 'programs',
-                through: { attributes: [] }
-            }
-        ];
+        // let includeClause = [
+        //     { model: db.notesCustomers },
+        //     {
+        //         model: db.programs,
+        //         as: 'programs',
+        //         through: { attributes: [] }
+        //     }
+        // ];
 
         // Thêm filter search vào whereClause
         if (keyWord) {
@@ -59,16 +59,12 @@ let show = async (req, res) => {
             whereClause.status = status;
         }
 
-        if (program && regexProgramNumber) {
-            includeClause[1].where = { id: program };
+  
 
+        let totalItems = await db.dateOffs.count({ where: whereClause });
 
-        }
-
-        let totalItems = await db.customers.count({ where: whereClause });
-
-        let lists = await db.customers.findAll({
-            include: includeClause,
+        let lists = await db.dateOffs.findAll({
+            // include: includeClause,
             where: whereClause,
             limit: itemPerPage,
             offset: offset
@@ -98,7 +94,6 @@ let show = async (req, res) => {
             endDate: endDate,
             status: status,
             message: req.flash('message'),
-            programs: programs,
             keyWord: keyWord,
             program: program,
             totalItems: totalItems,
@@ -106,12 +101,11 @@ let show = async (req, res) => {
             firstPageUrl: firstPageUrl
         };
 
-        return res.render("../views/customer/show.handlebars", data);
+        return res.render("../views/date-off/show.handlebars", data);
     } catch (error) {
         return res.json(error);
     }
 };
-
 
 
 /**
@@ -120,17 +114,12 @@ let show = async (req, res) => {
  * @param {view} res 
  */
 let create = async (req, res) => {
-    let lists = await db.programs.findAll();
-    let sales = await db.Admin.findAll()
-
     let data = {
         messageErr: req.flash('messageErr'),
         message: req.flash('message'),
-        oldInput: req.oldInput,
-        lists: lists,
-        sales: sales
+       
     }
-    res.render("../views/customer/create.handlebars", { data })
+    res.render("../views/date-off/create.handlebars", { data })
 }
 /**
  * 

@@ -10,6 +10,7 @@ const passportJWT = require("../controller/auth/customer/passport")
 const validate = require("../validate/checkvalidator")
 const jwts = require('jsonwebtoken')
 const basevalidator = require("../validate/basevalidator")
+const dateOffController = require("../controller/dateOffController")
 const checkPermission = require('../controller/auth/checkPermissionController');
 const checkValidate = require("../validate/checkvalidator")
 const initPassportLocal = require('../controller/auth/passport') 
@@ -181,6 +182,17 @@ app.group("/contract", (router) => {
   router.post('/update/:id/', uploadFile.upload.array("files"), contractController.update)
   router.post('/delete/:id',contractController.destroy)
   router.post('/delete/medias/:idDelete',uploadFileController.deleteMedias)
+})
+
+ // date-off
+ app.group("/date-off", (router) => {
+  router.use(loginController.checkAuthenticated)
+  router.get('/', loginController.checkAuthenticated, dateOffController.show)
+  router.get('/create', loginController.checkAuthenticated, dateOffController.create)
+  router.get('/edit/:id', loginController.checkAuthenticated, dateOffController.edit)
+  router.post('/store',  basevalidator.checkvalidate.validateDepartment, loginController.checkAuthenticated, dateOffController.store)
+  router.post('/update/:id', loginController.checkAuthenticated,  basevalidator.checkvalidate.validateDepartment, dateOffController.update)
+  router.post('/delete/:id', loginController.checkAuthenticated, dateOffController.destroy)
 })
 
 //files image

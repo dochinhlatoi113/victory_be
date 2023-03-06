@@ -32,20 +32,19 @@
             {{#each user.permission}}
             {{#if (eq this "create")}}
             <button type="button" class="btn btn-success" id="btnCreate">
-                <a href="/customer/create">Create</a>
+                <a href="/date-off/create">Create</a>
             </button>
             {{/if}}
             {{/each}}
 
         </div>
         <div class="">
-            <button type="button" class="btn btn-primary" id="btnCreate">
+            {{!-- <button type="button" class="btn btn-primary" id="btnCreate">
                 <a href="/customer/">clear</a>
-            </button>
+            </button> --}}
         </div>
     </div>
     <p>
-
         <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapseExample"
             aria-expanded="false" aria-controls="collapseExample">
             Tìm kiếm nâng cao
@@ -71,9 +70,7 @@
                         <label>Lọc theo chương trình</label>
                         <select class="custom-select " id="inlineFormCustomSelect" name="program">
                             <option value="">All</option>
-                            {{#each programs}}
-                            <option value="{{this.id}}">{{this.name}}</option>
-                            {{/each}}
+                    
                         </select>
                     </div>
                     <div class="col-3">
@@ -102,15 +99,12 @@
         <thead>
             <tr>
                 <th scope="col">#</th>
-                <th scope="col">Tên khách hàng</th>
-                <th scope="col">Phone</th>
-                <th scope="col">Ngày tháng năm sinh</th>
-                <th scope="col">Chương trình</th>
                 <th scope="col">Email</th>
+                <th scope="col">Ngày nghỉ</th>
+                <th scope="col">Lý do</th>
                 <th scope="col">Trạng thái</th>
-                <th scope="col">Liên hệ</th>
+                <th scope="col">Trạng thái</th>
                 <th scope="col">Ngày tạo</th>
-                <th scope="col">Ghi chú</th>
                 <th scope="col">Action</th>
                 {{!-- <th scope="col">action</th> --}}
             </tr>
@@ -119,69 +113,10 @@
             <tr>
                 {{#each lists}}
                 <th scope="row">{{inc @index}}</th>
-                <td>{{this.name}}</td>
-                <td>{{this.phone}}</td>
-                <td>{{this.dob}}</td>
-                <td>
-                    {{#each this.programs}}
-                    <div style="white-space: wrap;width: 100px"> {{this.name}} </div>
-                    {{/each}}
-
-                </td>
-                <td>{{this.email}}</td>
-                <td>
-                    {{#switch this.status}}
-                    {{#case 0}}<p class="bg-danger  text-white text-center"> đã ký hợp đồng </p> {{/case}}
-                    {{#case 1}}
-                    <p class="bg-primary text-white text-center">Rất tiềm năng</p>
-                    {{/case}}
-                    {{#case 2}}
-                    <p class="bg-warning text-white text-center"> quan tâm</p>
-                    {{/case}}
-                    {{#case 3}}
-                    <p class="bg-light text-white text-center">Không quan tâm</p>
-                    {{/case}}
-                    {{#case 4}}
-                    <p class="bg-info text-white text-center">Không nghe máy</p>
-                    {{/case}}
-                    {{#case 5}} <p class="bg-dark text-white text-center">không tiếp cận được</p>{{/case}}
-                    {{/switch}}
-                </td>
-                <td>
-                    {{#switch this.contact}}
-                    {{#case 1}}
-                    <p>hotline</p>
-                    {{/case}}
-                    {{#case 2}}
-                    <div>
-
-                        <i style="color: #149EF8; font-size:20px;" class="bi bi-messenger"></i>
-                        <span style="color: #149EF8;">fanpage</span>
-                    </div>
-                    {{/case}}
-                    {{#case 3}}
-                    <i style="color: green; font-size:20px;" class="bi bi-layers"></i>
-                    <span style="color: green;">ladinpage</span>
-                    {{/case}}
-                    {{#case 4}}
-                    <i style="color: grey; font-size:20px;" class="bi bi-person-add"></i>
-                    <span style="color: grey;">khách cũ</span>
-                    {{/case}}
-                    {{#case 5}}
-                    <i style="color: red; font-size:20px;" class="bi bi-youtube"></i>
-                    <span style="color: red;">fanpage</span>
-                    {{/case}}
-                    {{#case 6}}
-                    <i style="color: #7E1416; font-size:20px;" class="bi bi-globe-asia-australia"></i>
-                    <span style="color: #7E1416ed;">webiste</span>
-                    {{/case}}
-                    {{/switch}}
-                </td>
+                <td>{{this.status}}</td>
+                <td>{{this.totalDate}}</td>
+                <td>{{this.date}}</td>
                 <td>{{formatDate this.createdAt "short"}}</td>
-                <td>
-                    <div class="text-nowrap text-truncate" style="width: 8rem;">{{{ this.notesCustomer.content }}}
-                    </div>
-                </td>
                 <td style="display: flex;">
                     <a class="icon-edit" href="/customer/edit/{{this.id}}">
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
