@@ -168,7 +168,12 @@
                         dùng làm thông tin đăng nhập cho khách hàng</span></small> --}}
             </div>
     </div>
+    {{#each user.permission}}
+    {{#if (eq this "create")}}
     <button type="submit" class="btn btn-primary">Create customer</button>
+    {{/if}}
+    {{/each}}
+
     </form>
 </div>
 <script>

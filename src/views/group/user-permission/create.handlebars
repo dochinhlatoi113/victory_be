@@ -9,15 +9,15 @@
         {{data.messageErr}}
     </div>
     {{/if}}
-    
+
     {{#each data.extractedErrors}}
-     <div class="alert alert-warning" role="alert">
+    <div class="alert alert-warning" role="alert">
         {{this.user}}
         {{this.department}}
-         {{this.permissions}}
+        {{this.permissions}}
     </div>
     {{/each}}
-     <p class="messErr"></p>
+    <p class="messErr"></p>
     <form action="/group/user-permission/store" method="POST">
         <table class="table">
             <thead>
@@ -29,88 +29,90 @@
             </thead>
             <tbody>
                 <tr>
-                    <td>       
-                      {{#each data.listsUser}}
-                            <input type="radio" id="idUser{{this.id}}" name="user" value="{{this.id}}" class="listsId">
-                            <label for="idUser{{this.id}}"> {{this.email}} </label> <br>  
-                            <input type="hidden" id="idUser{{this.id}}" value="{{this.email}}" class="listsUser">
+                    <td>
+                        {{#each data.listsUser}}
+                        <input type="radio" id="idUser{{this.id}}" name="user" value="{{this.id}}" class="listsId">
+                        <label for="idUser{{this.id}}"> {{this.email}} </label> <br>
+                        <input type="hidden" id="idUser{{this.id}}" value="{{this.email}}" class="listsUser">
                         {{/each}}
                     </td>
                     <td>
-                         {{#each data.listsDepartments}}
-                        <input type="radio" id="id{{this.id}}" class="department" name="department" value="{{this.id}}" 
-                             {{#each ../data.lists}}  
-                                {{this.departmentId}} 
-                            {{/each}}
-                        >
+                        {{#each data.listsDepartments}}
+                        <input type="radio" id="id{{this.id}}" class="department" name="department" value="{{this.id}}"
+                            {{#each ../data.lists}} {{this.departmentId}} {{/each}}>
                         <label for="id{{this.id}}"> {{this.name}} </label> <br>
                         {{/each}}
                     </td>
                     <td>
                         {{#each data.listsPermissions}}
                         <div class="custom-control custom-switch">
-                             <input type="checkbox" class="custom-control-input" id="customSwitch1{{this.id}}" class="listsPermissions" name="permissions[]"
-                                value="{{this.id}}">
-                             <label class="custom-control-label" for="customSwitch1{{this.id}}">{{this.name}}</label> 
+                            <input type="checkbox" class="custom-control-input" id="customSwitch1{{this.id}}"
+                                class="listsPermissions" name="permissions[]" value="{{this.id}}">
+                            <label class="custom-control-label" for="customSwitch1{{this.id}}">{{this.name}}</label>
                         </div>
-                         <br>
+                        <br>
                         {{/each}}
                     </td>
                 </tr>
             </tbody>
         </table>
+        {{#each user.permission}}
+        {{#if (eq this "delete")}}
         <button type="submit" class="btn btn-primary" id="btnSubmit">Submit</button>
+        {{/if}}
+        {{/each}}
+
     </form>
-     <table class="table">
-            <thead>
-                <tr>
-                    <th scope="col">Account đã thêm quyền </th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>
-                        {{#each data.listsUserPermission}}
-                            <input type="hidden" value="{{this.Admin.email}}" class="listsUserPermission">
-                        {{/each}}   
-                     
-                        <div class="email">
-                          
-                       </div>
-                    </td>
-                     
-                </tr>
-            </tbody>
-        </table>
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">Account đã thêm quyền </th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>
+                    {{#each data.listsUserPermission}}
+                    <input type="hidden" value="{{this.Admin.email}}" class="listsUserPermission">
+                    {{/each}}
+
+                    <div class="email">
+
+                    </div>
+                </td>
+
+            </tr>
+        </tbody>
+    </table>
 </div>
 
 
 <script>
-    $(document).ready(function(){
-       let arr = []; 
-       let arrUser = [];
+    $(document).ready(function () {
+        let arr = [];
+        let arrUser = [];
 
-        $(".listsUserPermission").each(function () {                  
-            let text = $(this).val(); 
+        $(".listsUserPermission").each(function () {
+            let text = $(this).val();
             arr.push(text)
         });
-        $(".listsUser").each(function () {                  
-            let text = $(this).val(); 
+        $(".listsUser").each(function () {
+            let text = $(this).val();
             arrUser.push(text)
-        });   
-     
-   let arrUserId = Array.from(new Set(arr))
- 
-console.log("arrUserId",arrUserId)
-console.log("arrUser",arrUser)
+        });
 
-const newUserEmail = arrUser.filter(item => arrUserId.includes(item));
+        let arrUserId = Array.from(new Set(arr))
+
+        console.log("arrUserId", arrUserId)
+        console.log("arrUser", arrUser)
+
+        const newUserEmail = arrUser.filter(item => arrUserId.includes(item));
 
 
-  for(let i =0; i< arrUserId.length ; i++){
-       $(".email").append(arrUserId[i]).append("<br />");
-  }
-  var x =  document.cookie
-})
+        for (let i = 0; i < arrUserId.length; i++) {
+            $(".email").append(arrUserId[i]).append("<br />");
+        }
+        var x = document.cookie
+    })
 
 </script>

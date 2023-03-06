@@ -36,23 +36,24 @@
                     <td>
                         {{#each listsPermissions}}
                         <div class="custom-control custom-switch">
-                             <input type="checkbox" class="custom-control-input" id="customSwitch1{{this.id}}"  name="permissions[]"
-                                value="{{this.id}}"
-                        {{#each ../listUserPermission}} 
-                            {{#xIf ../this.id this.permissionId}}
-                                checked 
-                            {{/xIf}}       
-                        {{/each}}>
-                             <label class="custom-control-label" for="customSwitch1{{this.id}}">{{this.name}}</label> 
+                            <input type="checkbox" class="custom-control-input" id="customSwitch1{{this.id}}"
+                                name="permissions[]" value="{{this.id}}" {{#each ../listUserPermission}} {{#xIf
+                                ../this.id this.permissionId}} checked {{/xIf}} {{/each}}>
+                            <label class="custom-control-label" for="customSwitch1{{this.id}}">{{this.name}}</label>
                         </div>
                         {{/each}}
                     </td>
                 </tr>
             </tbody>
         </table>
-         <input type="hidden" value="{{listUserPermissions.userId}}" name="userIds">
-         <input type="hidden" value="{{listUserPermissions.departmentId}}" name="departmentIds">
+        <input type="hidden" value="{{listUserPermissions.userId}}" name="userIds">
+        <input type="hidden" value="{{listUserPermissions.departmentId}}" name="departmentIds">
+        {{#each ../user.permission}}
+        {{#if (eq this "edit")}}
         <button type="submit" class="btn btn-primary" class="btn">Submit</button>
+        {{/if}}
+        {{/each}}
+
     </form>
 </div>
 

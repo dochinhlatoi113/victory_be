@@ -35,14 +35,19 @@
                 </div>
                 <div class="form-check form-switch">
                     <div class="custom-control custom-switch">
-                        <input type="checkbox" class="custom-control-input" id="customSwitch1" name="status" value="{{lists.status}}"
-                            {{#xIf 1 lists.status}} checked {{/xIf}}>
+                        <input type="checkbox" class="custom-control-input" id="customSwitch1" name="status"
+                            value="{{lists.status}}" {{#xIf 1 lists.status}} checked {{/xIf}}>
                         <label class="custom-control-label" for="customSwitch1">Trạng Thái</label>
                     </div>
                 </div>
             </div>
             <input type="hidden" value="{{this.id}}" id="id">
+            {{#each ../user.permission}}
+            {{#if (eq this "edit")}}
             <button type="submit" class="btn btn-primary submit">Submit</button>
+            {{/if}}
+            {{/each}}
+
         </form>
     </div>
     <script>

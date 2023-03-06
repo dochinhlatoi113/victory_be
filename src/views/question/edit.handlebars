@@ -13,12 +13,13 @@
             <input type="text" class="form-control" aria-describedby="emailHelp" placeholder="vd đi canada giá nhiêu ?"
                 name="title" value="{{lists.title}}">
         </div>
-  
+
         <div class="form-group">
             <label for="">Danh mục câu hỏi</label>
             <select class="form-select" aria-label="Default select example" name="cateQs">
                 {{#each listCategoryQs}}
-                <option value="{{this.id}}" {{#xIf this.id ../lists.category_question_id }} selected {{/xIf}}>{{this.category_name}}</option>
+                <option value="{{this.id}}" {{#xIf this.id ../lists.category_question_id }} selected {{/xIf}}>
+                    {{this.category_name}}</option>
                 {{/each}}
             </select>
         </div>
@@ -26,6 +27,11 @@
             <label for="">Nội dung câu hỏi</label><br>
             <textarea id="my-expressjs-tinymce-app" name="content">{{{lists.content}}}</textarea>
         </div>
+        {{#each ../user.permission}}
+        {{#if (eq this "edit")}}
         <button type="submit" class="btn btn-primary">Submit</button>
+        {{/if}}
+        {{/each}}
+
     </form>
 </div>

@@ -32,7 +32,7 @@
                         {{this.name}}-{{this.phone}}</option>
                     {{/each}}
                 </select>
-                 <label for="exampleInputEmail1">Trạng thái</label> <br>
+                <label for="exampleInputEmail1">Trạng thái</label> <br>
                 <select class="form-select" aria-label="Default select example" name="status">
                     <option value="1">Đang tiến hành</option>
                     <option value="0">Thanh lý</option>
@@ -98,7 +98,12 @@
     </div>
     <input type="hidden" value="{{listsContracts.status}}" id="disable-btn-delete-file">
     {{#xIf listsContracts.status 1}}
+    {{#each ../user.permission}}
+    {{#if (eq this "edit")}}
     <button type="submit" class="btn btn-primary">Submit</button>
+    {{/if}}
+    {{/each}}
+
     {{/xIf}}
     </form>
 </div>
@@ -113,7 +118,7 @@
         let getFiles = []
         $("input[name='getFiles']").each(function () {
             getFiles.push($(this).val());
-            if(deleteFiles == 1) {
+            if (deleteFiles == 1) {
                 getFilesConfig.push({ url: "/contract/delete/medias/" + $(this).attr("data"), key: $(this).attr("data") })
             }
         });

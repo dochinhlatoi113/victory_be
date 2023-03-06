@@ -29,9 +29,14 @@
     {{/if}}
     <div class="box" style="margin: auto;display:flex;justify-content:space-between">
         <div class="">
+            {{#each user.permission}}
+            {{#if (eq this "create")}}
             <button type="button" class="btn btn-success" id="btnCreate">
                 <a href="/customer/create">Create</a>
             </button>
+            {{/if}}
+            {{/each}}
+
         </div>
         <div class="">
             <button type="button" class="btn btn-primary" id="btnCreate">
@@ -197,32 +202,32 @@
             </tr>
         </tbody>
     </table>
-   <div class="container mt-4">
-    <nav aria-label="Page navigation example">
-        <ul class="pagination justify-content-center">
-            {{#if hasPreviousPage}}
-            <li class="page-item">
-                <a class="page-link"
-                    href="?page={{previousPage}}&start={{startDate}}&end={{endDate}}&program={{program}}&status={{status}}&keyWord={{keyWord}}">Pre</a>
-            </li>
-            {{/if}}
-            
-            {{#each totalPages}}
+    <div class="container mt-4">
+        <nav aria-label="Page navigation example">
+            <ul class="pagination justify-content-center">
+                {{#if hasPreviousPage}}
+                <li class="page-item">
+                    <a class="page-link"
+                        href="?page={{previousPage}}&start={{startDate}}&end={{endDate}}&program={{program}}&status={{status}}&keyWord={{keyWord}}">Pre</a>
+                </li>
+                {{/if}}
+
+                {{#each totalPages}}
                 <li class="page-item {{#if isCurrent}}active{{/if}}">
                     <a class="page-link"
                         href="?page={{number}}&start={{../startDate}}&end={{../endDate}}&program={{../program}}&status={{../status}}&keyWord={{../keyWord}}">{{number}}</a>
                 </li>
-            {{/each}}
+                {{/each}}
 
-            {{#if hasNextPage}}
-            <li class="page-item">
-                <a class="page-link"
-                    href="?page={{nextPage}}&start={{startDate}}&end={{endDate}}&program={{program}}&status={{status}}&keyWord={{keyWord}}">Next</a>
-            </li>
-            {{/if}}
-        </ul>
-    </nav>
-</div>
+                {{#if hasNextPage}}
+                <li class="page-item">
+                    <a class="page-link"
+                        href="?page={{nextPage}}&start={{startDate}}&end={{endDate}}&program={{program}}&status={{status}}&keyWord={{keyWord}}">Next</a>
+                </li>
+                {{/if}}
+            </ul>
+        </nav>
+    </div>
 
 
 </div>

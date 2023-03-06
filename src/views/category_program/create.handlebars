@@ -34,19 +34,23 @@
                 </div>
                 <div class="form-check form-switch">
                     <div class="custom-control custom-switch">
-                        <input type="checkbox" class="custom-control-input" id="customSwitch1" name="status"
-                            value="1">
+                        <input type="checkbox" class="custom-control-input" id="customSwitch1" name="status" value="1">
                         <label class="custom-control-label" for="customSwitch1">Trạng Thái</label>
                     </div>
                 </div>
             </div>
+            {{#each user.permission}}
+            {{#if (eq this "create")}}
             <button type="submit" class="btn btn-primary">Submit</button>
+            {{/if}}
+            {{/each}}
+
         </form>
     </div>
     <script>
         $(document).ready(function () {
             $("#country").countrySelect();
-             
+
         })
-        
+
     </script>

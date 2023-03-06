@@ -25,6 +25,11 @@
             <label for="">Nội dung câu hỏi</label><br>
             <textarea id="my-expressjs-tinymce-app" name="content"></textarea>
         </div>
+        {{#each ../user.permission}}
+        {{#if (eq this "create")}}
         <button type="submit" class="btn btn-primary">Submit</button>
+        {{/if}}
+        {{/each}}
+
     </form>
 </div>

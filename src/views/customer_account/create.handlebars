@@ -23,10 +23,10 @@
                 <label for="exampleInputEmail1">username</label>
                 <select id="select-state" placeholder="Pick a customer..." name="customerId">
                     {{#each data.lists}}
-                        <option value="{{this.id}}">{{this.name}}-{{this.phone}}</option>
+                    <option value="{{this.id}}">{{this.name}}-{{this.phone}}</option>
                     {{/each}}
                 </select>
-                 <label for="exampleInputEmail1">username</label>
+                <label for="exampleInputEmail1">username</label>
                 <div class="form-group">
                     <input type="text" class="form-control" aria-describedby="email" name="name">
                 </div>
@@ -35,7 +35,13 @@
                     <input type="text" class="form-control" aria-describedby="email" name="password">
                 </div>
             </div>
+            {{#each user.permission}}
+            {{#if (eq this "create")}}
             <button type="submit" class="btn btn-primary">Submit</button>
+            {{/if}}
+            {{/each}}
+
+
         </form>
     </div>
     <script>

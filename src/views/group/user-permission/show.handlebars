@@ -12,16 +12,16 @@
                         value="Search">
                 </div>
             </div>
-         </form>
+        </form>
     </div>
     <!--show hide option--->
     {{!-- <div class="">
         <label>sắp xếp theo:</label>
         <select id="cars" class="sortBy" name="sortBy">
-            <option  name="asc" value="asc">ASC</option>
-            <option  name="desc" value="desc">DESC</option>
+            <option name="asc" value="asc">ASC</option>
+            <option name="desc" value="desc">DESC</option>
         </select>
-       
+
     </div> --}}
     <!--modals confirm delete-->
     <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
@@ -70,11 +70,16 @@
                 <th scope="row">{{inc @index}}</th>
                 <td>
                     {{#switch this.department.name}}
-                    {{#case 'phòng giám đốc'}}<button type="button" class="btn btn-danger">{{ this.department.name}}</button>{{/case}}
-                   {{#case 'phòng sales'}}<button type="button" class="btn btn-warning text-light">{{ this.department.name}}</button> {{/case}}
-                   {{#case 'phòng thụ lý'}}<button type="button" class="btn  btn-success text-light">{{ this.department.name}}</button> {{/case}}
-                   {{#case 'phòng it'}}<button type="button" class="btn btn-info text-light">{{ this.department.name}}</button> </p> {{/case}}
-                   {{#case 'phòng marketing'}}<button type="button" class="btn  btn-dark text-light">{{ this.department.name}}</button> </p> {{/case}}
+                    {{#case 'phòng giám đốc'}}<button type="button" class="btn btn-danger">{{
+                        this.department.name}}</button>{{/case}}
+                    {{#case 'phòng sales'}}<button type="button" class="btn btn-warning text-light">{{
+                        this.department.name}}</button> {{/case}}
+                    {{#case 'phòng thụ lý'}}<button type="button" class="btn  btn-success text-light">{{
+                        this.department.name}}</button> {{/case}}
+                    {{#case 'phòng it'}}<button type="button" class="btn btn-info text-light">{{
+                        this.department.name}}</button> </p> {{/case}}
+                    {{#case 'phòng marketing'}}<button type="button" class="btn  btn-dark text-light">{{
+                        this.department.name}}</button> </p> {{/case}}
 
                     {{/switch}}
                 </td>
@@ -84,6 +89,7 @@
                     {{this.userId}}
                 </td>
                 <td style="display: flex;">
+
                     <a class="icon-edit" href="/group/user-permission/edit/{{this.Admin.id}}">
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                             class="bi bi-pencil" viewBox="0 0 16 16">
@@ -91,10 +97,15 @@
                                 d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168l10-10zM11.207 2.5 13.5 4.793 14.793 3.5 12.5 1.207 11.207 2.5zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293l6.5-6.5zm-9.761 5.175-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325z" />
                         </svg>
                     </a>
+                    {{#each ../user.permission}}
+                    {{#if (eq this "delete")}}
                     <button type="submit" class="btn-destroy" id="btn-delete" data-toggle="modal"
                         data-target="#deleteModal" data-id="{{this.id}}">
                         <i class="bi bi-trash2" data-id="{{this.id}}"></i>
                     </button>
+                    {{/if}}
+                    {{/each}}
+
                 </td>
             </tr>
             {{/each}}
@@ -133,19 +144,19 @@
 </div>
 <script>
     $(document).ready(function () {
-        $(".sortBy").change(function(){
+        $(".sortBy").change(function () {
             let sortBy = $(".sortBy").val()
-        
+
             $.ajax({
-                    url: "/group/user-permission/",
-                    type: "get",
-                    data: {
-                        sortBy: sortBy								
-                    },
-                    cache: false,
-                    success: function(dataResult){
-                    }
-                })      
+                url: "/group/user-permission/",
+                type: "get",
+                data: {
+                    sortBy: sortBy
+                },
+                cache: false,
+                success: function (dataResult) {
+                }
+            })
         })
         $('#expander').on('click', function () {
             $(this).siblings().slideToggle('fast');

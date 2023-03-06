@@ -29,17 +29,23 @@
     {{/if}}
     <div class="row" style="margin: auto;">
         <div class="col-sm-2">
+            {{#each user.permission}}
+            {{#if (eq this "create")}}
             <button type="button" class="btn btn-primary" id="btnCreate">
                 <a href="/category_program/create">Create</a>
             </button>
+            {{/if}}
+            {{/each}}
+
         </div>
-         <div class="col-sm-10">
+        <div class="col-sm-10">
             <form action="/category_program/" method="GET">
                 <div class="input-group mb-3" style="padding-top: 10px;">
                     <input type="text" class="form-control" placeholder="Search ......"
                         aria-label="Recipient's username" name="keyWord">
                     <div class="input-group-append">
-                        <button type="submit"><span class="input-group-text"><i class="fa fa-search"></i></span></button>
+                        <button type="submit"><span class="input-group-text"><i
+                                    class="fa fa-search"></i></span></button>
                     </div>
                 </div>
             </form>
@@ -68,8 +74,8 @@
                     <div class="form-check form-switch">
                         <div class="custom-control custom-switch">
                             <input type="checkbox" class="custom-control-input customSwitch"
-                                id="customSwitch{{this.id}}" name="status" attr-data="{{this.id}}" value="{{this.status}}" {{#xIf 1
-                                this.status}} checked {{/xIf}}>
+                                id="customSwitch{{this.id}}" name="status" attr-data="{{this.id}}"
+                                value="{{this.status}}" {{#xIf 1 this.status}} checked {{/xIf}}>
                             <label class="custom-control-label" for="customSwitch{{this.id}}"></label>
                         </div>
                     </div>
@@ -92,7 +98,7 @@
             </tr>
         </tbody>
     </table>
-     <div class="container mt-4">
+    <div class="container mt-4">
         <nav aria-label="Page navigation example">
             <ul class="pagination justify-content-center">
                 {{#if hasPreviousPage}}
