@@ -29,7 +29,7 @@
     {{/if}}
     <div class="box" style="margin: auto;display:flex;justify-content:space-between">
         <div class="">
-            {{#each ../user.permission}}
+            {{#each user.permission}}
             {{#if (eq this "create")}}
             <button type="button" class="btn btn-success" id="btnCreate">
                 <a href="/customer/create">Create</a>

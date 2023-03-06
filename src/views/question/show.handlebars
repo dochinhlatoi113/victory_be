@@ -29,7 +29,7 @@
     {{/if}}
     <div class="row" style="margin: auto;">
         <div class="col-sm-2">
-            {{#each ../user.permission}}
+            {{#each user.permission}}
             {{#if (eq this "create")}}
             <button type="button" class="btn btn-primary" id="btnCreate">
                 <a href="/qs/create/">Create</a>

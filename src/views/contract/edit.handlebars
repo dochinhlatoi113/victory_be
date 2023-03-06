@@ -98,7 +98,7 @@
     </div>
     <input type="hidden" value="{{listsContracts.status}}" id="disable-btn-delete-file">
     {{#xIf listsContracts.status 1}}
-    {{#each ../user.permission}}
+    {{#each user.permission}}
     {{#if (eq this "edit")}}
     <button type="submit" class="btn btn-primary">Submit</button>
     {{/if}}

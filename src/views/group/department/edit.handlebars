@@ -10,7 +10,7 @@
             <input type="text" class="form-control" aria-describedby="emailHelp" placeholder="vd phòng thụ lý"
                 name="name" value="{{checkDepartment.name}}">
         </div>
-        {{#each ../user.permission}}
+        {{#each user.permission}}
         {{#if (eq this "edit")}}
         <button type="submit" class="btn btn-primary">Submit</button>
         {{/if}}

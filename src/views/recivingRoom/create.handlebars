@@ -104,7 +104,7 @@
         <input type="text" class="form-control" id="price">
       </div>
     </div>
-    {{#each ../user.permission}}
+    {{#each user.permission}}
     {{#if (eq this "create")}}
     <button type="submit" class="btn btn-primary">Submit</button>
     {{/if}}

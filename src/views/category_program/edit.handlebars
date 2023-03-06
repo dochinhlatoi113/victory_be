@@ -42,7 +42,7 @@
                 </div>
             </div>
             <input type="hidden" value="{{this.id}}" id="id">
-            {{#each ../user.permission}}
+            {{#each user.permission}}
             {{#if (eq this "edit")}}
             <button type="submit" class="btn btn-primary submit">Submit</button>
             {{/if}}
