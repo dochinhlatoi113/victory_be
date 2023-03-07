@@ -24,6 +24,9 @@ module.exports = {
       reason: {
         type: Sequelize.TEXT('long')
       },
+      note: {
+        type: Sequelize.TEXT('long')
+      },
       totalDate: {
         type: Sequelize.INTEGER
       },
@@ -32,6 +35,14 @@ module.exports = {
       },
       status: {
         type: Sequelize.STRING
+      },
+      fromDate: {
+        allowNull: false,
+        type: Sequelize.DATE
+      },
+      toDate: {
+        allowNull: false,
+        type: Sequelize.DATE
       },
       createdAt: {
         allowNull: false,

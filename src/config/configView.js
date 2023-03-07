@@ -23,6 +23,9 @@ const configView = (app) => {
                 xIf2: function (arg1, arg2, options) {
                     return (arg1 != arg2) ? options.fn(this) : options.inverse(this);
                 },
+                xIf3: function (arg1, arg2,arg3,arg4, options) {
+                    return (arg1 == arg2 && arg3 == arg4) ? options.fn(this) : options.inverse(this);
+                },
                 orIf: function (arg1, arg2, arg3, arg4, options) {
                     return (arg1 == arg2 || arg3 == arg4) ? options.fn(this) : options.inverse(this);
                 },

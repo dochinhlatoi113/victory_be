@@ -14,63 +14,57 @@ const Excel = require('exceljs');
  * @param {pagination,view} res 
  */
 let show = async (req, res) => {
-    let keyWord = req.query.keyWord;
-    let itemPerPage = 20;
-    let page = +req.query.page || 1
-    let offset = (page - 1) * itemPerPage;
-    let startDate = req.query.start;
-    let endDate = req.query.end;
-    let status = req.query.status;
-    let program = req.query.program || null;
-    let regexStatusNumber = new RegExp('^[0-9]+$').test(status);
-    let regexProgramNumber = new RegExp('^[0-9]+$').test(program);
-    let firstPageUrl = `?page=1&keyWord=${keyWord}&start=${startDate}&end=${endDate}`;
-
+    const keyWord = req.query.keyWord || '';
+    const itemPerPage = 20;
+    const page = +req.query.page || 1;
+    const offset = (page - 1) * itemPerPage;
+    const startDate = req.query.startDate ? new Date(req.query.startDate) : null;
+    const endDate = req.query.endDate ? new Date(req.query.endDate) : null;
+    const status = req.query.status || '';
+    const program = req.query.program || null;
+    const regexStatusNumber = new RegExp('^[0-9]+$').test(status);
+    const regexProgramNumber = new RegExp('^[0-9]+$').test(program);
+    const firstPageUrl = `?page=1&keyWord=${keyWord}&start=${startDate}&end=${endDate}`;
 
     try {
-        // let programs = await db.programs.findAll();
-        let whereClause = {};
-        // let includeClause = [
-        //     { model: db.notesCustomers },
-        //     {
-        //         model: db.programs,
-        //         as: 'programs',
-        //         through: { attributes: [] }
-        //     }
-        // ];
+        const whereClause = {
+            [Op.or]: [
+                { email: { [Op.substring]: keyWord } },
+            ]
+        };
 
-        // Thêm filter search vào whereClause
-        if (keyWord) {
-            whereClause = {
-                [Op.or]: [
-                    { name: { [Op.substring]: keyWord } },
-                    { email: { [Op.substring]: keyWord } },
-                    { phone: { [Op.substring]: keyWord } }
-                ]
+        if (startDate && endDate) {
+            whereClause.fromDate = {
+                [Op.between]: [startDate.toISOString(), endDate.toISOString()]
             };
-        }
-
-        if (startDate || endDate) {
-            whereClause.createdAt = {};
-            whereClause.createdAt[Op.between] = [startDate, endDate];
         }
 
         if (status && regexStatusNumber) {
             whereClause.status = status;
         }
 
-  
+        let totalItems;
+        let lists;
 
-        let totalItems = await db.dateOffs.count({ where: whereClause });
+        if (req.user.departments === "phòng giám đốc") {
+            totalItems = await db.dateOffs.count({ where: whereClause });
+            lists = await db.dateOffs.findAll({
+                where: whereClause,
+                limit: itemPerPage,
+                offset: offset
+            });
+           
+        } else {
+            totalItems = await db.dateOffs.count({ where: { id: req.user.userId } });
+            
+            lists = await db.dateOffs.findAll({
+                where: { userId: req.user.userId },
+                limit: itemPerPage,
+                offset: offset
+            });
+        }
 
-        let lists = await db.dateOffs.findAll({
-            // include: includeClause,
-            where: whereClause,
-            limit: itemPerPage,
-            offset: offset
-        });
-
-        let totalPages = [];
+        const totalPages = [];
         for (let i = 1; i <= Math.ceil(totalItems / itemPerPage); i++) {
             let url = `?page=${i}&keyWord=${keyWord}&start=${startDate}&end=${endDate}`;
             if (status) url += `&status=${status}`;
@@ -81,7 +75,8 @@ let show = async (req, res) => {
                 url: url
             });
         }
-        let data = {
+
+        const data = {
             lists: lists,
             currentPage: page,
             hasNextPage: (itemPerPage * page) < totalItems,
@@ -101,11 +96,12 @@ let show = async (req, res) => {
             firstPageUrl: firstPageUrl
         };
 
-        return res.render("../views/date-off/show.handlebars", data);
+        return res.render('../views/date-off/show.handlebars', data);
     } catch (error) {
         return res.json(error);
     }
 };
+
 
 
 /**
@@ -117,7 +113,7 @@ let create = async (req, res) => {
     let data = {
         messageErr: req.flash('messageErr'),
         message: req.flash('message'),
-       
+
     }
     res.render("../views/date-off/create.handlebars", { data })
 }
@@ -127,103 +123,23 @@ let create = async (req, res) => {
  * @param {store} 
  */
 let store = async (req, res) => {
+
     try {
-        let salesId = req.user.departmentsId == 2 ? req.user.userId : req.body.salesId
+        //let salesId = req.user.departmentsId == 2 ? req.user.userId : req.body.salesId
         // define array and variable
-        let dataCreateCustomer = {
-            name: req.body.name,
-            sex: req.body.sex,
-            // dob: new Date(req.body.dob).toLocaleDateString("vi"),
-            dob: new Date(req.body.dob).toLocaleDateString("vi-VI").replace(/\//g, "-"),
-            nameRelation: req.body.nameRelation,
-            sex2: req.body.sex2,
-            email: req.body.email,
-            dob2: new Date(req.body.dob2).toLocaleDateString("vi-VI").replace(/\//g, "-"),
-            status: req.body.status,
-            contact: req.body.contact,
-            phone: req.body.phoneMain,
-            emailSale: salesId
+        let dataCreateDateOff = {
+            fromDate: new Date(req.body.startDate).toLocaleDateString("vi-VI").replace(/\//g, "-"),
+            userId: req.user.userId,
+            email: req.user.email,
+            toDate: new Date(req.body.endDate).toLocaleDateString("vi-VI").replace(/\//g, "-"),
+            status:0,
+            note: req.body.notes,
+            reason:req.body.reason,
+            date:"",
         }
-
-
-        /**
-          * insert customers 
-          */
-        let listCustomer = await db.customers.create(
-            dataCreateCustomer
-        );
-        let dataChildren = [
-            {
-                name: req.body.childrenName,
-                dob: req.body.date,
-                sex: req.body.childrenSex
-            }
-        ]
-        let dataNotes = {
-            customerId: listCustomer.id,
-            content: req.body.notes
-        }
-        let dataCustomerPrograms = {
-            customerId: listCustomer.id,
-            programId: req.body.programs
-        }
-        let dataCreateChildren = []
-        /**
-             * insert phones into db.phones
-        */
-        if (req.body.phone != undefined) {
-            let phone = req.body.phone == "" ? "" : req.body.phone
-
-            for (let i = 0; i < req.body.phone.length; i++) {
-                await db.phones.create({ customerId: listCustomer.id, phone: phone[i] });
-            }
-        }
-
-        /**
-         * push array into dataChildren 
-         */
-        for (let i = 0; i < dataChildren.length; i++) {
-            for (let j = 0; j < dataChildren[i].name.length; j++) {
-                dataCreateChildren.push({ sex: dataChildren[i].sex[j], customerId: listCustomer.id, name: dataChildren[i].name[j], dob: new Date(dataChildren[i].dob[j]).toLocaleDateString("vi-VI") })
-            }
-        }
-        //end define array and variable
-
-        /**
-         * insert medias into db.medias
-         */
-        if (req.files.length != 0) {
-            for (let i = 0; i < req.files.length; i++) {
-                await db.medias.create({ modelId: listCustomer.id, model: 'customers', mediaFiles: "/image/fileCustomer/" + req.files[i].filename });
-            }
-        }
-
-        /**
-       * insert links into db.links
-       */
-        let links = req.body.links != "" ? req.body.links : ""
-        for (let i = 0; i < req.body.links.length; i++) {
-            await db.links.create({ modelId: listCustomer.id, model: 'customers', linkFiles: req.body.links[i] });
-        }
-
-
-        /**
-         * insert childrens into db.children
-         */
-        await db.childrens.bulkCreate(dataCreateChildren)
-
-        /**
-        * insert notes into notesCustomers
-        */
-        await db.notesCustomers.create(dataNotes)
-
-        /**
-      * insert customer_programs into dataCustomerPrograms
-      */
-        await db.customer_programs.create(dataCustomerPrograms)
-        req.flash('message', 'saved successfully');
-        res.redirect("/customer/create")
-
+        let lsit = await db.dateOffs.create(dataCreateDateOff)
+        req.flash('message', 'đã gửi đơn, vui lòng đợi duyệt');
+        res.redirect("/date-off/")
     } catch (err) {
         res.send(err);
     }
@@ -237,48 +153,19 @@ let store = async (req, res) => {
  */
 let edit = async (req, res) => {
     let id = req.params.id
-    let programs = await db.programs.findAll()
-    const listsCustomers = await db.customers.findOne(
+    const lists = await db.dateOffs.findOne(
         {
-            include:
-                [
-                    {
-                        model: db.childrens
-                    },
-                    {
-                        model: db.programs, // customer_program
-
-                    },
-                    {
-                        model: db.notesCustomers,
-                    },
-                    {
-                        model: db.phones
-                    }
-
-                ],
             where: { id: id }
         });
-    const listsMedias = await db.medias.findAll(
-        {
-            where: { modelId: id, model: 'customers' }
-        });
-    const listsLinks = await db.links.findAll(
-        {
-            where: { modelId: id, model: 'customers' }
-        });
+  
 
-
-    if (listsCustomers) {
+    if (lists) {
         let data = {
             id: id,
-            listsCustomers: listsCustomers,
-            listsMedias: listsMedias,
-            listsLinks: listsLinks,
-            programs: programs,
+            lists,
             message: req.flash('message')
         }
-        return res.render("../views/customer/edit.handlebars", { data })
+        return res.render("../views/date-off/edit.handlebars",  data )
     } else {
         return res.render("../views/error/error.handlebars", { layout: null })
     }
@@ -289,145 +176,24 @@ let edit = async (req, res) => {
  * @param {*} res 
  */
 let update = async (req, res) => {
-
+    
+    let id = req.params.id
     try {
-        let id = req.params.id
-        let idMedias = req.body.idMedias
-        const listsCustomers = await db.customers.findOne(
-            {
-                include:
-                    [
-                        {
-                            model: db.childrens
-                        },
-                        {
-                            model: db.programs
-                        },
-
-                        {
-                            model: db.notesCustomers,
-                        },
-
-                    ],
-                where: { id: id }
-            });
-
-        if (listsCustomers) {
-            // define variable 
-            let dataCreateCustomer = {
-                name: req.body.name,
-                phone: req.body.phoneMain,
-                sex: req.body.sex,
-                // dob: new Date(req.body.dob).toLocaleDateString("vi"),
-                dob: new Date(req.body.dob).toLocaleDateString("vi-VI").replace(/\//g, "-"),
-                nameRelation: req.body.nameRelation,
-                sex2: req.body.sex2,
-                email: req.body.email,
-                dob2: new Date(req.body.dob2).toLocaleDateString("vi-VI").replace(/\//g, "-"),
-                status: req.body.status,
-                contact: req.body.contact
-            }
-
-
-            let dataChildren = [
-                {
-                    name: req.body.childrenName,
-                    dob: req.body.date,
-                    sex: req.body.childrenSex
-                }
-            ]
-            let dataCreateChildren = []
-            let dataNotes = {
-                customerId: id,
-                content: req.body.notes
-            }
-            let dataCustomerPrograms = {
-                customerId: id,
-                programId: req.body.programs
-            }
-
-            // end define variable 
-
-            /**
-             * update customers into customers
-             */
-            await db.customers.update(
-                dataCreateCustomer,
-                { where: { id: id } },
-            );
-           
-            if (req.body.phone != "") {
-                await db.phones.destroy(
-                    { where: { customerId: id } }
-                )
-                for (let i = 0; i < req.body.phone.length; i++) {
-                    await db.phones.create(
-                        {
-                            phone: req.body.phone[i] ?  req.body.phone[i] : "",
-                            customerId: id
-                        },
-                    )
-                }
-            }
-
-
-            /**
-            * update and create childrens into db.childrens
-            */
-
-            if (req.body.childrenName != "") {
-                await db.childrens.destroy(
-                    { where: { customerId: id } }
-                )
-                for (let i = 0; i < dataChildren.length; i++) {
-                    for (let j = 0; j < dataChildren[i].name.length; j++) {
-                        dataCreateChildren.push({ sex: dataChildren[i].sex[j], customerId: id, name: dataChildren[i].name[j], dob: new Date(dataChildren[i].dob[j]).toLocaleDateString("vi-VI").replace(/\//g, "-") })
-                    }
-                }
-                await db.childrens.bulkCreate(dataCreateChildren)
-            }
-
-
-            /**
-            * update notes into db.notesCustomers
-            */
-            if (req.body.notes != "") {
-                await db.notesCustomers.update(dataNotes, { where: { customerId: id } })
-            } else {
-                await db.notesCustomers.update({ customerId: id, content: "NULL" }, { where: { customerId: id } })
-            }
-
-            /**
-            * update links into db.links
-            */
-            if (req.body.links.length != "") {
-                await db.links.destroy(
-                    { where: { modelId: id, model: "customers" } }
-                )
-                for (let i = 0; i < req.body.links.length; i++) {
-                    await db.links.create({ modelId: id, model: 'customers', linkFiles: req.body.links[i] });
-                }
-            }
-
-            /**
-              * update files into db.medias
-              */
-            for (let i = 0; i < req.files.length; i++) {
-                await db.medias.create({ modelId: id, model: 'customers', mediaFiles: "/image/fileCustomer/" + req.files[i].filename });
-            }
-
-            /**
-             * update customer_programs into db.customer_programs
-             */
-            await db.customer_programs.update(dataCustomerPrograms, { where: { customerId: id } })
-            req.flash('message', 'saved successfully');
-            res.redirect("back")
-        }
-
-
+        //let salesId = req.user.departmentsId == 2 ? req.user.userId : req.body.salesId
+        // define array and variable
+       
+        let lists = await db.dateOffs.update(
+           { status:req.body.status},
+           {
+                where:{id:id}
+            },
+        )
+        req.flash('message', 'đã phê duyệt thành công');
+        res.redirect("/date-off/")
     } catch (err) {
         res.send(err);
     }
+
 }
 
 /**
@@ -529,7 +295,7 @@ let deletePhone = async (req, res) => {
     let id = req.params.idCustomer
 
     try {
-       
+
         await db.phones.destroy(
             { where: { id: idPhone } }
         )
@@ -547,7 +313,7 @@ let deletePhone = async (req, res) => {
             )
         }
         req.flash('message', 'delete successfully');
-       return res.redirect('back')
+        return res.redirect('back')
     } catch (error) {
         return res.json(error)
     }

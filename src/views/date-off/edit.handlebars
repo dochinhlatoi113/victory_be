@@ -22,34 +22,40 @@
     {{/each}}
     --}}
 
-    <form action="/date-off/store" method="POST">
+    <form action="/date-off/update/{{lists.id}}" method="POST">
         <div class="row">
-            <div class="col-4">
-                <label for="exampleInputEmail1">Tạo đơn xin nghỉ</label><br>
+            <div class="col-3">
+                <label for="exampleInputEmail1">lý do xin nghỉ</label><br>
                 <div class="form-group col-md-4">
                     <select id="inputState" class="form-control" name="reason">
-                        <option selected>Choose...</option>
-                        <option value="1">nghỉ phép</option>
-                        <option value="2">nghỉ việc</option>
-                        <option value="3">.nghỉ không lương</option>
+                        <option value="1" {{#xIf lists.reason 1}} selected {{/xIf}}>nghỉ phép</option>
+                        <option value="2" {{#xIf lists.reason  2}} selected {{/xIf}}>nghỉ việc</option>
+                        <option value="3" {{#xIf lists.reason  3}} selected {{/xIf}}>nghỉ không lương</option>
                     </select>
                 </div>
             </div>
-            <div class="col-4">
-                <label>Ngày bắt đầu</label> <input type="text" id="from" name="startDate" class="form-control" value="">
+            <div class="col-3">
+                <label>Ngày bắt đầu</label> <input type="text" id="from" name="startDate" class="form-control" value="{{lists.fromDate}}">
             </div>
-            <div class="col-4">
-                <label>Ngày kết thúc </label> <input type="text" id="to" name="endDate" class="form-control" value="">
+            <div class="col-3">
+                <label>Ngày kết thúc </label> <input type="text" id="to" name="endDate" class="form-control" value="{{lists.toDate}}">
             </div>
+              <div class="form-group col-3">
+                <label>Phê duyệt</label>
+                    <select id="inputState" class="form-control" name="status">
+                        <option value="1" {{#xIf lists.status 1}} selected {{/xIf}}>từ chối</option>
+                        <option value="2" {{#xIf lists.status 2}} selected {{/xIf}}>phê duyệt</option>
+                    </select>
+                </div>
         </div>
         <div class="form-group">
             <label for="">Ghi chú</label><br>
-            <textarea id="my-expressjs-tinymce-app" name="notes"></textarea>
+            <textarea id="my-expressjs-tinymce-app" name="notes">{{lists.note}}</textarea>
         </div>
-
-
-        <button type="submit" class="btn btn-primary">Create</button>
-
+       
+        {{#xIf3 lists.status 0 user.departments "phòng giám đốc"}}
+            <button type="submit" class="btn btn-primary">submit update</button>
+        {{/xIf3 }}
     </form>
 </div>
 <script>

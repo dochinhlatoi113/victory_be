@@ -19,7 +19,10 @@ module.exports = (sequelize, DataTypes) => {
     totalDate: DataTypes.INTEGER,
     date: DataTypes.INTEGER,
     status: DataTypes.STRING,
-    reason:DataTypes.TEXT('long')
+    fromDate:DataTypes.DATE,
+    toDate:DataTypes.DATE,
+    reason:DataTypes.TEXT('long'),
+    note:DataTypes.TEXT('long')
   }, {
     sequelize,
     modelName: 'dateOffs',

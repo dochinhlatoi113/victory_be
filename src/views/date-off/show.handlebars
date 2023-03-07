@@ -39,9 +39,9 @@
 
         </div>
         <div class="">
-            {{!-- <button type="button" class="btn btn-primary" id="btnCreate">
-                <a href="/customer/">clear</a>
-            </button> --}}
+            <button type="button" class="btn btn-primary" id="btnCreate">
+                <a href="/date-off/">clear</a>
+            </button>
         </div>
     </div>
     <p>
@@ -52,7 +52,7 @@
     </p>
     <div class="collapse" id="collapseExample">
         <div class="card card-body">
-            <form action="/customer/" method="GET">
+            <form action="/date-off/" method="GET">
                 <div class="row">
                     {{!-- <div class="col-2">
                         <label>Lọc theo chương trình</label>
@@ -62,31 +62,21 @@
                             {{/each}}
                         </select>
                     </div> --}}
-                    <div class="col-3">
+                    {{!-- <div class="col-3">
                         <label>Ngày bắt đầu</label> <input type="text" id="from" name="start" class="form-control">
                         <label>Ngày kết thúc </label> <input type="text" id="to" name="end" class="form-control">
-                    </div>
-                    <div class="col-3">
-                        <label>Lọc theo chương trình</label>
-                        <select class="custom-select " id="inlineFormCustomSelect" name="program">
-                            <option value="">All</option>
-                    
-                        </select>
-                    </div>
+                    </div> --}}
                     <div class="col-3">
                         <label>Lọc theo trạng thái</label><br>
                         <select class="custom-select " id="inlineFormCustomSelect" name="status">
                             <option value="">All</option>
-                            <option value="0">đã ký hợp đồng</option>
-                            <option value="1">rất tiềm năng</option>
-                            <option value="2">quan tâm</option>
-                            <option value="3">không quan tâm</option>
-                            <option value="4">không nghe máy</option>
-                            <option value="5">không tiếp cận được</option>
+                            <option value="1">từ chối</option>
+                            <option value="2">đã phê duyệt</option>
+                            <option value="0">đang phê duyệt</option>
                         </select>
                     </div>
                     <div class="col-3">
-                        <label>Lọc theo tên </label><br>
+                        <label>Lọc theo email </label><br>
                         <input type="text" class="form-control" placeholder="Search ......"
                             aria-label="Recipient's username" name="keyWord">
                     </div>
@@ -100,9 +90,9 @@
             <tr>
                 <th scope="col">#</th>
                 <th scope="col">Email</th>
-                <th scope="col">Ngày nghỉ</th>
+                <th scope="col">Ngày nghỉ bắt đầu</th>
+                <th scope="col">Ngày nghỉ kết thúc đầu</th>
                 <th scope="col">Lý do</th>
-                <th scope="col">Trạng thái</th>
                 <th scope="col">Trạng thái</th>
                 <th scope="col">Ngày tạo</th>
                 <th scope="col">Action</th>
@@ -113,24 +103,37 @@
             <tr>
                 {{#each lists}}
                 <th scope="row">{{inc @index}}</th>
-                <td>{{this.status}}</td>
-                <td>{{this.totalDate}}</td>
-                <td>{{this.date}}</td>
-                <td>{{formatDate this.createdAt "short"}}</td>
+                <td>{{this.email}}</td>
+                <td>{{this.fromDate}}</td>
+                <td>{{this.toDate}}</td>
+                <td>{{this.reason}}</td>
+                <td>{{#xIf this.status 0}}
+                        <p>đang phê duyệt</p>   
+                    {{/xIf}}
+                    {{#xIf this.status 1}}
+                        <p>từ chối</p>   
+                    {{/xIf}}
+                    {{#xIf this.status 2}}
+                        <p>phê duyệt</p>   
+                    {{/xIf}}
+                </td>
+               <td>{{formatDate this.createdAt "short"}}</td> 
                 <td style="display: flex;">
-                    <a class="icon-edit" href="/customer/edit/{{this.id}}">
+                    {{!-- {{#xIf this.status 0}} --}}
+                    <a class="icon-edit" href="/date-off/edit/{{this.id}}">
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                             class="bi bi-pencil" viewBox="0 0 16 16">
                             <path
                                 d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168l10-10zM11.207 2.5 13.5 4.793 14.793 3.5 12.5 1.207 11.207 2.5zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293l6.5-6.5zm-9.761 5.175-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325z" />
                         </svg>
                     </a>
-                    {{#xIf2 this.status 0}}
+                    {{!-- {{/xIf}} --}}
+                    {{!-- {{#xIf2 this.status 0}}
                     <button type="submit" class="btn-destroy" id="btn-delete" data-toggle="modal"
                         data-target="#deleteModal" data-id="{{this.id}}">
                         <i class="bi bi-trash2" data-id="{{this.id}}"></i>
                     </button>
-                    {{/xIf2}}
+                    {{/xIf2}} --}}
                 </td>
             </tr>
             {{/each}}
@@ -143,7 +146,7 @@
                 {{#if hasPreviousPage}}
                 <li class="page-item">
                     <a class="page-link"
-                        href="?page={{previousPage}}&start={{startDate}}&end={{endDate}}&program={{program}}&status={{status}}&keyWord={{keyWord}}">Pre</a>
+                        href="?page={{previousPage}}&start={{startDate}}&end={{endDate}}&status={{status}}&keyWord={{keyWord}}">Pre</a>
                 </li>
                 {{/if}}
 
@@ -188,7 +191,7 @@
             dateFormat: 'yy-mm-dd',
             changeMonth: true,
             changeYear: true,
-            maxDate: '0',
+            maxDate: '',
             onClose: function (selectedDate) {
                 jQuery("#to").datepicker("option", "minDate", selectedDate);
             }
@@ -197,7 +200,7 @@
             dateFormat: 'yy-mm-dd',
             changeMonth: true,
             changeYear: true,
-            maxDate: '0',
+            maxDate: '',
             onClose: function (selectedDate) {
                 jQuery("#from").datepicker("option", "maxDate", selectedDate);
             }
