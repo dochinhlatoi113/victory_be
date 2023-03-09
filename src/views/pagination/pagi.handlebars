@@ -1,14 +1,17 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href='https://getbootstrap.com/docs/4.4/dist/css/bootstrap.min.css'>
-    <link rel="stylesheet" href="dist/css/pagination.css">
-    <title>Document</title>
-</head>
-<body>
-    
-</body>
-</html>
+<div class="pagination">
+  {{#if hasPreviousPage}}
+    <a href="?page={{previousPage}}&keyWord={{keyWord}}&status={{status}}">Previous</a>
+  {{/if}}
+  
+  {{#each totalPages}}
+    {{#if isCurrent}}
+      <a href="?page={{number}}&keyWord={{keyWord}}&status={{status}}" class="active">{{number}}</a>
+    {{else}}
+      <a href="?page={{number}}&keyWord={{keyWord}}&status={{status}}">{{number}}</a>
+    {{/if}}
+  {{/each}}
+  
+  {{#if hasNextPage}}
+    <a href="?page={{nextPage}}&keyWord={{keyWord}}&status={{status}}">Next</a>
+  {{/if}}
+</div>

@@ -6,21 +6,23 @@ const { readFile } = require("@babel/core/lib/gensync-utils/fs");
 const { text } = require("body-parser");
 let show = async (req, res) => {
     const keyWord = req.query.keyWord || '';
-    const itemPerPage = 2;
-    const page = +req.query.page || 1;
-    const offset = (page - 1) * itemPerPage;
+    let itemPerPage = 1;
+    let page = +req.query.page || 1
+    let offset = (page - 1) * itemPerPage;
     const status = req.query.status || '';
-    const program = req.query.program || null;
+    let firstPageUrl = `?page=1&keyWord=${keyWord}&status=${status}`;
+
     try {
-        // return res.json(req.user)
         const included = [
             {
                 model: db.task_admins,
                 include: {
-                    model: db.Admin
-                }
-            },
-
+                    model: db.Admin,
+                    as: 'Admin',
+                    
+                },
+               
+            }
         ];
         const whereClause = {
             [Op.or]: [
@@ -29,12 +31,9 @@ let show = async (req, res) => {
                         [Op.like]: `%${keyWord}%`
                     }
                 },
+              
             ]
         };
-        if(keyWord){
-            whereClause.title = keyWord;
-           
-        }
         if (status) {
             whereClause.status = status;
         }
@@ -42,16 +41,12 @@ let show = async (req, res) => {
         let lists;
 
         if (req.user.departments === "phòng giám đốc") {
-            totalItems = await db.tasks.count(
-                {
-                    where: whereClause,
-                    include: included,
-                }
-
-            );
+            totalItems = await db.tasks.count({
+                where: whereClause,
+                include: included
+            });
 
             lists = await db.tasks.findAll({
-
                 where: whereClause,
                 include: included,
                 limit: itemPerPage,
@@ -59,45 +54,45 @@ let show = async (req, res) => {
             });
 
         } else {
-          
             totalItems = await db.tasks.count({
-                where:whereClause,
+                where: whereClause,
                 include: {
                     model: db.task_admins,
-                    include:{
-                        model:db.Admin,
+                    include: {
+                        model: db.Admin
                     },
                     where: {
                         '$task_admins.userId$': req.user.userId
-                    },
-                },
+                    }
+                }
             });
             lists = await db.tasks.findAll({
-                where:whereClause,
+                where: whereClause,
                 include: {
                     model: db.task_admins,
-                    include:{
-                        model:db.Admin
+                    include: {
+                        model: db.Admin,
+                        attributes: ['firstName']
                     },
                     where: {
                         '$task_admins.userId$': req.user.userId
-                    },
+                    }
                 },
-
                 limit: itemPerPage,
                 offset: offset
             });
         }
 
-        // const totalPages = [];
-        // for (let i = 1; i <= Math.ceil(totalItems / itemPerPage); i++) {
-        //     let url = `?page=${i}&keyWord=${keyWord}&status=${status}`;
-        //     totalPages.push({
-        //         number: i,
-        //         isCurrent: i === page,
-        //         url: url
-        //     });
-        // }
+        let totalPages = [];
+        for (let i = 1; i <= Math.ceil(totalItems / itemPerPage); i++) {
+            let url = `?page=${i}&keyWord=${keyWord}`;
+            if (status) url += `&status=${status}`;
+            totalPages.push({
+                number: i,
+                isCurrent: i === page,
+                url: url
+            });
+        }
 
         const data = {
             lists: lists,
@@ -110,9 +105,9 @@ let show = async (req, res) => {
             status: status,
             message: req.flash('message'),
             keyWord: keyWord,
-            // totalItems: totalItems,
-            // totalPages: totalPages,
-            // firstPageUrl: firstPageUrl
+            totalItems: totalItems,
+            totalPages: totalPages,
+            firstPageUrl: firstPageUrl
         };
 
         return res.render('../views/task/show.handlebars', data);
@@ -120,6 +115,8 @@ let show = async (req, res) => {
         return res.json(error);
     }
 };
+
+
 let create = async (req, res) => {
     let admin = await db.Admin.findAll()
     let data = {

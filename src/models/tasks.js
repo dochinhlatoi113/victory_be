@@ -14,6 +14,8 @@ module.exports = (sequelize, DataTypes) => {
       const taskAdmin = sequelize.define('task_admins');
       tasks.hasMany(taskAdmin,{  foreignKey: "taskId",})
 
+     
+      
     }
   }
   tasks.init({

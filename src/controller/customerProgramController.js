@@ -60,8 +60,13 @@ let show = async (req, res) => {
         }
 
         if (program && regexProgramNumber) {
-            includeClause[1].where = { id: program };
-
+            includeClause.push({
+                model: db.programs,
+                as: 'programs',
+                where: {
+                    id: program
+                }
+            });
 
         }
 
