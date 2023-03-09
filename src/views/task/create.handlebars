@@ -1,0 +1,170 @@
+<div class="container-fluid">
+    {{#if data.message}}
+    <div class="alert alert-warning" role="alert">
+        {{data.message}}
+    </div>
+    {{/if}}
+    {{#if data.messageErr}}
+    <div class="alert alert-warning" role="alert">
+        {{data.messageErr}}
+    </div>
+    {{/if}}
+    {{#if messDateErr}}
+    {{messDateErr}}
+    {{/if}}
+
+
+    {{!-- {{#each extractedErrors}}
+    <div class="alert alert-warning" role="alert">
+        {{this.email}}
+        {{this.password}}
+    </div>
+    {{/each}}
+    --}}
+
+    <form action="/task/store" method="POST">
+        <label for="exampleInputEmail1">Tạo task</label><br>
+        <div class="row">
+            <div class="col-3">
+                <div class="form-group">
+                    <label for="exampleInputEmail1">Title</label>
+                    <input type="text" name="title" class="form-control" id="exampleInputEmail1"
+                        aria-describedby="emailHelp">
+                </div>
+            </div>
+            <div class="col-3">
+                <label>Ngày bắt đầu</label> <input type="text" id="from" name="fromDate" class="form-control" value="">
+            </div>
+            <div class="col-3">
+                <label>Ngày kết thúc </label> <input type="text" id="to" name="toDate" class="form-control" value="">
+            </div>
+          <div class="col-3">
+              <label>Giao task cho</label> <br>
+            <select class="form-select" multiple aria-label="multiple select example" name="userId[]"style="width: 100%;">
+                {{#each admin}}
+                    <option value="{{this.id}}">{{this.email}}</option>
+                {{/each}}
+            </select>
+          </div>
+        </div>
+        <div class="form-group">
+            <label for="">Ghi chú</label><br>
+            <textarea id="my-expressjs-tinymce-app" name="notes"></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary">Create</button>
+
+    </form>
+</div>
+<script>
+    $(document).ready(function () {
+        /*add field link*/
+        $(".add_form_field_link").click(function (e) {
+            e.preventDefault();
+            let template = ` <div class="form-group">
+                               <label for="exampleInputEmail1">Link</label>
+                                <input type="text" class="form-control delete-children-button" name="links[]">
+                                <button type="button" class="btn btn-danger delete">Delete</button>
+                            </div>`;
+            if (x < max_fields) {
+                x++;
+                $(".container1").append(template); //add input box
+            } else {
+                alert('You Reached the limits')
+            }
+        });
+
+        $(".container1").on("click", ".delete", function (e) {
+            e.preventDefault();
+            $(this).parent('div').remove();
+            x--;
+        })
+
+        /*add filed chidren*/
+        $(".add_form_field").click(function (e) {
+            e.preventDefault();
+            let template = ` 
+                            <div>
+                                <div class="row">
+                                    <div class="form-group col-sm">
+                                        <label for="exampleInputEmail1">Họ và Tên</label>
+                                        <input type="text" class="form-control" aria-describedby="email" name="childrenName[]">
+                                    </div>
+                                    <div class="form-group col-sm">
+                                        <label for="exampleInputEmail1">Ngày/tháng/năm/sinh</label>
+                                        <input type="text" class="form-control datepicker" aria-describedby="email" name="date[]">
+                                    </div>
+                                    <div class="form-group col-sm">
+                                        <label for="exampleInputEmail1">Giới tính</label>
+                                        <select class="custom-select " id="inlineFormCustomSelect" name="childrenSex[]">
+                                            <option selected value="1">Nam</option>
+                                            <option value="2">Nữ</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <button type="button" class="btn btn-danger delete-children-button deletes">Delete</button>
+                                </div>  
+                             `
+            if (x < max_fields) {
+                $(".container2").append(template); //add input box
+            } else {
+                alert('You Reached the limits')
+            }
+
+        })
+        $(".container2").on("click", ".deletes", function (e) {
+            e.preventDefault();
+            $(this).parent("div").remove();
+            x--;
+        })
+
+        /*add filed phones*/
+        $(".add_phone_form_field").click(function (e) {
+            e.preventDefault();
+            let template = ` <div class="form-group">
+                               <label for="exampleInputEmail1">Phone #</label>
+                                <input type="text" class="form-control delete-children-button" name="phone[]">
+                                <button type="button" class="btn btn-danger delete">Delete</button>
+                            </div>`;
+            if (x < max_fields) {
+                x++;
+                $(".phones").append(template); //add input box
+            } else {
+                alert('You Reached the limits')
+            }
+        });
+
+        $(".phones").on("click", ".delete", function (e) {
+            e.preventDefault();
+            $(this).parent('div').remove();
+            x--;
+        })
+
+        /* date picker*/
+        $(".datepicker").datepicker();
+        var max_fields = 10;
+        var x = 1;
+
+        // date filter
+        // filter date
+        jQuery("#from").datepicker({
+            dateFormat: 'dd-mm-yy',
+            changeMonth: true,
+            changeYear: true,
+            maxDate: '',
+            onClose: function (selectedDate) {
+                jQuery("#to").datepicker("option", "minDate", selectedDate);
+            }
+        });
+        jQuery("#to").datepicker({
+            dateFormat: 'dd-mm-yy',
+            changeMonth: true,
+            changeYear: true,
+            maxDate: '',
+            onClose: function (selectedDate) {
+                jQuery("#from").datepicker("option", "maxDate", selectedDate);
+            }
+        });
+
+
+    })
+</script>

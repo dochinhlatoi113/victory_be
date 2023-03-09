@@ -32,7 +32,7 @@ const configView = (app) => {
                 formatDate: function (datetime, format) {
                     var DateFormats = {
                         short: "DD MMMM - YYYY",
-                        long: "dddd DD.MM.YYYY HH:mm"
+                        long: "dddd DD.MM.YYYY"
                     };
                     if (moment) {
                         // can use other formats like 'lll' too

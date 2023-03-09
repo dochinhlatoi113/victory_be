@@ -12,7 +12,8 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-    
+      const tasks = sequelize.define('tasks');
+      Admin.hasMany(tasks,{  foreignKey: "userId",})
     }
   }
   Admin.init({

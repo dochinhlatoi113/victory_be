@@ -14,6 +14,7 @@ const dateOffController = require("../controller/dateOffController")
 const checkPermission = require('../controller/auth/checkPermissionController');
 const checkValidate = require("../validate/checkvalidator")
 const initPassportLocal = require('../controller/auth/passport') 
+const taskController = require("../controller/taskController")
 const userController = require("../controller/userController")
 const categoryProgramController = require("../controller/categoryProgramController")
 const contractController = require("../controller/contractController")
@@ -195,6 +196,16 @@ app.group("/contract", (router) => {
   router.post('/delete/:id', loginController.checkAuthenticated, dateOffController.destroy)
 })
 
+ // task
+ app.group("/task", (router) => {
+  router.use(loginController.checkAuthenticated)
+  router.get('/', loginController.checkAuthenticated, taskController.show)
+  router.get('/create', loginController.checkAuthenticated, taskController.create)
+  router.get('/edit/:id', loginController.checkAuthenticated, taskController.edit)
+  router.post('/store',  basevalidator.checkvalidate.validateDepartment, loginController.checkAuthenticated, taskController.store)
+  router.post('/update/:id', loginController.checkAuthenticated,  basevalidator.checkvalidate.validateDepartment, taskController.update)
+  router.post('/delete/:id', loginController.checkAuthenticated, taskController.destroy)
+})
 //files image
   router.post('/upload-file/',uploadFileController.store)
  

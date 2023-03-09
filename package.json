@@ -40,6 +40,7 @@
     "passport": "^0.6.0",
     "passport-jwt": "^4.0.1",
     "passport-local": "^1.0.0",
+    "select2": "^4.1.0-rc.0",
     "sequelize": "^6.26.0",
     "tinymce": "^6.3.1",
     "winston": "^3.8.2"
