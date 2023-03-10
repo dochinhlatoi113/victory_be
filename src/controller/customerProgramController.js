@@ -15,9 +15,9 @@ const Excel = require('exceljs');
  */
 let show = async (req, res) => {
     let keyWord = req.query.keyWord;
-    let itemPerPage = 20;
+    let itemPerPage = 100;
     let page = +req.query.page || 1
-    let offset = (page - 1) * itemPerPage;
+    let offset = (page - 1) * itemPerPage ;
     let startDate = req.query.start;
     let endDate = req.query.end;
     let status = req.query.status;

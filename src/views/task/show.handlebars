@@ -74,11 +74,19 @@
                             <option value="2">từ chối</option>
                         </select>
                     </div>
-                   
                     <div class="col-3">
-                        <label>Lọc theo {{#xIf user.departments  "phòng giám đốc"}}tên member hoặc {{/xIf}}tên title </label><br>
+                        <label>Lọc theo tên title </label><br>
                         <input type="text" class="form-control" placeholder="Search ......"
                             aria-label="Recipient's username" name="keyWord">
+                    </div>
+                    <div class="col-3">
+                        <label>Lọc theo tên member </label><br>
+                        <select class="custom-select " id="inlineFormCustomSelect" name="memberId">
+                            <option value="">All</option>
+                            {{#each listMember}}
+                                <option value="{{this.id}}">{{this.firstName}}</option>
+                            {{/each}}
+                        </select>
                     </div>
                 </div>
                 <button style="margin-top: 10px;width:10%;" type="submit" class="btn btn-danger">Search</button>
@@ -155,31 +163,47 @@
             </tr>
         </tbody>
     </table>
-  <div class="container mt-4">
+    <div class="container mt-4">
+        {{#if totalPages}}
         <nav aria-label="Page navigation example">
             <ul class="pagination justify-content-center">
-                {{#if hasPreviousPage}}
+                {{!-- {{#if hasPreviousPage}}
                 <li class="page-item">
-                    <a class="page-link"
-                        href="?page={{previousPage}}&status={{status}}&keyWord={{keyWord}}">Pre</a>
+                    <a class="page-link" href="{{firstPageUrl}}" aria-label="First">
+                        <span aria-hidden="true">&laquo;</span>
+                        <span class="sr-only">First</span>
+                    </a>
                 </li>
-                {{/if}}
-
+                <li class="page-item">
+                    <a class="page-link" href="{{../previousPageUrl}}" aria-label="Previous">
+                        <span aria-hidden="true">&lt;</span>
+                        <span class="sr-only">Previous</span>
+                    </a>
+                </li>
+                {{/if}} --}}
                 {{#each totalPages}}
-                <li class="page-item {{#if isCurrent}}active{{/if}}">
-                    <a class="page-link"
-                        href="?page={{number}}&status={{../status}}&keyWord={{../keyWord}}">{{number}}</a>
+                <li class="page-item{{#if isCurrent}} active{{/if}}">
+                    <a class="page-link" href="{{url}}">{{number}}</a>
                 </li>
                 {{/each}}
-
-                {{#if hasNextPage}}
+                {{!-- {{#if hasNextPage}}
                 <li class="page-item">
-                    <a class="page-link"
-                        href="?page={{nextPage}}&status={{status}}&keyWord={{keyWord}}">Next</a>
+                    <a class="page-link" href="{{../nextPageUrl}}" aria-label="Next">
+                        <span aria-hidden="true">&gt;</span>
+                        <span class="sr-only">Next</span>
+                    </a>
                 </li>
-                {{/if}}
+                <li class="page-item">
+                    <a class="page-link" href="{{lastPageUrl}}" aria-label="Last">
+                        <span aria-hidden="true">&raquo;</span>
+                        <span class="sr-only">Last</span>
+                    </a>
+                </li>
+                {{/if}} --}}
             </ul>
         </nav>
+        {{/if}}
+
     </div>
 
 
